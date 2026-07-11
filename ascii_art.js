@@ -1,39 +1,21 @@
 const container = document.getElementById('ascii-container');
 
-// Rainbow wave effect using pure CSS + JavaScript
+// Rainbow wave effect - pure color animation (no text replacement)
 let hue = 0;
 const chars = '█▓▒░ .:-=+*#%@';
 
-function generateWaveText(width, height, seed) {
-  let result = '';
-  for (let y = 0; y < height; y++) {
-    for (let x = 0; x < width; x++) {
-      const wave = Math.sin((x * 0.05) + (y * 0.02) + (seed * 0.01));
-      const charIdx = Math.floor((wave + 1) * chars.length / 2);
-      result += chars[charIdx];
-    }
-    result += '\n';
-  }
-  return result;
-}
-
-function updateWave() {
-  hue = (hue + 1) % 360;
+function updateRainbow() {
+  hue = (hue + 2) % 360;
   container.style.color = `hsl(${hue}, 100%, 50%)`;
-  container.style.textShadow = `0 0 10px hsl(${hue}, 100%, 50%), 0 0 20px hsl(${(hue + 60) % 360}, 100%, 50%)`;
+  container.style.textShadow = `0 0 8px hsl(${hue}, 100%, 70%), 0 0 16px hsl(${(hue + 60) % 360}, 100%, 70%)`;
 }
 
 // Start rainbow animation
-setInterval(updateWave, 50);
+setInterval(updateRainbow, 80);
 
 // Load data and display
 async function loadContent() {
   try {
-    // Wave background
-    const waveText = generateWaveText(80, 25, Date.now());
-    container.innerHTML = `<div style="color: #00ff00; text-shadow: 0 0 5px #00ff00;">${waveText}</div>`;
-    
-    // Try to load content
     const response = await fetch('data.json');
     if (response.ok) {
       const data = await response.json();
@@ -47,32 +29,54 @@ async function loadContent() {
 }
 
 function displayContent(data) {
-  let html = '<div style="color: #00ff80; font-weight: bold;">🧠 TECH HEADLINES</div>';
+  let html = '<div class="wave-effect">';
+  html += '<div class="section"><div class="headline">🧠 TECH HEADLINES</div>';
   if (data.headlines && data.headlines.length) {
     data.headlines.forEach(h => {
-      html += `<div>📰 ${h}</div>`;
+      html += `<div class="item">📰 ${h}</div>`;
     });
   }
-  html += '<br><div style="color: #00ff80; font-weight: bold;">💻 GITHUB INSIGHTS</div>';
+  html += '</div><br>';
+  html += '<div class="section"><div class="headline">💻 GITHUB INSIGHTS</div>';
   if (data.repos && data.repos.length) {
     data.repos.forEach(r => {
-      html += `<div>🚀 ${r.name}: ${r.next || 'Active'}</div>`;
+      html += `<div class="item">🚀 <a href="${r.url}" target="_blank">${r.name}</a>: ${r.next_issue || 'Active'}</div>`;
     });
   }
-  container.innerHTML += html;
+  html += '</div></div>';
+  
+  // Add next steps from emails
+  if (data.next_steps) {
+    html += '<div class="section"><div class="headline">▶️ NEXT STEPS</div>';
+    for (const [key, step] of Object.entries(data.next_steps)) {
+      html += `<div class="item">• ${key}: ${step}</div>`;
+    }
+    html += '</div>';
+  }
+  
+  container.innerHTML = html;
 }
 
 function displayDefault() {
   container.innerHTML = `
-    <div style="color: #00ff80; font-weight: bold;">🧠 TECH HEADLINES</div>
-    <div>📰 Quantum AI Breakthrough: New Compiler Achieves 100x Speedup</div>
-    <div>📰 Hardware Innovation: Open-Source RISC-V Chip Reaches 5GHz</div>
-    <br>
-    <div style="color: #00ff80; font-weight: bold;">💻 GITHUB INSIGHTS</div>
-    <div>🚀 frontier-ai-dlc: Resolve AST tree fragmentation in src/reset</div>
-    <div>🚀 moe-gui-architecture: GPU kernel integration pending</div>
+    <div class="wave-effect">
+      <div class="section">
+        <div class="headline">🧠 TECH HEADLINES</div>
+        <div class="item">📰 Quantum AI Breakthrough: 100x Speedup in Neural Compilers</div>
+      </div><br>
+      <div class="section">
+        <div class="headline">💻 GITHUB INSIGHTS</div>
+        <div class="item">🚀 <a href="https://github.com/chrisalunlloyd2-sudo/frontier-ai-dlc" target="_blank">frontier-ai-dlc</a>: AST tree fragmentation fix</div>
+        <div class="item">🚀 <a href="https://github.com/chrisalunlloyd2-sudo/moe-gui-architecture" target="_blank">moe-gui-architecture</a>: GPU kernel integration</div>
+      </div>
+      <div class="section">
+        <div class="headline">▶️ NEXT STEPS</div>
+        <div class="item">• frontier-ai-dlc: AST tree fragmentation fix</div>
+        <div class="item">• moe-gui-architecture: GPU kernel integration</div>
+      </div>
+    </div>
   `;
 }
 
 loadContent();
-setInterval(loadContent, 300000); // Refresh every 5 minutes
+setInterval(loadContent, 300000);
