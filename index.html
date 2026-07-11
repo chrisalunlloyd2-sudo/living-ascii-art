@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Living ASCII Art — News & GitHub</title>
+  <style>
+    body { font-family: 'Courier New', monospace; background:#0a0a0a; color:#00ff00; padding:20px; line-height:1.6; }
+    .container { max-width:1000px; margin:0 auto; }
+    #ascii-container { opacity:0; transition:opacity 1s; }
+    .news-section, .github-section { background:rgba(0,255,0,0.08); margin:12px 0; padding:15px; border-radius:8px; border-left:4px solid #00ff00; }
+    .ascii-art { font-size:1.4em; letter-spacing:2px; margin:10px 0; animation:rainbow 4s infinite; white-space:pre-wrap; }
+    @keyframes rainbow { 0%{color:#ff0040;}25%{color:#00ff80;}50%{color:#0080ff;}75%{color:#ffea00;}100%{color:#ff0040;} }
+    a { color:#00ffea; }
+    .repo-card { border-left:3px solid #0080ff; padding:8px 12px; margin:8px 0; background:rgba(0,128,255,0.07); }
+    small { opacity:0.7; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🌈 Living ASCII Art</h1>
+    <h2>News & GitHub Randomizer</h2>
+    <div id="ascii-container"><p>Loading…</p></div>
+  </div>
+  <script src="ascii_art.js"></script>
+</body>
+</html>
