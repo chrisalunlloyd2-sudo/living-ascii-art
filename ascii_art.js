@@ -1,22 +1,29 @@
 const container = document.getElementById('ascii-container');
 
-// Rainbow wave effect - pure color animation (no text replacement)
-let hue = 0;
-const chars = '█▓▒░ .:-=+*#%@';
+// 3D Wave Rainbow Effect
+let t = 0;
+const waveLayers = 3;
 
-function updateRainbow() {
-  hue = (hue + 2) % 360;
-  container.style.color = `hsl(${hue}, 100%, 50%)`;
-  container.style.textShadow = `0 0 8px hsl(${hue}, 100%, 70%), 0 0 16px hsl(${(hue + 60) % 360}, 100%, 70%)`;
+function update3DWave() {
+  t += 0.02;
+  const hue = (t * 5) % 360;
+  const transform = `
+    perspective(500px) 
+    rotateX(${Math.sin(t) * 5}deg) 
+    rotateY(${Math.cos(t) * 3}deg) 
+    scale(${0.95 + Math.sin(t * 0.5) * 0.05})
+  `;
+  container.style.transform = transform;
+  container.style.filter = `hue-rotate(${hue}deg) brightness(1.2)`;
+  container.style.textShadow = `0 0 10px hsl(${hue}, 100%, 70%), 0 0 20px hsl(${(hue + 60) % 360}, 100%, 70%)`;
 }
 
-// Start rainbow animation
-setInterval(updateRainbow, 80);
+setInterval(update3DWave, 50);
 
 // Load data and display
 async function loadContent() {
   try {
-    const response = await fetch('data.json');
+    const response = await fetch('data.json?t=' + Date.now()); // Cache bust
     if (response.ok) {
       const data = await response.json();
       displayContent(data);
@@ -43,9 +50,7 @@ function displayContent(data) {
       html += `<div class="item">🚀 <a href="${r.url}" target="_blank">${r.name}</a>: ${r.next_issue || 'Active'}</div>`;
     });
   }
-  html += '</div></div>';
-  
-  // Add next steps from emails
+  html += '</div>';
   if (data.next_steps) {
     html += '<div class="section"><div class="headline">▶️ NEXT STEPS</div>';
     for (const [key, step] of Object.entries(data.next_steps)) {
@@ -53,6 +58,10 @@ function displayContent(data) {
     }
     html += '</div>';
   }
+  if (data.github_suggestion) {
+    html += `<div class="section"><div class="headline">🔧 GITHUB SUGGESTION</div><div class="item">${data.github_suggestion}</div></div>`;
+  }
+  html += '</div>';
   
   container.innerHTML = html;
 }
@@ -73,6 +82,10 @@ function displayDefault() {
         <div class="headline">▶️ NEXT STEPS</div>
         <div class="item">• frontier-ai-dlc: AST tree fragmentation fix</div>
         <div class="item">• moe-gui-architecture: GPU kernel integration</div>
+      </div>
+      <div class="section">
+        <div class="headline">🔧 GITHUB SUGGESTION</div>
+        <div class="item">Add CI workflow to frontier-ai-dlc that validates AST completeness on every PR</div>
       </div>
     </div>
   `;
