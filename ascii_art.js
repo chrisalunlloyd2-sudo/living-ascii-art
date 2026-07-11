@@ -35,7 +35,8 @@ async function loadData() {
       </div>`;
     const el = document.getElementById('ascii-container');
     el.innerHTML = html;
-    setTimeout(()=>{ el.style.opacity='1'; setTimeout(()=>{ el.style.opacity='0'; },5000); },800);
+    // No fade - just keep visible
+    el.style.opacity = '1';
   } catch(e) {
     document.getElementById('ascii-container').innerHTML = '<p>Error loading data.</p>';
   }
