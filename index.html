@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Living ASCII Art</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0d0d0d;
+      font-family: 'Courier New', monospace;
+      color: #00ff00 !important;
+      overflow: hidden;
+    }
+    #ascii-container {
+      position: relative;
+      margin: 0 auto;
+      max-width: 1200px;
+      padding: 20px;
+      background: #000;
+      border-radius: 4px;
+      overflow: auto;
+      white-space: pre-wrap;
+      font-size: 0.9rem;
+      line-height: 1.2;
+      color: #00ff00 !important;
+      text-shadow: 0 0 5px #00ff00, 0 0 10px #00ffff;
+    }
+    .section {
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 4px;
+      background: #001100;
+    }
+    .section h3 {
+      margin-top: 0;
+      color: #00ff80 !important;
+    }
+    .repo-card {
+      margin: 10px 0;
+      padding: 8px;
+      border_left: 3px solid #00ff00;
+      background: #001100;
+    }
+    .repo-card strong {
+      color: #00ff80 !important;
+    }
+    .repo-card a {
+      color: #00ffff !important;
+      text-decoration: none;
+    }
+    .repo-card p {
+      margin: 5px 0;
+      color: #aaa;
+    }
+    .repo-card p.code {
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      color: #00ff00 !important;
+    }
+    .repo-card small {
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div id="ascii-container"></div>
+  <script src="ascii_art.js"></script>
+</body>
+</html>

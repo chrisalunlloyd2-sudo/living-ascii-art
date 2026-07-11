@@ -1,0 +1,23 @@
+name: Update Living ASCII Art
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run fetch script
+        run: python3 scripts/fetch_data.py
+      - name: Commit changes
+        run: |
+          git config user.name "Aegis Bot"
+          git config user.email "aegis@local"
+          git add data.json
+          git commit -m "Update data $(date -u)" || echo "No changes"
+          git push

@@ -1,0 +1,62 @@
+{
+  "date": "2026-07-11T23:02:10.408253",
+  "headlines": [
+    "Quantum Supremacy Achieved by Google's Sycamore Processor"
+  ],
+  "repos": [
+    {
+      "name": "frontier-ai-dlc",
+      "url": "https://github.com/chrisalunlloyd2-sudo/frontier-ai-dlc",
+      "incomplete": true,
+      "next_issue": "AST tree fragmentation fix",
+      "next_step": "AST tree fragmentation fix"
+    },
+    {
+      "name": "moe-gui-architecture",
+      "url": "https://github.com/chrisalunlloyd2-sudo/moe-gui-architecture",
+      "incomplete": true,
+      "next_issue": "GPU kernel integration pending",
+      "next_step": "GPU kernel integration pending"
+    },
+    {
+      "name": "wip-quantum-asm",
+      "url": "https://github.com/chrisalunlloyd2-sudo/wip-quantum-asm",
+      "incomplete": true,
+      "next_issue": "Instruction set validation",
+      "next_step": "Instruction set validation"
+    }
+  ],
+  "incomplete_tasks": [
+    {
+      "repo": "frontier-ai-dlc",
+      "priority": "HIGH",
+      "issue": "AST tree fragmentation fix",
+      "reason": "Pending merge or test failure"
+    },
+    {
+      "repo": "moe-gui-architecture",
+      "priority": "HIGH",
+      "issue": "GPU kernel integration pending",
+      "reason": "Pending merge or test failure"
+    },
+    {
+      "repo": "wip-quantum-asm",
+      "priority": "HIGH",
+      "issue": "Instruction set validation",
+      "reason": "Pending merge or test failure"
+    }
+  ],
+  "email_todos": [
+    {
+      "source": "Work Update - Q3 AI Pipeline",
+      "task": "TODO",
+      "date_hint": "2026-07-10"
+    }
+  ],
+  "next_steps": {
+    "frontier-ai-dlc": "AST tree fragmentation fix",
+    "moe-gui-architecture": "GPU kernel integration pending",
+    "wip-quantum-asm": "Instruction set validation",
+    "work update - q3 ai pipeline": "TODO [auto-generated from email]"
+  }
+}
