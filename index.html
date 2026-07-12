@@ -1,71 +1,230 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Living ASCII Art</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: #0d0d0d;
-      font-family: 'Courier New', monospace;
-      color: #00ff00 !important;
-      overflow: hidden;
-    }
-    #ascii-container {
-      position: relative;
-      margin: 0 auto;
-      max-width: 1200px;
-      padding: 20px;
-      background: #000;
-      border-radius: 4px;
-      overflow: auto;
-      white-space: pre-wrap;
-      font-size: 0.9rem;
-      line-height: 1.2;
-      color: #00ff00 !important;
-      text-shadow: 0 0 5px #00ff00, 0 0 10px #00ffff;
-    }
-    .section {
-      margin: 20px 0;
-      padding: 15px;
-      border-radius: 4px;
-      background: #001100;
-    }
-    .section h3 {
-      margin-top: 0;
-      color: #00ff80 !important;
-    }
-    .repo-card {
-      margin: 10px 0;
-      padding: 8px;
-      border_left: 3px solid #00ff00;
-      background: #001100;
-    }
-    .repo-card strong {
-      color: #00ff80 !important;
-    }
-    .repo-card a {
-      color: #00ffff !important;
-      text-decoration: none;
-    }
-    .repo-card p {
-      margin: 5px 0;
-      color: #aaa;
-    }
-    .repo-card p.code {
-      font-family: 'Courier New', monospace;
-      font-weight: bold;
-      color: #00ff00 !important;
-    }
-    .repo-card small {
-      color: #888;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Living ASCII Art - Tech Dashboard</title>
+    <style>
+        /* Rainbow Wave Animation - No Fade */
+        @keyframes rainbowWave {
+            0% { filter: hue-rotate(0deg) drop-shadow(0 0 5px #ff0000); }
+            20% { filter: hue-rotate(72deg) drop-shadow(0 0 5px #ff7f00); }
+            40% { filter: hue-rotate(144deg) drop-shadow(0 0 5px #ffff00); }
+            60% { filter: hue-rotate(216deg) drop-shadow(0 0 5px #00ff00); }
+            80% { filter: hue-rotate(288deg) drop-shadow(0 0 5px #0000ff); }
+            100% { filter: hue-rotate(360deg) drop-shadow(0 0 5px #8b00ff); }
+        }
+
+        @keyframes waveMotion {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-2px) rotate(1deg); }
+            50% { transform: translateY(-4px) rotate(0deg); }
+            75% { transform: translateY(-2px) rotate(-1deg); }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #000;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+            padding: 20px;
+        }
+
+        #ascii-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Navigation Menu */
+        .ascii-menu {
+            background: #0d0d0d;
+            border: 1px solid #00ff00;
+            border-radius: 6px;
+            padding: 12px 0;
+            text-align: center;
+            margin: 15px 0 30px 0;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .ascii-menu a {
+            color: #00ffcc;
+            text-decoration: none;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            margin: 0 14px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .ascii-menu a:hover {
+            color: #ff4d4d;
+            background: rgba(255, 77, 77, 0.1);
+            text-shadow: 0 0 8px #ff4d4d;
+        }
+
+        .section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-left: 3px solid #00ff00;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        h2 {
+            color: #00ff80;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ff80;
+        }
+
+        .ascii-art {
+            color: #00ff00;
+            font-size: 14px;
+            line-height: 1.4;
+            white-space: pre-wrap;
+            animation: rainbowWave 8s linear infinite, waveMotion 3s ease-in-out infinite;
+            text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff80;
+        }
+
+        .tech-section pre,
+        .repos-section pre,
+        .steps-section pre {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .menu-content {
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .menu-content ul,
+        .menu-content ol {
+            margin: 10px 0 10px 25px;
+        }
+
+        .menu-content li {
+            margin-bottom: 6px;
+        }
+
+        .note {
+            color: #ffaa00;
+            font-size: 12px;
+            font-style: italic;
+            margin-top: 10px;
+            border-left: 2px solid #ffaa00;
+            padding-left: 10px;
+        }
+
+        a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            text-align: center;
+            color: #888;
+            margin-top: 30px;
+            font-size: 12px;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            .ascii-menu a {
+                display: inline-block;
+                margin: 6px 8px;
+                font-size: 13px;
+            }
+
+            .ascii-art {
+                font-size: 11px;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div id="ascii-container"></div>
-  <script src="ascii_art.js"></script>
+    <div id="ascii-container">
+        <h1>🚀 Living ASCII Art - Tech Dashboard</h1>
+
+        <!-- Navigation Menu -->
+        <nav class="ascii-menu">
+            <a href="#forums">Forums</a>
+            <a href="#walkthroughs">Walkthroughs</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="section">
+            <h2>Live Feed</h2>
+            <pre class="ascii-art">Loading tech news and projects...</pre>
+        </div>
+
+        <!-- Forums Section -->
+        <section id="forums" class="section">
+            <h2>💬 Forums</h2>
+            <div class="menu-content">
+                <p><em>Lightweight, limited-user discussion boards. Backend to be figured out later.</em></p>
+                <ul>
+                    <li><strong>AI Talk</strong> — Discuss AI tools, workflows, and automation strategies.</li>
+                    <li><strong>News &amp; Trends</strong> — Share and comment on the latest AI breakthroughs.</li>
+                    <li><strong>Bug Reports</strong> — Submit issues with the system (local JSON store for now).</li>
+                    <li><strong>Showcase</strong> — Post your own ASCII art and metamaterial designs.</li>
+                </ul>
+                <p class="note">🔧 Backend pending: posts will be stored locally (~/.ai_memory/forums.json) for rapid prototyping until a proper forum backend is built.</p>
+            </div>
+        </section>
+
+        <!-- Walkthroughs Section -->
+        <section id="walkthroughs" class="section">
+            <h2>📘 Walkthroughs</h2>
+            <div class="menu-content">
+                <p><em>How to use all AI programs, apps, servers, and more. Full content to be determined.</em></p>
+                <ol>
+                    <li><strong>OpenAI Manager Setup</strong> — Connect your API key and configure email alerts.</li>
+                    <li><strong>Metamaterial Designer</strong> — Create and test custom metamaterial patterns.</li>
+                    <li><strong>Proot Sandbox Management</strong> — Securely persist and restore system state.</li>
+                    <li><strong>GGUF v3 Engine</strong> — Optimize quantization formats (Q4_0, Q4_K, Q5_K, Q8_0).</li>
+                    <li><strong>Kai Collective / Aegis</strong> — Autonomous agent orchestration and memory systems.</li>
+                    <li><strong>Living ASCII Art</strong> — Deploy this site via GitHub Pages + Cloudflare.</li>
+                </ol>
+                <p class="note">📝 Content for each walkthrough is to be determined — structure in place, tutorials coming later.</p>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <h2>ℹ️ About</h2>
+            <div class="menu-content">
+                <p>Living ASCII Art is a visual-first project that fetches live news headlines and generates dynamic ASCII art with rainbow color cycling and fade animations.</p>
+                <p>Built with GitHub Pages + Cloudflare. Deploys free, updates via GitHub webhook/Action.</p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <h2>📧 Contact</h2>
+            <div class="menu-content">
+                <p>Email: <a href="mailto:chrisalunlloyd2@gmail.com">chrisalunlloyd2@gmail.com</a></p>
+            </div>
+        </section>
+    </div>
+
+    <script src="ascii_art.js"></script>
 </body>
 </html>
