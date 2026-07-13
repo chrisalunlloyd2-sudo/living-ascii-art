@@ -50,6 +50,10 @@ function normalizeData(data) {
     if (!Array.isArray(data.walkthroughs)) data.walkthroughs = [];
     if (!Array.isArray(data.incomplete_tasks)) data.incomplete_tasks = [];
     if (!Array.isArray(data.email_updates)) data.email_updates = [];
+    if (!Array.isArray(data.workflow_cards)) data.workflow_cards = [];
+    if (!data.daily_flex) data.daily_flex = {};
+    if (!data.metrics) data.metrics = { page_views: 0 };
+    if (!data.seo) data.seo = {};
 
     return data;
 }
