@@ -1,113 +1,71 @@
 #!/usr/bin/env python3
 import json
-import re
 import datetime
-from pathlib import Path
+import re
+import os
 
-# === CONFIG ===
-TECH_KEYWORDS = ['computers', 'ai', 'hardware', 'programming', 'software', 'quantum', 'risc-v', 'cyber']
-REPOS = [
-    {"name": "frontier-ai-dlc", "url": "https://github.com/chrisalunlloyd2-sudo/frontier-ai-dlc", "incomplete": True, "next_issue": "AST tree fragmentation fix"},
-    {"name": "moe-gui-architecture", "url": "https://github.com/chrisalunlloyd2-sudo/moe-gui-architecture", "incomplete": True, "next_issue": "GPU kernel integration pending"},
-    {"name": "wip-quantum-asm", "url": "https://github.com/chrisalunlloyd2-sudo/wip-quantum-asm", "incomplete": True, "next_issue": "Instruction set validation"},
-]
+# Keywords for filtering tech news
+TECH_KEYWORDS = ['computers', 'ai', 'artificial intelligence', 'hardware', 'programming', 'software', 'tech', 'digital', 'cyber', 'data', 'algorithm']
 
-# Simulated self-sent emails (could be loaded from files)
-SELF_SENT_EMAILS = [
-    {
-        "subject": "Work Update - Q3 AI Pipeline",
-        "body": "Please review the upcoming deadline for the quantum annealing scheduler. Need to complete core.py by 2026-07-15.\n\nDon't forget the TODO: Add logging to debug.\n\nThis pushes the AST rewrite forward.",
-        "date": "2026-07-10T14:00:00Z"
-    },
-    {
-        "subject": "New Project Proposal: Ural Compiler Suite",
-        "body": "We should start tracking issues for Ural. Adding items to backlog.\n\nTODO: Initialize project scaffold by 2026-07-15",
-        "date": "2026-07-11T09:30:00Z"
-    }
-]
-
-# === TECH NEWS FETCH (mock) ===
-def fetch_tech_news():
-    # Mock news feed - in reality we'd use search_api or RSS
-    all_news = [
-        "Quantum Supremacy Achieved by Google's Sycamore Processor",
-        "AI-Powered Code Review Tool Surpasses Human Accuracy",
-        "RISC-V Hardware Secures 5 New Funding Rounds",
-        "Breakthrough in Neural Net Compression: 3x Smaller Models",
-        "Cybersecurity Firm Reports $2B in New Contracts",
-        "SpaceX Announces Starship 3.0 with Full Reusability",
-        "Microsoft Announces Windows 12: AI-First OS",
-        "Ethical AI Guidelines Released by OECD Committee",
-        "Silicon Valley Braces for AI Regulation Changes",
-        "Open-Source AI Framework Reaches 1M GitHub Stars"
+def load_cached_data():
+    """Load cached data from local files"""
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    
+    # Tech news (static for now)
+    tech_news = [
+        {"title": "Quantum Supremacy Achieved by Google's Sycamore Processor", "link": "https://techcrunch.com/2025/03/15/google-quantum-supremacy/", "source": "TechCrunch"},
+        {"title": "New AI Chip Breaks Energy Efficiency Barriers", "link": "https://www.wired.com/story/new-ai-chip-energy-efficiency/", "source": "Wired"},
+        {"title": "Open Source Hardware Revolution Gains Momentum", "link": "https://github.com/opensource-hardware", "source": "GitHub"},
+        {"title": "Programming Language X Surges in Developer Adoption", "link": "https://stateofjs.com/2025/", "source": "StateOfJS"},
+        {"title": "Data Center Cooling Innovations Cut Power Use by 40%", "link": "https://www.datacenterdynamics.com", "source": "DataCenterDynamics"}
     ]
     
-    # Filter by tech keywords
-    filtered = [item for item in all_news if any(kw.lower() in item.lower() 
-                                                   for kw in TECH_KEYWORDS)]
+    # Filter for tech keywords
+    filtered_news = [n for n in tech_news if any(kw in n['title'].lower() for kw in TECH_KEYWORDS)]
     
-    # Limit to one (single daily headline)
-    daily_headline = filtered[0] if filtered else "No recent tech news"
-    return filtered[:1]
-
-# === ISSUE ANALYSIS ===
-def analyze_incomplete(repos):
-    """Identify incomplete items in repos and rank by urgency"""
-    urgent = []
-    for repo in repos:
-        if repo["incomplete"]:
-            # Priority: AST issues > pending PRs > TODO items
-            urgent.append({
-                "repo": repo["name"],
-                "priority": "HIGH",
-                "issue": repo["next_issue"],
-                "reason": "Pending merge or test failure"
-            })
-    return urgent
-
-# === EMAIL CROSS-CORRELATION ===
-def extract_todos_from_emails(emails):
-    todos = []
-    for email in emails:
-        matches = re.findall(r'(TODO|task|reminder|action)\b.*?[\.\n]', email["body"], re.IGNORECASE)
-        for match in matches:
-            todos.append({
-                "source": email["subject"],
-                "task": match.strip(),
-                "date_hint": email["date"][:10]
-            })
-    return sorted(todos, key=lambda x: x["date_hint"], reverse=True)[:3]
-
-# === MAIN PIPELINE ===
-def build_report():
-    data = {
-        "date": datetime.datetime.utcnow().isoformat(),
-        "headlines": fetch_tech_news(),
-        "repos": REPOS,
-        "incomplete_tasks": analyze_incomplete(REPOS),
-        "email_todos": extract_todos_from_emails(SELF_SENT_EMAILS),
-        "next_steps": {}
+    # GitHub repos with next steps
+    repos = [
+        {"name": "frontier-ai-dlc", "url": "https://github.com/chrisalunlloyd2-sudo/frontier-ai-dlc", "next": "Fix AST tree fragmentation in src/reset"},
+        {"name": "moe-gui-architecture", "url": "https://github.com/chrisalunlloyd2-sudo/moe-gui-architecture", "next": "Integrate wave renderer into foundry dashboard"},
+        {"name": "viper-kernel", "url": "https://github.com/chrisalunlloyd2-sudo/viper-kernel", "next": "Complete GPU kernel integration"},
+        {"name": "living-ascii-art", "url": "https://github.com/chrisalunlloyd2-sudo/living-ascii-art", "next": "Add 3D wave effects enhancement"}
+    ]
+    
+    # Next steps from emails (simulated)
+    next_steps = [
+        "Resolve AST tree fragmentation in frontier-ai-dlc",
+        "Integrate living-ASCII wave renderer into MoeGUI",
+        "Complete GPU kernel integration for viper-kernel",
+        "Add TODO: logging to debug AI pipeline"
+    ]
+    
+    # Incomplete AST analysis
+    incomplete_tasks = [
+        "Fix incomplete AST tree in src/reset",
+        "Complete instruction set validation for quantum-asm",
+        "Resolve memory allocation bug in kernel"
+    ]
+    
+    # Email updates (simulated from self-sent emails)
+    email_updates = [
+        "TODO: Add logging to debug AI pipeline",
+        "Review PR #42 for memory optimization",
+        "Follow up on GitHub issue #18"
+    ]
+    
+    return {
+        "headlines": filtered_news[:3],
+        "repos": repos,
+        "next_steps": next_steps,
+        "incomplete_tasks": incomplete_tasks,
+        "email_updates": email_updates,
+        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
     }
-    
-    # Generate next steps for each repo
-    for repo in REPOS:
-        # Cross-correlate incompletes with next steps
-        if repo["incomplete"]:
-            repo_issues = analyze_incomplete([repo])
-            repo["next_step"] = repo_issues[0]["issue"] if repo_issues else "Complete pending pull requests"
-            data["next_steps"][repo["name"]] = repo_issues[0]["issue"]
-    
-    # Add email-sourced tasks to next_steps
-    for todo in data["email_todos"]:
-        source = todo["source"]
-        task = todo["task"]
-        if "<next>" not in task.lower():
-            # Auto-generate synthetic next step placeholder
-            task += " [auto-generated from email]"
-        data["next_steps"][source.lower()] = task
-    
-    return data
 
 if __name__ == "__main__":
-    report = build_report()
-    Path("data.json").write_text(json.dumps(report, indent=2))
+    report = load_cached_data()
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    output_path = os.path.join(base_dir, "data.json")
+    with open(output_path, "w") as f:
+        json.dump(report, f, indent=2)
+    print(f"Data written to {output_path}")

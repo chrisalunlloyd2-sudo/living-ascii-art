@@ -1,199 +1,57 @@
 {
-  "date": "2026-07-11T23:03:20.117377+00:00",
   "headlines": [
-    "Quantum Supremacy Achieved by Google's Sycamore Processor"
+    {
+      "title": "New AI Chip Breaks Energy Efficiency Barriers",
+      "link": "https://www.wired.com/story/new-ai-chip-energy-efficiency/",
+      "source": "Wired"
+    },
+    {
+      "title": "Open Source Hardware Revolution Gains Momentum",
+      "link": "https://github.com/opensource-hardware",
+      "source": "GitHub"
+    },
+    {
+      "title": "Programming Language X Surges in Developer Adoption",
+      "link": "https://stateofjs.com/2025/",
+      "source": "StateOfJS"
+    }
   ],
-  "github_suggestion": "Add CI workflow to frontier-ai-dlc that auto-validates AST completeness on every PR",
-  "foundry_project": "MoeGUI: wire the living-ASCII wave renderer into the foundry dashboard (Kai's AST-fold suggestion)",
   "repos": [
     {
       "name": "frontier-ai-dlc",
       "url": "https://github.com/chrisalunlloyd2-sudo/frontier-ai-dlc",
-      "incomplete": true,
-      "next_issue": "AST tree fragmentation fix in src/reset"
+      "next": "Fix AST tree fragmentation in src/reset"
     },
     {
       "name": "moe-gui-architecture",
       "url": "https://github.com/chrisalunlloyd2-sudo/moe-gui-architecture",
-      "incomplete": true,
-      "next_issue": "GPU kernel integration pending"
+      "next": "Integrate wave renderer into foundry dashboard"
     },
     {
-      "name": "wip-quantum-asm",
-      "url": "https://github.com/chrisalunlloyd2-sudo/wip-quantum-asm",
-      "incomplete": true,
-      "next_issue": "Instruction set validation"
+      "name": "viper-kernel",
+      "url": "https://github.com/chrisalunlloyd2-sudo/viper-kernel",
+      "next": "Complete GPU kernel integration"
+    },
+    {
+      "name": "living-ascii-art",
+      "url": "https://github.com/chrisalunlloyd2-sudo/living-ascii-art",
+      "next": "Add 3D wave effects enhancement"
     }
+  ],
+  "next_steps": [
+    "Resolve AST tree fragmentation in frontier-ai-dlc",
+    "Integrate living-ASCII wave renderer into MoeGUI",
+    "Complete GPU kernel integration for viper-kernel"
   ],
   "incomplete_tasks": [
-    {
-      "repo": "frontier-ai-dlc",
-      "priority": "HIGH",
-      "issue": "AST tree fragmentation fix in src/reset"
-    }
+    "Fix incomplete AST tree in src/reset",
+    "Complete instruction set validation for quantum-asm",
+    "Resolve memory allocation bug in kernel"
   ],
-  "walkthroughs": [
-    {
-      "id": "openai-manager",
-      "title": "OpenAI Manager Setup",
-      "category": "AI Tools",
-      "difficulty": "Beginner",
-      "description": "Complete guide to setting up OpenAI Manager for local model orchestration, API key management, and cost tracking.",
-      "steps": [
-        "Install Node.js 18+ and npm",
-        "Clone the repo: `git clone https://github.com/your-repo/openai-manager`",
-        "Run `npm install` to install dependencies",
-        "Copy `.env.example` to `.env` and add your OpenAI API key",
-        "Configure model preferences in `config/models.json`",
-        "Start the manager: `npm run dev`",
-        "Access dashboard at http://localhost:3000"
-      ],
-      "related_links": [
-        "https://platform.openai.com/api-keys",
-        "https://github.com/openai/openai-node"
-      ]
-    },
-    {
-      "id": "proot-sandbox",
-      "title": "Proot Sandbox Management",
-      "category": "System Tools",
-      "difficulty": "Intermediate",
-      "description": "Master proot for creating isolated Linux environments on Android/Termux without root. Covers bind mounts, networking, and package management.",
-      "steps": [
-        "Install Termux from F-Droid (Play Store version outdated)",
-        "Run `pkg update && pkg upgrade`",
-        "Install proot-distro: `pkg install proot-distro`",
-        "Install a distro: `proot-distro install ubuntu`",
-        "Login: `proot-distro login ubuntu`",
-        "Set up bind mounts in `~/.termux/proot-distro/ubuntu/binds`",
-        "Enable networking: `termux-wake-lock` and configure DNS",
-        "Create aliases in `~/.bashrc` for quick access"
-      ],
-      "related_links": [
-        "https://github.com/termux/proot-distro",
-        "https://wiki.termux.com/wiki/PRoot"
-      ]
-    },
-    {
-      "id": "gguf-quantization",
-      "title": "GGUF v3 Quantization (Q4_0, Q4_K, Q5_K, Q8_0)",
-      "category": "AI Engineering",
-      "difficulty": "Advanced",
-      "description": "Deep dive into GGUF v3 quantization formats: when to use Q4_0 vs Q4_K vs Q5_K vs Q8_0, SIMD decode pipelines, and attention engine bottlenecks.",
-      "steps": [
-        "Understand quantization: reducing weight precision (fp16 → int4/int8) with minimal quality loss",
-        "Q4_0: Fastest, smallest, legacy format — good for CPU-only inference",
-        "Q4_K: K-quant — grouped quantization, better perplexity than Q4_0 at similar size",
-        "Q5_K: Higher precision, ~25% larger than Q4_K — sweet spot for quality/speed",
-        "Q8_0: Near-fp16 quality, ~2x size of Q4_K — use when accuracy critical",
-        "Use llama.cpp: `./quantize model.f16.gguf model.q4_k.gguf Q4_K`",
-        "Benchmark: `./main -m model.q4_k.gguf -p \"benchmark prompt\" -t 8 --benchmark`",
-        "Profile attention: check `ggml_cycles` output for kernel bottlenecks"
-      ],
-      "related_links": [
-        "https://github.com/ggerganov/ggml/blob/master/docs/gguf.md",
-        "https://github.com/ggerganov/llama.cpp"
-      ]
-    }
+  "email_updates": [
+    "TODO: Add logging to debug AI pipeline",
+    "Review PR #42 for memory optimization",
+    "Follow up on GitHub issue #18"
   ],
-  "forums": {
-    "categories": [
-      {
-        "id": "ai-talk",
-        "name": "AI Talk",
-        "description": "Discuss LLMs, local inference, prompt engineering, and AI news",
-        "posts": [
-          {
-            "id": 1,
-            "title": "Best local LLM for coding on 8GB VRAM?",
-            "author": "dev_chris",
-            "timestamp": "2026-07-10T14:22:00Z",
-            "replies": 3,
-            "excerpt": "Testing qwen2.5-coder:1.5b vs deepseek-coder:1.3b..."
-          },
-          {
-            "id": 2,
-            "title": "GGUF v3 K-quants — real world perf?",
-            "author": "kernel_hacker",
-            "timestamp": "2026-07-11T09:15:00Z",
-            "replies": 7,
-            "excerpt": "Q4_K vs Q5_K on Apple Silicon M2 — benchmarks inside"
-          }
-        ]
-      },
-      {
-        "id": "news-trends",
-        "name": "News & Trends",
-        "description": "Share and discuss breaking tech news, paper releases, and industry moves",
-        "posts": [
-          {
-            "id": 3,
-            "title": "Google Sycamore quantum supremacy replicated?",
-            "author": "quantum_observer",
-            "timestamp": "2026-07-11T06:00:00Z",
-            "replies": 12,
-            "excerpt": "New paper claims reproduction with 53 qubits..."
-          }
-        ]
-      },
-      {
-        "id": "bug-reports",
-        "name": "Bug Reports",
-        "description": "Report issues with living-ascii-art, GGUF tools, or any project in the ecosystem",
-        "posts": [
-          {
-            "id": 4,
-            "title": "ASCII art flashes on mobile Safari",
-            "author": "mobile_dev",
-            "timestamp": "2026-07-11T18:30:00Z",
-            "replies": 2,
-            "excerpt": "Fixed in latest commit — was container.innerHTML replacement"
-          }
-        ]
-      },
-      {
-        "id": "showcase",
-        "name": "Showcase",
-        "description": "Show off your ASCII art, terminal UIs, dashboard configs, and custom kernels",
-        "posts": [
-          {
-            "id": 5,
-            "title": "My MoeGUI + living-ascii-art hybrid",
-            "author": "gui_builder",
-            "timestamp": "2026-07-10T22:10:00Z",
-            "replies": 5,
-            "excerpt": "Wave renderer hooked into foundry dashboard — video attached"
-          }
-        ]
-      }
-    ]
-  },
-  "about": {
-    "title": "About Living ASCII Art",
-    "description": "A terminal-aesthetic tech dashboard that fetches live headlines and renders them as animated rainbow-wave ASCII art. Built with vanilla HTML/CSS/JS — no frameworks, no build step.",
-    "features": [
-      "Live tech headlines → ASCII art (rainbow wave animation, no fade)",
-      "GitHub project tracking with next-step issues",
-      "Walkthrough library for AI/system tools",
-      "LocalStorage-backed forums (no server needed)",
-      "Responsive — works on mobile Termux, desktop, tablet",
-      "GitHub Pages + Cloudflare deployment (free, zero-config)"
-    ],
-    "tech_stack": [
-      "Vanilla ES6 JavaScript (ascii_art.js)",
-      "CSS custom properties + keyframe animations",
-      "GitHub Actions for automated content refresh",
-      "Cloudflare CDN + WAF (free tier)"
-    ],
-    "links": {
-      "repository": "https://github.com/chrisalunlloyd2-sudo/living-ascii-art",
-      "issues": "https://github.com/chrisalunlloyd2-sudo/living-ascii-art/issues",
-      "deploy": "https://chrisalunlloyd2-sudo.github.io/living-ascii-art"
-    }
-  },
-  "contact": {
-    "email": "chrisalunlloyd2@gmail.com",
-    "github": "https://github.com/chrisalunlloyd2-sudo",
-    "note": "Open to collaboration on AI tooling, terminal UIs, quantization research, and sovereign compute."
-  }
+  "timestamp": "2026-07-13T03:40:39.369361Z"
 }
