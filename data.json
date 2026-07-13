@@ -1,4 +1,22 @@
 {
+  "title": "Aegis Foundry Launchpad",
+  "tagline": "The first page you open before writing any code.",
+  "updated_at": "2026-07-13T13:30:33.490543+00:00",
+  "metrics": {
+    "page_views": 0,
+    "last_flex_change": "2026-07-13",
+    "cards_count": 1
+  },
+  "seo": {
+    "description": "Terminal-first guides to install Claude Code CLI, Aider, Ollama, GGUF quantization, and every tool you actually need. Daily ASCII flex + foundry forums.",
+    "keywords": [
+      "claude code cli",
+      "install claude code windows",
+      "aider ollama setup",
+      "terminal AI coding",
+      "sovereign developer tools"
+    ]
+  },
   "headlines": [
     {
       "title": "New AI Chip Breaks Energy Efficiency Barriers",
@@ -16,43 +34,275 @@
       "source": "StateOfJS"
     }
   ],
-  "repos": [
+  "daily_flex": {
+    "date": "2026-07-13",
+    "title": "ASCII Sine-Wave of the Day",
+    "description": "A deterministic sine wave rendered in ASCII, seeded by today's date. Refreshes once per day at 00:00 UTC.",
+    "type": "ascii_sine",
+    "seed": 20260713,
+    "vote_options": [
+      "ascii_sine",
+      "fractal_tree",
+      "matrix_rain",
+      "spiral_galaxy"
+    ],
+    "current_vote": "ascii_sine"
+  },
+  "workflow_cards": [
     {
-      "name": "frontier-ai-dlc",
-      "url": "https://github.com/chrisalunlloyd2-sudo/frontier-ai-dlc",
-      "next": "Fix AST tree fragmentation in src/reset"
-    },
-    {
-      "name": "moe-gui-architecture",
-      "url": "https://github.com/chrisalunlloyd2-sudo/moe-gui-architecture",
-      "next": "Integrate wave renderer into foundry dashboard"
-    },
-    {
-      "name": "viper-kernel",
-      "url": "https://github.com/chrisalunlloyd2-sudo/viper-kernel",
-      "next": "Complete GPU kernel integration"
-    },
-    {
-      "name": "living-ascii-art",
-      "url": "https://github.com/chrisalunlloyd2-sudo/living-ascii-art",
-      "next": "Add more walkthroughs and polish UI"
+      "id": "claude-code-cli",
+      "name": "Claude Code CLI",
+      "tagline": "The most-used coding assistant in the terminal.",
+      "category": "AI Coding",
+      "difficulty": "Beginner",
+      "status": "active",
+      "deprecated": null,
+      "why_use": "Claude Code is Anthropic's official terminal agent. You describe what you want in plain English and it reads, edits, tests, and commits code from your shell. It is the fastest way to refactor, debug, scaffold, and explore a codebase without leaving the keyboard.",
+      "metrics": {
+        "claim": "Most-used code-assist CLI",
+        "evidence": "Highest mindshare among terminal-first AI coding tools; recommended by Aider/Cursor power-users for agentic shell workflows."
+      },
+      "dependencies": [
+        {
+          "name": "Node.js 18+",
+          "why": "Claude Code is distributed as an npm package",
+          "check_command": "node --version"
+        },
+        {
+          "name": "npm 9+",
+          "why": "Required to install/update the package",
+          "check_command": "npm --version"
+        },
+        {
+          "name": "Git",
+          "why": "Claude Code uses git context for safer edits",
+          "check_command": "git --version"
+        },
+        {
+          "name": "Anthropic API key",
+          "why": "Claude Code bills against your Anthropic account",
+          "check_command": "echo $ANTHROPIC_API_KEY"
+        }
+      ],
+      "install_methods": [
+        {
+          "name": "npm global \u2014 cross-platform",
+          "os": "Windows, macOS, Linux",
+          "shell": "powershell / bash",
+          "pre_steps": [
+            "# 1. Check what you already have",
+            "node --version",
+            "npm --version",
+            "git --version"
+          ],
+          "steps": [
+            "# 2. Install Claude Code globally",
+            "npm install -g @anthropic-ai/claude-code",
+            "",
+            "# 3. Verify the binary exists",
+            "claude-code --version"
+          ],
+          "verify_command": "claude-code --version",
+          "pitfalls": "If you see 'npm ERR! EACCES', configure a global npm prefix or use the npx fallback below.",
+          "fallback": "npx @anthropic-ai/claude-code"
+        },
+        {
+          "name": "npx one-shot \u2014 no global install",
+          "os": "Windows, macOS, Linux",
+          "shell": "powershell / bash",
+          "pre_steps": [
+            "node --version"
+          ],
+          "steps": [
+            "# Run the latest version without installing",
+            "npx @anthropic-ai/claude-code"
+          ],
+          "verify_command": "npx @anthropic-ai/claude-code --version",
+          "pitfalls": "Slower startup because npx downloads/checks the package. Corporate proxies may block npx.",
+          "fallback": "npm install -g @anthropic-ai/claude-code"
+        },
+        {
+          "name": "Windows PowerShell + winget",
+          "os": "Windows 10/11",
+          "shell": "powershell",
+          "pre_steps": [
+            "winget --version",
+            "# If Node is missing, install LTS:",
+            "winget install OpenJS.NodeJS.LTS",
+            "# Refresh PATH in this session without restarting:",
+            "$env:Path = [System.Environment]::GetEnvironmentVariable('Path','Machine') + ';' + [System.Environment]::GetEnvironmentVariable('Path','User')",
+            "node --version"
+          ],
+          "steps": [
+            "npm install -g @anthropic-ai/claude-code",
+            "claude-code --version"
+          ],
+          "verify_command": "claude-code --version",
+          "pitfalls": "PATH does not update until you open a new PowerShell window unless you refresh $env:Path manually.",
+          "fallback": "Download Node.js from https://nodejs.org/en/download, install, then npm install -g @anthropic-ai/claude-code"
+        },
+        {
+          "name": "WSL2 Ubuntu / Debian bash",
+          "os": "Windows 10/11 WSL",
+          "shell": "bash",
+          "pre_steps": [
+            "sudo apt update",
+            "sudo apt install -y curl git",
+            "# Install a modern Node if system node is old:",
+            "curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -",
+            "sudo apt install -y nodejs",
+            "node --version && npm --version"
+          ],
+          "steps": [
+            "npm install -g @anthropic-ai/claude-code",
+            "claude-code --version"
+          ],
+          "verify_command": "claude-code --version",
+          "pitfalls": "Ubuntu's default nodejs package may be older than 18. Use the NodeSource curl pipe shown above if needed.",
+          "fallback": "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash && source ~/.bashrc && nvm install 20 && npm install -g @anthropic-ai/claude-code"
+        },
+        {
+          "name": "macOS Homebrew",
+          "os": "macOS",
+          "shell": "bash / zsh",
+          "pre_steps": [
+            "# If Homebrew is missing:",
+            "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"",
+            "brew --version",
+            "brew install node",
+            "node --version && npm --version"
+          ],
+          "steps": [
+            "npm install -g @anthropic-ai/claude-code",
+            "claude-code --version"
+          ],
+          "verify_command": "claude-code --version",
+          "pitfalls": "Homebrew on Apple Silicon installs to /opt/homebrew; make sure it is in your PATH.",
+          "fallback": "npx @anthropic-ai/claude-code"
+        }
+      ],
+      "dependency_install": [
+        {
+          "name": "Install Node.js LTS on Windows (no admin: use nvm-windows)",
+          "shell": "powershell",
+          "steps": [
+            "# 1. Download nvm-windows from https://github.com/coreybutler/nvm-windows/releases",
+            "# 2. Install nvm, then run:",
+            "nvm install 20.15.0",
+            "nvm use 20.15.0",
+            "node --version"
+          ]
+        },
+        {
+          "name": "Upgrade npm itself",
+          "shell": "powershell / bash",
+          "steps": [
+            "npm install -g npm@latest",
+            "npm --version"
+          ]
+        },
+        {
+          "name": "Set Anthropic API key",
+          "shell": "powershell / bash",
+          "steps": [
+            "# PowerShell",
+            "$env:ANTHROPIC_API_KEY='sk-ant-api03-...'",
+            "",
+            "# Bash / zsh (add to ~/.bashrc or ~/.zshrc)",
+            "export ANTHROPIC_API_KEY='sk-ant-api03-...'",
+            "",
+            "# Verify",
+            "claude-code --version"
+          ]
+        }
+      ],
+      "use_cases": [
+        {
+          "title": "Scaffold a feature from a blank terminal",
+          "context": "You just created an empty folder and want a working feature without touching an editor.",
+          "demo_commands": [
+            "mkdir ~/projects/demo-app && cd ~/projects/demo-app",
+            "git init",
+            "claude-code",
+            "# Inside Claude Code:",
+            "> Create a minimal Python Flask app with one route '/' that returns JSON {status: 'ok'}",
+            "",
+            "# Claude will show planned files. Accept each with 'y'.",
+            "python -m flask --app app run"
+          ],
+          "expected_output": "app.py appears, requirements are inferred, and the server starts on http://127.0.0.1:5000."
+        },
+        {
+          "title": "Fix a failing test",
+          "context": "You ran the test suite and one test fails with a confusing error.",
+          "demo_commands": [
+            "npm test",
+            "# Copy the error, then launch Claude Code in the project root:",
+            "claude-code",
+            "> Test X failed with 'Cannot find module ./helpers'. Diagnose and fix.",
+            "",
+            "# Review the diff Claude proposes, accept with 'y'.",
+            "npm test"
+          ],
+          "expected_output": "The missing import or path is corrected and the test passes."
+        },
+        {
+          "title": "Refactor a large file into modules",
+          "context": "src/app.js is 600 lines and you want it split into src/lib/ modules with tests.",
+          "demo_commands": [
+            "cd existing-project",
+            "claude-code src/app.js",
+            "> Refactor src/app.js into smaller modules under src/lib/ and add unit tests for the extracted helpers."
+          ],
+          "expected_output": "New files appear under src/lib/, src/app.js shrinks, and tests are added."
+        },
+        {
+          "title": "Understand a foreign codebase",
+          "context": "You cloned a repo and need a 30-second orientation before contributing.",
+          "demo_commands": [
+            "cd ~/projects/some-repo",
+            "claude-code",
+            "> What does this repo do, what are the main entry points, and how do I run it?"
+          ],
+          "expected_output": "A concise summary of the project purpose, key files, and run commands."
+        }
+      ],
+      "pro_tips": [
+        "Run Claude Code inside a git repo so every change is reversible with git checkout -- .",
+        "Type /compact when the conversation gets long; Claude will summarize context.",
+        "Type /cost to see estimated API usage for the session.",
+        "In CI/automation, restrict tools with claude-code --allowedTools edit,bash,view",
+        "Set ANTHROPIC_API_KEY in your shell profile or load it from a .env file."
+      ],
+      "copy_sections": [
+        {
+          "label": "Install globally (Windows/macOS/Linux)",
+          "text": "npm install -g @anthropic-ai/claude-code && claude-code --version"
+        },
+        {
+          "label": "Run once without installing",
+          "text": "npx @anthropic-ai/claude-code"
+        },
+        {
+          "label": "macOS one-liner",
+          "text": "curl -fsSL https://claude.ai/install.sh | bash"
+        },
+        {
+          "label": "Set API key (bash)",
+          "text": "export ANTHROPIC_API_KEY='sk-ant-api03-...' && claude-code"
+        }
+      ],
+      "related_links": [
+        {
+          "label": "Official docs",
+          "url": "https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview"
+        },
+        {
+          "label": "npm package",
+          "url": "https://www.npmjs.com/package/@anthropic-ai/claude-code"
+        }
+      ]
     }
-  ],
-  "next_steps": [
-    "Resolve AST tree fragmentation in frontier-ai-dlc",
-    "Integrate living-ASCII wave renderer into MoeGUI",
-    "Complete GPU kernel integration for viper-kernel",
-    "Add TODO: logging to debug AI pipeline"
-  ],
-  "incomplete_tasks": [
-    "Fix incomplete AST tree in src/reset",
-    "Complete instruction set validation for quantum-asm",
-    "Resolve memory allocation bug in kernel"
-  ],
-  "email_updates": [
-    "TODO: Add logging to debug AI pipeline",
-    "Review PR #42 for memory optimization",
-    "Follow up on GitHub issue #18"
   ],
   "walkthroughs": [
     {
@@ -166,6 +416,66 @@
       ]
     }
   ],
+  "repos": [
+    {
+      "name": "frontier-ai-dlc",
+      "url": "https://github.com/chrisalunlloyd2-sudo/frontier-ai-dlc",
+      "next": "Fix AST tree fragmentation in src/reset"
+    },
+    {
+      "name": "moe-gui-architecture",
+      "url": "https://github.com/chrisalunlloyd2-sudo/moe-gui-architecture",
+      "next": "Integrate wave renderer into foundry dashboard"
+    },
+    {
+      "name": "viper-kernel",
+      "url": "https://github.com/chrisalunlloyd2-sudo/viper-kernel",
+      "next": "Complete GPU kernel integration"
+    },
+    {
+      "name": "living-ascii-art",
+      "url": "https://github.com/chrisalunlloyd2-sudo/living-ascii-art",
+      "next": "Add more walkthroughs and polish UI"
+    }
+  ],
+  "next_steps": [
+    "Resolve AST tree fragmentation in frontier-ai-dlc",
+    "Integrate living-ASCII wave renderer into MoeGUI",
+    "Complete GPU kernel integration for viper-kernel",
+    "Add TODO: logging to debug AI pipeline"
+  ],
+  "incomplete_tasks": [
+    "Fix incomplete AST tree in src/reset",
+    "Complete instruction set validation for quantum-asm",
+    "Resolve memory allocation bug in kernel"
+  ],
+  "email_updates": [
+    "TODO: Add logging to debug AI pipeline",
+    "Review PR #42 for memory optimization",
+    "Follow up on GitHub issue #18"
+  ],
+  "forums": {
+    "categories": [
+      {
+        "id": "general",
+        "title": "General Discussion",
+        "description": "Open forum for questions, ideas, and project chatter.",
+        "posts": []
+      },
+      {
+        "id": "walkthroughs",
+        "title": "Walkthrough Requests",
+        "description": "Suggest new walkthroughs or corrections.",
+        "posts": []
+      },
+      {
+        "id": "showcase",
+        "title": "Showcase",
+        "description": "Share things built with these guides.",
+        "posts": []
+      }
+    ]
+  },
   "about": {
     "title": "Aegis Foundry \u2014 Living ASCII Dashboard",
     "description": "A sovereign, auto-updating terminal-style dashboard for tracking projects, mastering workflows, and surfacing the most important next steps. Built as a static GitHub Pages site with a Python data generator, rainbow ASCII art, and expandable walkthroughs.",
@@ -193,28 +503,5 @@
     "note": "Questions, ideas, or broken walkthroughs? Reach out directly.",
     "email": "chrisalunlloyd2@gmail.com",
     "github": "https://github.com/chrisalunlloyd2-sudo"
-  },
-  "forums": {
-    "categories": [
-      {
-        "id": "general",
-        "title": "General Discussion",
-        "description": "Open forum for questions, ideas, and project chatter.",
-        "posts": []
-      },
-      {
-        "id": "walkthroughs",
-        "title": "Walkthrough Requests",
-        "description": "Suggest new walkthroughs or corrections.",
-        "posts": []
-      },
-      {
-        "id": "showcase",
-        "title": "Showcase",
-        "description": "Share things built with these guides.",
-        "posts": []
-      }
-    ]
-  },
-  "timestamp": "2026-07-13T04:24:40.532401+00:00"
+  }
 }

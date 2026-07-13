@@ -3,7 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Living ASCII Art - Tech Dashboard</title>
+    <title>Aegis Foundry Launchpad — Start Any Coding Workflow</title>
+    <meta name="description" content="Terminal-first guides to install Claude Code CLI, Aider, Ollama, GGUF quantization, and every tool you actually need. Daily ASCII flex + foundry forums.">
+    <meta name="keywords" content="claude code cli, install claude code windows, aider ollama setup, terminal AI coding, sovereign developer tools">
+    <meta name="author" content="Aegis Foundry">
+    <meta property="og:title" content="Aegis Foundry Launchpad — Start Any Coding Workflow">
+    <meta property="og:description" content="Terminal-first guides for Claude Code CLI, Aider, Ollama, GGUF quantization, and more.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chrisalunlloyd2-sudo.github.io/living-ascii-art/">
+    <meta property="og:image" content="https://chrisalunlloyd2-sudo.github.io/living-ascii-art/og-image.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Aegis Foundry Launchpad">
+    <meta name="twitter:description" content="Terminal-first guides + daily programmatic flex for sovereign developers.">
     <style>
         /* Rainbow Wave Animation - No Fade */
         @keyframes rainbowWave {
@@ -313,19 +324,233 @@
                 padding: 15px;
             }
         }
+    
+        /* Workflow cards */
+        .workflow-grid { display: grid; gap: 24px; }
+        .workflow-card {
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            background: rgba(0, 20, 0, 0.4);
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 16px 20px;
+            background: rgba(0, 255, 0, 0.08);
+            border-bottom: 1px solid #00ff00;
+        }
+        .card-title-row {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        .card-title-row h3 { margin: 0; color: #00ff80; text-shadow: 0 0 10px #00ff80; }
+        .card-tag, .card-difficulty, .card-metric {
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid;
+        }
+        .card-tag { color: #00ffff; border-color: #00ffff; }
+        .card-difficulty { color: #ffaa00; border-color: #ffaa00; }
+        .card-metric { color: #ff00ff; border-color: #ff00ff; }
+        .card-tagline { color: #aaa; font-style: italic; font-size: 13px; }
+        .card-body { padding: 20px; }
+        .card-why { margin-bottom: 14px; line-height: 1.5; }
+        .metric-callout {
+            background: rgba(0, 255, 0, 0.1);
+            border-left: 3px solid #00ff00;
+            padding: 10px 14px;
+            margin-bottom: 14px;
+            font-size: 13px;
+        }
+        .deprecation-banner {
+            background: rgba(255, 170, 0, 0.1);
+            border-left: 3px solid #ffaa00;
+            color: #ffcc00;
+            padding: 10px 14px;
+            margin-bottom: 14px;
+            font-size: 13px;
+        }
+        .quick-copy-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+        .copy-section-btn, .copy-btn {
+            background: #111;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 6px 12px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+        .copy-section-btn:hover, .copy-btn:hover { background: rgba(0, 255, 0, 0.2); }
+        .method-tabs { margin: 18px 0; }
+        .tab-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 8px;
+        }
+        .tab-btn {
+            background: transparent;
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .tab-btn.active, .tab-btn:hover { background: rgba(0, 255, 0, 0.2); color: #fff; }
+        .tab-panel { display: none; animation: fadeIn 0.2s ease; }
+        .tab-panel.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .method-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .method-name { font-weight: bold; color: #00ffcc; }
+        .method-meta { color: #888; font-size: 12px; }
+        .dep-box {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px dashed #00ffff;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+        .dep-box ul { margin: 8px 0 0 20px; }
+        .dep-why { color: #888; }
+        .terminal-block {
+            border: 1px solid #333;
+            border-radius: 6px;
+            margin: 12px 0;
+            overflow: hidden;
+            background: #050505;
+        }
+        .terminal-header {
+            background: #111;
+            padding: 6px 12px;
+            display: flex;
+            gap: 10px;
+            font-size: 12px;
+            color: #888;
+            border-bottom: 1px solid #222;
+        }
+        .terminal-header span:first-child { color: #00ff00; font-weight: bold; }
+        .terminal-body {
+            padding: 14px;
+            margin: 0;
+            background: #000;
+            color: #00ff00;
+            font-size: 12px;
+            line-height: 1.5;
+            overflow-x: auto;
+            white-space: pre;
+        }
+        .method-pitfall, .method-fallback { font-size: 12px; margin-top: 8px; }
+        .method-pitfall { color: #ffaa00; }
+        .method-fallback { color: #00ffff; }
+        .dependency-install-section { margin-top: 24px; }
+        .dependency-install-section h4 { color: #00ff80; margin-bottom: 12px; }
+        .dep-install-block { margin-bottom: 18px; }
+        .dep-install-block h5 { color: #00ffff; margin-bottom: 8px; }
+        .use-cases-section { margin-top: 24px; }
+        .use-cases-section h4 { color: #00ff80; margin-bottom: 12px; }
+        .use-case {
+            border-left: 2px solid #00ffff;
+            padding-left: 14px;
+            margin-bottom: 20px;
+        }
+        .use-case h5 { color: #00ffff; margin-bottom: 6px; }
+        .use-context { color: #bbb; font-size: 13px; margin-bottom: 10px; }
+        .expected-output { color: #888; font-size: 12px; margin-top: 8px; }
+        .pro-tips { margin-top: 20px; }
+        .pro-tips h4 { color: #00ff80; margin-bottom: 8px; }
+        .pro-tips ul { margin-left: 20px; font-size: 13px; color: #ccc; }
+        .related-links { margin-top: 16px; font-size: 13px; }
+
+        /* Daily flex */
+        .daily-flex {
+            border: 1px solid #ff00ff;
+            border-radius: 8px;
+            padding: 20px;
+            background: rgba(40, 0, 40, 0.25);
+        }
+        .flex-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .flex-header h3 { color: #ff80ff; text-shadow: 0 0 10px #ff80ff; margin: 0; }
+        .flex-type { color: #ff00ff; border: 1px solid #ff00ff; padding: 2px 10px; border-radius: 4px; font-size: 12px; }
+        .daily-ascii { color: #ff00ff; text-shadow: 0 0 8px #ff00ff; font-size: 12px; }
+        .flex-vote { margin-top: 16px; }
+        .vote-options { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0; }
+        .vote-btn {
+            background: transparent;
+            border: 1px solid #ff00ff;
+            color: #ff80ff;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .vote-btn:hover, .vote-btn.voted { background: rgba(255, 0, 255, 0.2); color: #fff; }
+        .vote-note { color: #888; font-size: 11px; }
+
+        /* Page counter */
+        .page-counter {
+            text-align: right;
+            color: #00ffcc;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
     </style>
 </head>
 <body>
     <div id="ascii-container">
-        <h1>🚀 Living ASCII Art - Tech Dashboard</h1>
+        <h1>🚀 Aegis Foundry Launchpad</h1>
 
         <!-- Navigation Menu -->
         <nav class="ascii-menu">
-            <a href="#forums">Forums</a>
+            <a href="#launchpad">Launchpad</a>
+            <a href="#daily-flex">Daily Flex</a>
+            <a href="#live-feed">Live Feed</a>
             <a href="#walkthroughs">Walkthroughs</a>
+            <a href="#forums">Forums</a>
             <a href="#about">About</a>
             <a href="#contact">Contact</a>
         </nav>
+
+        <div id="page-counter-content"></div>
+
+        <!-- Launchpad -->
+        <section id="launchpad" class="section">
+            <h2>🚀 Aegis Foundry Launchpad — Start Any Workflow</h2>
+            <p class="menu-content">Every card assumes a bare terminal. Dependencies first, install methods second, use-case demos third. Copy any block and run it.</p>
+            <div id="workflow-cards-content" class="menu-content"></div>
+        </section>
+
+        <!-- Daily Programmatic Flex -->
+        <section id="daily-flex" class="section">
+            <h2>🎨 Daily Programmatic Flex</h2>
+            <div id="daily-flex-content"></div>
+        </section>
 
         <!-- Live Feed (updates every 5 min) -->
         <div class="section" id="live-feed">

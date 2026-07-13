@@ -343,6 +343,23 @@ async function updatePage() {
         const data = await loadContent();
         console.log('[ASCII] data loaded:', {headlines: data.headlines.length, repos: data.repos.length, walkthroughs: data.walkthroughs.length});
 
+        const workflowContainer = document.getElementById('workflow-cards-content');
+        if (workflowContainer) {
+            workflowContainer.innerHTML = createWorkflowCards(data);
+            bindWorkflowTabs();
+        }
+
+        const flexContainer = document.getElementById('daily-flex-content');
+        if (flexContainer) {
+            flexContainer.innerHTML = renderDailyFlex(data);
+            bindDailyFlexVote();
+        }
+
+        const counterContainer = document.getElementById('page-counter-content');
+        if (counterContainer) {
+            counterContainer.innerHTML = createPageCounter(data);
+        }
+
         // Live feed (updates every 5 min)
         const feedContainer = document.getElementById('live-feed');
         if (feedContainer) {
