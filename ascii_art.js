@@ -342,35 +342,39 @@ async function updatePage() {
     try {
         const data = await loadContent();
         console.log('[ASCII] data loaded:', {headlines: data.headlines.length, repos: data.repos.length, walkthroughs: data.walkthroughs.length});
-    const feedContainer = document.getElementById('live-feed');
-    if (feedContainer) {
-        feedContainer.innerHTML = createLiveFeed(data);
-    }
-    
-    // Static sections (render once on load)
-    if (!window.sectionsRendered) {
-        const walkthroughsContainer = document.getElementById('walkthroughs-content');
-        if (walkthroughsContainer) {
-            walkthroughsContainer.innerHTML = createWalkthroughs(data);
+
+        // Live feed (updates every 5 min)
+        const feedContainer = document.getElementById('live-feed');
+        if (feedContainer) {
+            feedContainer.innerHTML = createLiveFeed(data);
         }
-        
-        const forumsContainer = document.getElementById('forums-content');
-        if (forumsContainer) {
-            forumsContainer.innerHTML = createForums(data);
-            initForumInteractions();
+
+        // Static sections (render once on load)
+        if (!window.sectionsRendered) {
+            const walkthroughsContainer = document.getElementById('walkthroughs-content');
+            if (walkthroughsContainer) {
+                walkthroughsContainer.innerHTML = createWalkthroughs(data);
+            }
+
+            const forumsContainer = document.getElementById('forums-content');
+            if (forumsContainer) {
+                forumsContainer.innerHTML = createForums(data);
+                initForumInteractions();
+            }
+
+            const aboutContainer = document.getElementById('about-content');
+            if (aboutContainer) {
+                aboutContainer.innerHTML = createAbout(data);
+            }
+
+            const contactContainer = document.getElementById('contact-content');
+            if (contactContainer) {
+                contactContainer.innerHTML = createContact(data);
+            }
+
+            window.sectionsRendered = true;
         }
-        
-        const aboutContainer = document.getElementById('about-content');
-        if (aboutContainer) {
-            aboutContainer.innerHTML = createAbout(data);
-        }
-        
-        const contactContainer = document.getElementById('contact-content');
-        if (contactContainer) {
-            contactContainer.innerHTML = createContact(data);
-        }
-        
-        window.sectionsRendered = true;
+
         console.log('[ASCII] updatePage complete');
     } catch (err) {
         console.error('[ASCII] updatePage error:', err);
