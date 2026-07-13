@@ -82,6 +82,12 @@
             text-shadow: 0 0 10px #00ff80;
         }
 
+        h3 {
+            color: #00ff80;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ff80;
+        }
+
         .ascii-art {
             color: #00ff00;
             font-size: 14px;
@@ -104,6 +110,7 @@
         .menu-content {
             font-size: 13px;
             line-height: 1.6;
+            color: #ccc;
         }
 
         .menu-content ul,
@@ -140,6 +147,148 @@
             font-size: 12px;
         }
 
+        /* Walkthrough card styles */
+        .walkthrough-card ol {
+            color: #00ffcc;
+        }
+
+        /* Forum styles */
+        .forum-category button.new-post-btn:hover {
+            background: #00cc00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .forum-post a:hover {
+            color: #ff4d4d;
+            text-shadow: 0 0 5px #ff4d4d;
+        }
+
+        /* Modal styles */
+        #post-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: #0d0d0d;
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 15px;
+        }
+
+        .modal-header h3 {
+            color: #00ff80;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #ff4d4d;
+            font-size: 24px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-close:hover {
+            text-shadow: 0 0 10px #ff4d4d;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #00ffcc;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            background: #000;
+            border: 1px solid #333;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background: #00ff00;
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: #00cc00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+
+        .btn-secondary {
+            background: #333;
+            color: #00ffcc;
+            border: 1px solid #00ffcc;
+        }
+
+        .btn-secondary:hover {
+            background: #444;
+        }
+
         /* Mobile responsive */
         @media (max-width: 600px) {
             body {
@@ -154,6 +303,14 @@
 
             .ascii-art {
                 font-size: 11px;
+            }
+
+            .modal-content {
+                padding: 20px;
+            }
+
+            .walkthrough-card {
+                padding: 15px;
             }
         }
     </style>
@@ -170,59 +327,72 @@
             <a href="#contact">Contact</a>
         </nav>
 
+        <!-- Live Feed (updates every 5 min) -->
         <div class="section" id="live-feed">
             <h2>Live Feed</h2>
             <pre class="ascii-art">Loading tech news and projects...</pre>
         </div>
 
-        <!-- Forums Section -->
-        <section id="forums" class="section">
-            <h2>💬 Forums</h2>
-            <div class="menu-content">
-                <p><em>Lightweight, limited-user discussion boards. Backend to be figured out later.</em></p>
-                <ul>
-                    <li><strong>AI Talk</strong> — Discuss AI tools, workflows, and automation strategies.</li>
-                    <li><strong>News &amp; Trends</strong> — Share and comment on the latest AI breakthroughs.</li>
-                    <li><strong>Bug Reports</strong> — Submit issues with the system (local JSON store for now).</li>
-                    <li><strong>Showcase</strong> — Post your own ASCII art and metamaterial designs.</li>
-                </ul>
-                <p class="note">🔧 Backend pending: posts will be stored locally (~/.ai_memory/forums.json) for rapid prototyping until a proper forum backend is built.</p>
-            </div>
-        </section>
-
         <!-- Walkthroughs Section -->
         <section id="walkthroughs" class="section">
             <h2>📘 Walkthroughs</h2>
-            <div class="menu-content">
-                <p><em>How to use all AI programs, apps, servers, and more. Full content to be determined.</em></p>
-                <ol>
-                    <li><strong>OpenAI Manager Setup</strong> — Connect your API key and configure email alerts.</li>
-                    <li><strong>Metamaterial Designer</strong> — Create and test custom metamaterial patterns.</li>
-                    <li><strong>Proot Sandbox Management</strong> — Securely persist and restore system state.</li>
-                    <li><strong>GGUF v3 Engine</strong> — Optimize quantization formats (Q4_0, Q4_K, Q5_K, Q8_0).</li>
-                    <li><strong>Kai Collective / Aegis</strong> — Autonomous agent orchestration and memory systems.</li>
-                    <li><strong>Living ASCII Art</strong> — Deploy this site via GitHub Pages + Cloudflare.</li>
-                </ol>
-                <p class="note">📝 Content for each walkthrough is to be determined — structure in place, tutorials coming later.</p>
+            <div id="walkthroughs-content" class="menu-content">
+                <p style="color:#888; text-align:center; padding:20px;">Loading walkthroughs...</p>
+            </div>
+        </section>
+
+        <!-- Forums Section -->
+        <section id="forums" class="section">
+            <h2>💬 Forums</h2>
+            <div id="forums-content" class="menu-content">
+                <p style="color:#888; text-align:center; padding:20px;">Loading forums...</p>
             </div>
         </section>
 
         <!-- About Section -->
         <section id="about" class="section">
             <h2>ℹ️ About</h2>
-            <div class="menu-content">
-                <p>Living ASCII Art is a visual-first project that fetches live news headlines and generates dynamic ASCII art with rainbow color cycling and fade animations.</p>
-                <p>Built with GitHub Pages + Cloudflare. Deploys free, updates via GitHub webhook/Action.</p>
+            <div id="about-content" class="menu-content">
+                <p style="color:#888; text-align:center; padding:20px;">Loading...</p>
             </div>
         </section>
 
         <!-- Contact Section -->
         <section id="contact" class="section">
             <h2>📧 Contact</h2>
-            <div class="menu-content">
-                <p>Email: <a href="mailto:chrisalunlloyd2@gmail.com">chrisalunlloyd2@gmail.com</a></p>
+            <div id="contact-content" class="menu-content">
+                <p style="color:#888; text-align:center; padding:20px;">Loading...</p>
             </div>
         </section>
+    </div>
+
+    <!-- New Post Modal -->
+    <div id="post-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>New Forum Post</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="new-post-form">
+                <input type="hidden" id="post-category" name="category">
+                <div class="form-group">
+                    <label for="post-title">Title</label>
+                    <input type="text" id="post-title" name="title" required maxlength="100" placeholder="Enter post title...">
+                </div>
+                <div class="form-group">
+                    <label for="post-author">Author (optional)</label>
+                    <input type="text" id="post-author" name="author" maxlength="30" placeholder="Your name or handle">
+                </div>
+                <div class="form-group">
+                    <label for="post-content">Content</label>
+                    <textarea id="post-content" name="content" required maxlength="5000" placeholder="Write your post..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script src="ascii_art.js"></script>
