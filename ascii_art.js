@@ -1,95 +1,353 @@
-const container = document.getElementById('ascii-container');
+// ASCII Art with Rainbow Wave Effect - No Fading
+// Uses CSS animation for continuous rainbow effect
 
-// 3D Wave Rainbow Effect
-let t = 0;
-const waveLayers = 3;
-
-function update3DWave() {
-  t += 0.02;
-  const hue = (t * 5) % 360;
-  const transform = `
-    perspective(500px) 
-    rotateX(${Math.sin(t) * 5}deg) 
-    rotateY(${Math.cos(t) * 3}deg) 
-    scale(${0.95 + Math.sin(t * 0.5) * 0.05})
-  `;
-  container.style.transform = transform;
-  container.style.filter = `hue-rotate(${hue}deg) brightness(1.2)`;
-  container.style.textShadow = `0 0 10px hsl(${hue}, 100%, 70%), 0 0 20px hsl(${(hue + 60) % 360}, 100%, 70%)`;
-}
-
-setInterval(update3DWave, 50);
-
-// Load data and display
+// Load data from data.json
 async function loadContent() {
-  try {
-    const response = await fetch('data.json?t=' + Date.now()); // Cache bust
-    if (response.ok) {
-      const data = await response.json();
-      displayContent(data);
-    } else {
-      displayDefault();
+    try {
+        const response = await fetch('data.json');
+        if (!response.ok) throw new Error('Failed to fetch data');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error loading data:', error);
+        return { headlines: [], repos: [], next_steps: [] };
     }
-  } catch (e) {
-    displayDefault();
-  }
 }
 
-function displayContent(data) {
-  let html = '<div class="wave-effect">';
-  html += '<div class="section"><div class="headline">🧠 TECH HEADLINES</div>';
-  if (data.headlines && data.headlines.length) {
-    data.headlines.forEach(h => {
-      html += `<div class="item">📰 ${h}</div>`;
-    });
-  }
-  html += '</div><br>';
-  html += '<div class="section"><div class="headline">💻 GITHUB INSIGHTS</div>';
-  if (data.repos && data.repos.length) {
-    data.repos.forEach(r => {
-      html += `<div class="item">🚀 <a href="${r.url}" target="_blank">${r.name}</a>: ${r.next_issue || 'Active'}</div>`;
-    });
-  }
-  html += '</div>';
-  if (data.next_steps) {
-    html += '<div class="section"><div class="headline">▶️ NEXT STEPS</div>';
-    for (const [key, step] of Object.entries(data.next_steps)) {
-      html += `<div class="item">• ${key}: ${step}</div>`;
+// Convert text to ASCII art using a simple block font
+function textToAscii(text) {
+    // Simple block font mapping (simplified)
+    const font = {
+        'A': [
+            "  ###  ",
+            " #   # ",
+            "#####  ",
+            "#   #  ",
+            "#   #  "
+        ],
+        'B': [
+            "####   ",
+            "#   #  ",
+            "####   ",
+            "#   #  ",
+            "####   "
+        ],
+        'C': [
+            " ####  ",
+            "#      ",
+            "#      ",
+            "#      ",
+            " ####  "
+        ],
+        'D': [
+            "####   ",
+            "#   #  ",
+            "#   #  ",
+            "#   #  ",
+            "####   "
+        ],
+        'E': [
+            "#####  ",
+            "#      ",
+            "####   ",
+            "#      ",
+            "#####  "
+        ],
+        'F': [
+            "#####  ",
+            "#      ",
+            "####   ",
+            "#      ",
+            "#      "
+        ],
+        'G': [
+            " ####  ",
+            "#      ",
+            "#  ### ",
+            "#   #  ",
+            " ####  "
+        ],
+        'H': [
+            "#   #  ",
+            "#   #  ",
+            "#####  ",
+            "#   #  ",
+            "#   #  "
+        ],
+        'I': [
+            "#####  ",
+            "  #    ",
+            "  #    ",
+            "  #    ",
+            "#####  "
+        ],
+        'J': [
+            "#####  ",
+            "    #  ",
+            "    #  ",
+            "#   #  ",
+            " ###   "
+        ],
+        'K': [
+            "#   #  ",
+            "#  #   ",
+            "###    ",
+            "#  #   ",
+            "#   #  "
+        ],
+        'L': [
+            "#      ",
+            "#      ",
+            "#      ",
+            "#      ",
+            "#####  "
+        ],
+        'M': [
+            "#   #  ",
+            "# # #  ",
+            "# # #  ",
+            "#   #  ",
+            "#   #  "
+        ],
+        'N': [
+            "#    # ",
+            "##   # ",
+            "# #  # ",
+            "#  # # ",
+            "#   ## "
+        ],
+        'O': [
+            " ###   ",
+            "#   #  ",
+            "#   #  ",
+            "#   #  ",
+            " ###   "
+        ],
+        'P': [
+            "####   ",
+            "#   #  ",
+            "####   ",
+            "#      ",
+            "#      "
+        ],
+        'Q': [
+            " ###   ",
+            "#   #  ",
+            "#   #  ",
+            "#  # # ",
+            " ## # "
+        ],
+        'R': [
+            "####   ",
+            "#   #  ",
+            "####   ",
+            "# #    ",
+            "#  #   "
+        ],
+        'S': [
+            " ####  ",
+            "#      ",
+            " ####  ",
+            "     # ",
+            " ####  "
+        ],
+        'T': [
+            "#####  ",
+            "  #    ",
+            "  #    ",
+            "  #    ",
+            "  #    "
+        ],
+        'U': [
+            "#   #  ",
+            "#   #  ",
+            "#   #  ",
+            "#   #  ",
+            " ###   "
+        ],
+        'V': [
+            "#   #  ",
+            "#   #  ",
+            "#   #  ",
+            " # #   ",
+            "  #    "
+        ],
+        'W': [
+            "#   #  ",
+            "#   #  ",
+            "# # #  ",
+            "# # #  ",
+            " # #   "
+        ],
+        'X': [
+            "#   #  ",
+            " # #   ",
+            "  #    ",
+            " # #   ",
+            "#   #  "
+        ],
+        'Y': [
+            "#   #  ",
+            " # #   ",
+            "  #    ",
+            "  #    ",
+            "  #    "
+        ],
+        'Z': [
+            "#####  ",
+            "    #  ",
+            "   #   ",
+            "  #    ",
+            "#####  "
+        ],
+        '0': [
+            " ###   ",
+            "#   #  ",
+            "#   #  ",
+            "#   #  ",
+            " ###   "
+        ],
+        '1': [
+            "  #    ",
+            " ##    ",
+            "  #    ",
+            "  #    ",
+            " ###   "
+        ],
+        '2': [
+            " ###   ",
+            "    #  ",
+            " ###   ",
+            "#      ",
+            "#####  "
+        ],
+        '3': [
+            "#####  ",
+            "    #  ",
+            " ###   ",
+            "    #  ",
+            "#####  "
+        ],
+        '4': [
+            "#   #  ",
+            "#   #  ",
+            "#####  ",
+            "    #  ",
+            "    #  "
+        ],
+        '5': [
+            "#####  ",
+            "#      ",
+            "#####  ",
+            "    #  ",
+            "#####  "
+        ],
+        '6': [
+            " ###   ",
+            "#      ",
+            "#####  ",
+            "#   #  ",
+            " ###   "
+        ],
+        '7': [
+            "#####  ",
+            "    #  ",
+            "   #   ",
+            "  #    ",
+            "  #    "
+        ],
+        '8': [
+            " ###   ",
+            "#   #  ",
+            " ###   ",
+            "#   #  ",
+            " ###   "
+        ],
+        '9': [
+            " ###   ",
+            "#   #  ",
+            " ###   ",
+            "    #  ",
+            " ###   "
+        ],
+        ' ': [
+            "       ",
+            "       ",
+            "       ",
+            "       ",
+            "       "
+        ],
+        '\n': [
+            "",
+            "",
+            "",
+            "",
+            ""
+        ]
+    };
+
+    const lines = ['', '', '', '', ''];
+    for (const char of text.toUpperCase()) {
+        const charArt = font[char] || font['?'];
+        if (!charArt) continue;
+        for (let i = 0; i < 5; i++) {
+            lines[i] += charArt[i] + ' ';
+        }
     }
-    html += '</div>';
-  }
-  if (data.github_suggestion) {
-    html += `<div class="section"><div class="headline">🔧 GITHUB SUGGESTION</div><div class="item">${data.github_suggestion}</div></div>`;
-  }
-  html += '</div>';
-  
-  container.innerHTML = html;
+    return lines.join('\n');
 }
 
-function displayDefault() {
-  container.innerHTML = `
-    <div class="wave-effect">
-      <div class="section">
-        <div class="headline">🧠 TECH HEADLINES</div>
-        <div class="item">📰 Quantum AI Breakthrough: 100x Speedup in Neural Compilers</div>
-      </div><br>
-      <div class="section">
-        <div class="headline">💻 GITHUB INSIGHTS</div>
-        <div class="item">🚀 <a href="https://github.com/chrisalunlloyd2-sudo/frontier-ai-dlc" target="_blank">frontier-ai-dlc</a>: AST tree fragmentation fix</div>
-        <div class="item">🚀 <a href="https://github.com/chrisalunlloyd2-sudo/moe-gui-architecture" target="_blank">moe-gui-architecture</a>: GPU kernel integration</div>
-      </div>
-      <div class="section">
-        <div class="headline">▶️ NEXT STEPS</div>
-        <div class="item">• frontier-ai-dlc: AST tree fragmentation fix</div>
-        <div class="item">• moe-gui-architecture: GPU kernel integration</div>
-      </div>
-      <div class="section">
-        <div class="headline">🔧 GITHUB SUGGESTION</div>
-        <div class="item">Add CI workflow to frontier-ai-dlc that validates AST completeness on every PR</div>
-      </div>
-    </div>
-  `;
+// Create the HTML content
+function createContent(data) {
+    // Generate ASCII art for current tech headline
+    const techHeadline = data.headlines.length > 0 ? data.headlines[0].title : "Tech News Unavailable";
+    const asciiHeadline = textToAscii(techHeadline);
+    
+    // Generate ASCII repos list
+    const asciiRepos = data.repos.map((repo, index) => 
+        `${index + 1}. ${repo.name}: ${repo.next}`
+    ).join('\n');
+    
+    // Generate next steps
+    const asciiSteps = data.next_steps.map((step, index) => 
+        `${index + 1}. ${step}`
+    ).join('\n');
+    
+    return `
+        <div class="tech-section">
+            <h2>🔬 Tech Headline</h2>
+            <pre class="ascii-art">${asciiHeadline}</pre>
+            ${data.headlines.length > 0 ? `<p><a href="${data.headlines[0].link}" target="_blank">Read more</a></p>` : ''}
+        </div>
+        
+        <div class="repos-section">
+            <h2>💻 GitHub Projects</h2>
+            <pre class="ascii-art">${asciiRepos}</pre>
+        </div>
+        
+        <div class="steps-section">
+            <h2>📋 Next Steps</h2>
+            <pre class="ascii-art">${asciiSteps}</pre>
+        </div>
+        
+        <div class="footer">
+            <p>Updated: ${new Date(data.timestamp).toLocaleString()}</p>
+        </div>
+    `;
 }
 
-loadContent();
-setInterval(loadContent, 300000);
+// Main function to update the page
+async function updatePage() {
+    const data = await loadContent();
+    const container = document.getElementById('live-feed');
+    if (container) {
+        container.innerHTML = createContent(data);
+    }
+}
+
+// Initialize and set interval for updates
+document.addEventListener('DOMContentLoaded', () => {
+    updatePage();
+    // Update every 5 minutes
+    setInterval(updatePage, 5 * 60 * 1000);
+});
