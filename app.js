@@ -383,6 +383,80 @@ async function updatePage() {
     }
 }
 
+
+// ===== FORUM AUTH =====
+const FORUM_CREDENTIALS = { username: 'Viper', password: 'clamchowder' };
+
+function isForumAuthenticated() {
+    return sessionStorage.getItem('forum_auth') === 'true';
+}
+
+function showForumLoginModal(categoryId) {
+    const modal = document.getElementById('post-modal');
+    const form = document.getElementById('new-post-form');
+    if (form) {
+        form.innerHTML = `
+            <input type="hidden" id="post-category" name="category" value="${categoryId || ''}">
+            <div class="form-group">
+                <label for="forum-username">Username</label>
+                <input type="text" id="forum-username" name="username" required placeholder="Enter forum username...">
+            </div>
+            <div class="form-group">
+                <label for="forum-password">Password</label>
+                <input type="password" id="forum-password" name="password" required placeholder="Enter forum password...">
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        `;
+        form.onsubmit = handleForumLogin;
+    }
+    if (modal) modal.style.display = 'flex';
+}
+
+function handleForumLogin(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const username = formData.get('username');
+    const password = formData.get('password');
+    const categoryId = formData.get('category');
+    
+    if (username === FORUM_CREDENTIALS.username && password === FORUM_CREDENTIALS.password) {
+        sessionStorage.setItem('forum_auth', 'true');
+        closeModal();
+        restorePostForm();
+        if (categoryId) openNewPostModal(categoryId);
+    } else {
+        alert('Invalid forum credentials. Try again.');
+    }
+}
+
+function restorePostForm() {
+    const form = document.getElementById('new-post-form');
+    if (!form) return;
+    form.innerHTML = `
+        <input type="hidden" id="post-category" name="category">
+        <div class="form-group">
+            <label for="post-title">Title</label>
+            <input type="text" id="post-title" name="title" required maxlength="100" placeholder="Enter post title...">
+        </div>
+        <div class="form-group">
+            <label for="post-author">Author (optional)</label>
+            <input type="text" id="post-author" name="author" maxlength="30" placeholder="Your name or handle">
+        </div>
+        <div class="form-group">
+            <label for="post-content">Content</label>
+            <textarea id="post-content" name="content" required maxlength="5000" placeholder="Write your post..."></textarea>
+        </div>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary modal-close">Cancel</button>
+            <button type="submit" class="btn btn-primary">Post</button>
+        </div>
+    `;
+    form.onsubmit = handleNewPost;
+}
+
 // ===== FORUM INTERACTIONS =====
 function initForumInteractions() {
     // New post buttons
@@ -405,6 +479,11 @@ function initForumInteractions() {
 }
 
 function openNewPostModal(categoryId) {
+    if (!isForumAuthenticated()) {
+        showForumLoginModal(categoryId);
+        return;
+    }
+    restorePostForm();
     const modal = document.getElementById('post-modal');
     const categoryInput = document.getElementById('post-category');
     if (modal && categoryInput) {
