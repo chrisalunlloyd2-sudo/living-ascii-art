@@ -41,7 +41,8 @@
   "next_steps": [
     "Resolve AST tree fragmentation in frontier-ai-dlc",
     "Integrate living-ASCII wave renderer into MoeGUI",
-    "Complete GPU kernel integration for viper-kernel"
+    "Complete GPU kernel integration for viper-kernel",
+    "Add TODO: logging to debug AI pipeline"
   ],
   "incomplete_tasks": [
     "Fix incomplete AST tree in src/reset",
@@ -53,5 +54,68 @@
     "Review PR #42 for memory optimization",
     "Follow up on GitHub issue #18"
   ],
-  "timestamp": "2026-07-13T03:40:39.369361Z"
+  "walkthroughs": [
+    {
+      "id": "openai-manager",
+      "title": "OpenAI Manager Setup",
+      "category": "AI Tools",
+      "difficulty": "Beginner",
+      "description": "Complete guide to setting up OpenAI Manager for local model orchestration, API key management, and cost tracking.",
+      "steps": [
+        "Install Node.js 18+ and npm",
+        "Clone the repo: `git clone https://github.com/your-repo/openai-manager`",
+        "Run `npm install` to install dependencies",
+        "Copy `.env.example` to `.env` and add your OpenAI API key",
+        "Configure model preferences in `config/models.json`",
+        "Start the manager: `npm run dev`",
+        "Access dashboard at http://localhost:3000"
+      ],
+      "related_links": [
+        "https://platform.openai.com/api-keys",
+        "https://github.com/openai/openai-node"
+      ]
+    },
+    {
+      "id": "proot-sandbox",
+      "title": "Proot Sandbox Management",
+      "category": "System Tools",
+      "difficulty": "Intermediate",
+      "description": "Manage isolated Linux sandboxes with Proot for secure development and dependency control.",
+      "steps": [
+        "Install Proot: `pkg install proot` (Termux) or use your distro's package manager",
+        "Create a sandbox: `termux-setup-storage` then `proot-distro install alpine`",
+        "Login: `proot-distro login alpine`",
+        "Install tools inside sandbox: `apk add nodejs python3 git`",
+        "Mount project dirs: `proot --bind /sdcard/Projects:/root/projects`",
+        "Run isolated builds and tests inside the sandbox",
+        "Exit with `exit` when done"
+      ],
+      "related_links": [
+        "https://github.com/termux/proot-distro",
+        "https://wiki.termux.com/wiki/Proot"
+      ]
+    },
+    {
+      "id": "gguf-quantization",
+      "title": "GGUF v3 Quantization: Q4_0 / Q4_K / Q5_K / Q8_0",
+      "category": "Model Optimization",
+      "difficulty": "Advanced",
+      "description": "Deep dive into GGUF v3 quantization formats, block layouts, bit budgets, and when to use each scheme.",
+      "steps": [
+        "Install llama.cpp or a quantization tool with GGUF support",
+        "Convert your model to FP16 GGUF first: `python convert.py --outfile model-f16.gguf`",
+        "Quantize to Q4_0: `llama-quantize model-f16.gguf model-q4_0.gguf Q4_0`",
+        "Quantize to Q4_K_M: `llama-quantize model-f16.gguf model-q4_k.gguf Q4_K_M`",
+        "Quantize to Q5_K_M: `llama-quantize model-f16.gguf model-q5_k.gguf Q5_K_M`",
+        "Quantize to Q8_0: `llama-quantize model-f16.gguf model-q8_0.gguf Q8_0`",
+        "Compare perplexity: `llama-perplexity -m model-q4_0.gguf -f wiki.test.raw`",
+        "Pick format based on size/quality trade-off (Q4_K_M for balanced, Q8_0 for best quality)"
+      ],
+      "related_links": [
+        "https://github.com/ggerganov/llama.cpp",
+        "https://github.com/ggerganov/ggml/blob/master/docs/gguf.md"
+      ]
+    }
+  ],
+  "timestamp": "2026-07-13T04:03:44.588834+00:00"
 }

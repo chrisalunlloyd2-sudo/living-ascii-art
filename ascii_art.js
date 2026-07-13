@@ -6,10 +6,11 @@ async function loadContent() {
     try {
         const response = await fetch('data.json');
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
-        return await response.json();
+        const raw = await response.json();
+        return normalizeData(raw);
     } catch (err) {
         console.error('Failed to load data.json:', err);
-        return getFallbackData();
+        return normalizeData(getFallbackData());
     }
 }
 
@@ -23,6 +24,34 @@ function getFallbackData() {
         about: { title: "About", description: "", features: [], tech_stack: [], links: {} },
         contact: { email: "", github: "", note: "" }
     };
+}
+
+
+function normalizeData(data) {
+    if (!data || typeof data !== 'object') return getFallbackData();
+
+    // Normalize headlines: support both strings and objects
+    if (!Array.isArray(data.headlines)) data.headlines = [];
+    data.headlines = data.headlines.map(h => {
+        if (typeof h === 'string') return { title: h, link: '#', source: 'legacy' };
+        return h;
+    });
+
+    // Normalize repos: support next_issue or next
+    if (!Array.isArray(data.repos)) data.repos = [];
+    data.repos = data.repos.map(r => ({
+        name: r.name || 'unknown',
+        url: r.url || '#',
+        next: r.next || r.next_issue || 'No next issue'
+    }));
+
+    // Ensure arrays exist
+    if (!Array.isArray(data.next_steps)) data.next_steps = [];
+    if (!Array.isArray(data.walkthroughs)) data.walkthroughs = [];
+    if (!Array.isArray(data.incomplete_tasks)) data.incomplete_tasks = [];
+    if (!Array.isArray(data.email_updates)) data.email_updates = [];
+
+    return data;
 }
 
 // ===== ASCII GENERATION =====
@@ -126,7 +155,7 @@ function createLiveFeed(data) {
     const asciiHeadline = textToAscii(techHeadline);
     
     const asciiRepos = data.repos.map((repo, index) =>
-        `${index + 1}. ${repo.name}: ${repo.next_issue || 'No next issue'}`
+        `${index + 1}. ${repo.name}: ${repo.next || 'No next issue'}`
     ).join('\n');
     
     const asciiSteps = data.next_steps?.map((step, index) =>
