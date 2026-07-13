@@ -4,7 +4,7 @@
 // ===== UTILITIES =====
 async function loadContent() {
     try {
-        const response = await fetch('data.json');
+        const response = await fetch('data.json?v=' + Date.now());
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const raw = await response.json();
         return normalizeData(raw);
@@ -338,9 +338,10 @@ function createContact(data) {
 
 // ===== MAIN UPDATE =====
 async function updatePage() {
-    const data = await loadContent();
-    
-    // Live feed (updates every 5 min)
+    console.log('[ASCII] updatePage starting...');
+    try {
+        const data = await loadContent();
+        console.log('[ASCII] data loaded:', {headlines: data.headlines.length, repos: data.repos.length, walkthroughs: data.walkthroughs.length});
     const feedContainer = document.getElementById('live-feed');
     if (feedContainer) {
         feedContainer.innerHTML = createLiveFeed(data);
@@ -370,6 +371,11 @@ async function updatePage() {
         }
         
         window.sectionsRendered = true;
+        console.log('[ASCII] updatePage complete');
+    } catch (err) {
+        console.error('[ASCII] updatePage error:', err);
+        const feed = document.getElementById('live-feed');
+        if (feed) feed.innerHTML += '<pre style="color:#ff4444;">[ERROR] ' + err.message + '</pre>';
     }
 }
 
