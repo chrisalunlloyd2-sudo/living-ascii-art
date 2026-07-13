@@ -140,6 +140,30 @@
         "https://cli.github.com/",
         "https://ollama.com/"
       ]
+    },
+    {
+      "id": "aider-ollama",
+      "title": "Aider + Ollama: Local AI Pair Programming",
+      "category": "AI Coding",
+      "difficulty": "Intermediate",
+      "description": "Set up Aider to use a local Ollama model for private, offline AI pair programming. Covers Ollama install, pulling a coding model, launching Aider with the local endpoint, and everyday commands for asking questions, editing files, and committing changes.",
+      "steps": [
+        "Install Ollama: `curl -fsSL https://ollama.com/install.sh | sh`",
+        "Pull a coding model: `ollama pull qwen2.5-coder:1.5b` (or `llama3.1`, `codellama`, `deepseek-coder-v2`)",
+        "Verify the model runs: `ollama run qwen2.5-coder:1.5b` \u2014 then type `/bye` to exit",
+        "Install Aider: `pip install aider-install && aider-install`",
+        "Open your project repo in a terminal.",
+        "Launch Aider with Ollama: `aider --model ollama/qwen2.5-coder:1.5b`",
+        "Add files to the chat: `/add src/myfile.py`",
+        "Ask for changes: `refactor this function to use async/await`",
+        "Review diffs, accept with `/commit`, or undo with `/undo`",
+        "Pro tip: add `export OLLAMA_API_BASE=http://localhost:11434` to your shell rc if Aider can't find Ollama."
+      ],
+      "related_links": [
+        "https://aider.chat/docs/llms/ollama.html",
+        "https://ollama.com/",
+        "https://aider.chat/docs/usage/commands.html"
+      ]
     }
   ],
   "about": {
@@ -192,5 +216,5 @@
       }
     ]
   },
-  "timestamp": "2026-07-13T04:21:26.453284+00:00"
+  "timestamp": "2026-07-13T04:24:40.532401+00:00"
 }
