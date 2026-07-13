@@ -39,7 +39,7 @@ function bindDailyFlexVote() {
 }
 
 // ===== FORUM AUTH =====
-const FORUM_CREDENTIALS = { username: 'Viper', password: 'clamchowder' };
+// Forum credentials moved to CONFIG.forumCredentials
 
 function isForumAuthenticated() {
     return sessionStorage.getItem('forum_auth') === 'true';
@@ -76,7 +76,7 @@ function handleForumLogin(e) {
     const password = formData.get('password');
     const categoryId = formData.get('category');
 
-    if (username === FORUM_CREDENTIALS.username && password === FORUM_CREDENTIALS.password) {
+    if (username === CONFIG.forumCredentials.username && password === CONFIG.forumCredentials.password) {
         sessionStorage.setItem('forum_auth', 'true');
         closeModal();
         restorePostForm();

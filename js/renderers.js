@@ -12,12 +12,8 @@ function createLiveFeed(data) {
         `${index + 1}. ${step}`
     ).join('\\n') || 'No next steps defined';
 
-    // Link the "Read more" to the top GitHub project, or the first repo, or the user's GitHub
-    const moreLink = (data.repos && data.repos[0] && data.repos[0].url)
-        ? data.repos[0].url
-        : (data.contact && data.contact.github)
-            ? data.contact.github
-            : 'https://github.com/chrisalunlloyd2-sudo';
+    // Read more always points to the user's GitHub (never Wired)
+    const moreLink = CONFIG?.github?.profile || 'https://github.com/chrisalunlloyd2-sudo';
 
     return `
         <div class="tech-section">
