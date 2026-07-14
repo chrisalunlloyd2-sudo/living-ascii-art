@@ -212,6 +212,31 @@ if __name__ == "__main__":
     report = load_cached_data()
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     output_path = os.path.join(base_dir, "data.json")
-    with open(output_path, "w") as f:
+
+    # === PRESERVE STATIC FIELDS ===
+    static_fields = {}
+    if os.path.exists(output_path):
+        try:
+            with open(output_path, "r", encoding="utf-8") as f:
+                old = json.load(f)
+                for key in ["title", "tagline", "metrics", "seo", "daily_flex", "workflow_cards"]:
+                    if key in old:
+                        static_fields[key] = old[key]
+        except Exception as e:
+            print(f"Could not preserve static fields: {e}")
+
+    report["title"] = static_fields.get("title", report.get("title"))
+    report["tagline"] = static_fields.get("tagline", report.get("tagline"))
+    report["metrics"] = static_fields.get("metrics", report.get("metrics", {}))
+    report["seo"] = static_fields.get("seo", report.get("seo", {}))
+    report["daily_flex"] = static_fields.get("daily_flex", report.get("daily_flex", {}))
+    report["workflow_cards"] = static_fields.get("workflow_cards", report.get("workflow_cards", []))
+
+    # keep metrics in sync
+    if "metrics" in report:
+        report["metrics"]["cards_count"] = len(report.get("workflow_cards", []))
+        report["metrics"]["last_flex_change"] = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+
+    with open(output_path, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
     print(f"Data written to {output_path}")
