@@ -1,0 +1,27 @@
+{
+  "generated_at": "2026-07-15T13:30:00+00:00",
+  "hypotheses": [
+    {
+      "date": "2026-07-15",
+      "title": "Add 'quantum-classical kernel' walkthrough",
+      "description": "Agents viper-kernel and quantum-asm both converged on new-foundry-kernel. If we publish a walkthrough matching this term, search + internal traffic should rise.",
+      "keywords": ["quantum-classical", "kernel", "new-foundry-kernel", "viper-kernel"],
+      "status": "running",
+      "traffic_since_change": 0,
+      "traffic_delta": 0,
+      "source_vote_id": "repo-priority-2026-07-15"
+    }
+  ],
+  "keyword_rankings": [
+    { "term": "claude code cli", "score": 9.2, "delta": 3.5 },
+    { "term": "gguf quantization", "score": 8.7, "delta": 1.2 },
+    { "term": "viper kernel", "score": 7.4, "delta": 4.1 },
+    { "term": "quantum-classical bridge", "score": 6.1, "delta": 12.0 },
+    { "term": "aegis foundry", "score": 5.8, "delta": -0.5 }
+  ],
+  "metadata_ratings": [
+    { "name": "Claude Code CLI", "type": "workflow_card", "score": 8.9, "tags": ["complete", "copy-ready", "tested"] },
+    { "name": "GGUF Quantization", "type": "walkthrough", "score": 8.2, "tags": ["deep", "technical", "needs-update"] },
+    { "name": "About section", "type": "page", "score": 6.5, "tags": ["sparse", "needs-cta"] }
+  ]
+}
