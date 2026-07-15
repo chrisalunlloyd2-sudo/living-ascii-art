@@ -1,27 +1,277 @@
 {
-  "generated_at": "2026-07-15T13:30:00+00:00",
+  "generated_at": "2026-07-15T20:46:25.218112+00:00",
   "hypotheses": [
     {
       "date": "2026-07-15",
       "title": "Add 'quantum-classical kernel' walkthrough",
       "description": "Agents viper-kernel and quantum-asm both converged on new-foundry-kernel. If we publish a walkthrough matching this term, search + internal traffic should rise.",
-      "keywords": ["quantum-classical", "kernel", "new-foundry-kernel", "viper-kernel"],
-      "status": "running",
+      "keywords": [
+        "quantum-classical",
+        "kernel",
+        "new-foundry-kernel",
+        "viper-kernel"
+      ],
+      "status": "inconclusive",
       "traffic_since_change": 0,
-      "traffic_delta": 0,
+      "traffic_delta": 0.0,
       "source_vote_id": "repo-priority-2026-07-15"
     }
   ],
   "keyword_rankings": [
-    { "term": "claude code cli", "score": 9.2, "delta": 3.5 },
-    { "term": "gguf quantization", "score": 8.7, "delta": 1.2 },
-    { "term": "viper kernel", "score": 7.4, "delta": 4.1 },
-    { "term": "quantum-classical bridge", "score": 6.1, "delta": 12.0 },
-    { "term": "aegis foundry", "score": 5.8, "delta": -0.5 }
+    {
+      "term": "local",
+      "score": 2.36,
+      "mentions": 2
+    },
+    {
+      "term": "setup",
+      "score": 1.89,
+      "mentions": 3
+    },
+    {
+      "term": "model",
+      "score": 1.89,
+      "mentions": 2
+    },
+    {
+      "term": "covers",
+      "score": 1.89,
+      "mentions": 4
+    },
+    {
+      "term": "install",
+      "score": 1.89,
+      "mentions": 3
+    },
+    {
+      "term": "aider",
+      "score": 1.89,
+      "mentions": 2
+    },
+    {
+      "term": "ollama",
+      "score": 1.89,
+      "mentions": 2
+    },
+    {
+      "term": "code",
+      "score": 1.7,
+      "mentions": 1
+    },
+    {
+      "term": "coding",
+      "score": 1.6,
+      "mentions": 2
+    },
+    {
+      "term": "cli",
+      "score": 1.51,
+      "mentions": 2
+    },
+    {
+      "term": "dashboard",
+      "score": 1.18,
+      "mentions": 2
+    },
+    {
+      "term": "complete",
+      "score": 1.18,
+      "mentions": 2
+    },
+    {
+      "term": "claude",
+      "score": 1.13,
+      "mentions": 1
+    },
+    {
+      "term": "terminal",
+      "score": 1.13,
+      "mentions": 1
+    },
+    {
+      "term": "shell",
+      "score": 1.04,
+      "mentions": 2
+    },
+    {
+      "term": "openai",
+      "score": 0.94,
+      "mentions": 1
+    },
+    {
+      "term": "manager",
+      "score": 0.94,
+      "mentions": 1
+    },
+    {
+      "term": "management",
+      "score": 0.94,
+      "mentions": 2
+    },
+    {
+      "term": "launching",
+      "score": 0.94,
+      "mentions": 2
+    },
+    {
+      "term": "proot",
+      "score": 0.94,
+      "mentions": 1
+    },
+    {
+      "term": "linux",
+      "score": 0.94,
+      "mentions": 2
+    },
+    {
+      "term": "gguf",
+      "score": 0.94,
+      "mentions": 1
+    },
+    {
+      "term": "quantization",
+      "score": 0.94,
+      "mentions": 1
+    },
+    {
+      "term": "q4_0",
+      "score": 0.94,
+      "mentions": 1
+    },
+    {
+      "term": "q8_0",
+      "score": 0.94,
+      "mentions": 1
+    },
+    {
+      "term": "commands",
+      "score": 0.94,
+      "mentions": 2
+    },
+    {
+      "term": "pair",
+      "score": 0.94,
+      "mentions": 1
+    },
+    {
+      "term": "programming",
+      "score": 0.94,
+      "mentions": 1
+    },
+    {
+      "term": "frontier-ai-dlc",
+      "score": 0.71,
+      "mentions": 1
+    },
+    {
+      "term": "fix",
+      "score": 0.71,
+      "mentions": 1
+    }
   ],
   "metadata_ratings": [
-    { "name": "Claude Code CLI", "type": "workflow_card", "score": 8.9, "tags": ["complete", "copy-ready", "tested"] },
-    { "name": "GGUF Quantization", "type": "walkthrough", "score": 8.2, "tags": ["deep", "technical", "needs-update"] },
-    { "name": "About section", "type": "page", "score": 6.5, "tags": ["sparse", "needs-cta"] }
-  ]
+    {
+      "name": "frontier-ai-dlc",
+      "url": "https://github.com/chrisalunlloyd2-sudo/frontier-ai-dlc",
+      "type": "repo",
+      "score": 5.0,
+      "tags": [],
+      "raw": {
+        "name": "frontier-ai-dlc",
+        "url": "https://github.com/chrisalunlloyd2-sudo/frontier-ai-dlc",
+        "next": "Fix AST tree fragmentation in src/reset"
+      }
+    },
+    {
+      "name": "moe-gui-architecture",
+      "url": "https://github.com/chrisalunlloyd2-sudo/moe-gui-architecture",
+      "type": "repo",
+      "score": 5.0,
+      "tags": [],
+      "raw": {
+        "name": "moe-gui-architecture",
+        "url": "https://github.com/chrisalunlloyd2-sudo/moe-gui-architecture",
+        "next": "Integrate wave renderer into foundry dashboard"
+      }
+    },
+    {
+      "name": "viper-kernel",
+      "url": "https://github.com/chrisalunlloyd2-sudo/viper-kernel",
+      "type": "repo",
+      "score": 5.0,
+      "tags": [],
+      "raw": {
+        "name": "viper-kernel",
+        "url": "https://github.com/chrisalunlloyd2-sudo/viper-kernel",
+        "next": "Complete GPU kernel integration"
+      }
+    },
+    {
+      "name": "living-ascii-art",
+      "url": "https://github.com/chrisalunlloyd2-sudo/living-ascii-art",
+      "type": "repo",
+      "score": 5.0,
+      "tags": [],
+      "raw": {
+        "name": "living-ascii-art",
+        "url": "https://github.com/chrisalunlloyd2-sudo/living-ascii-art",
+        "next": "Add more walkthroughs and polish UI"
+      }
+    },
+    {
+      "name": "OpenAI Manager Setup",
+      "type": "walkthrough",
+      "score": 3.5,
+      "tags": [
+        "thin content",
+        "untagged"
+      ]
+    },
+    {
+      "name": "Proot Sandbox Management",
+      "type": "walkthrough",
+      "score": 3.5,
+      "tags": [
+        "thin content",
+        "untagged"
+      ]
+    },
+    {
+      "name": "GGUF v3 Quantization: Q4_0 / Q4_K / Q5_K / Q8_0",
+      "type": "walkthrough",
+      "score": 3.5,
+      "tags": [
+        "thin content",
+        "untagged"
+      ]
+    },
+    {
+      "name": "Install All Code-Assist CLIs in One Place",
+      "type": "walkthrough",
+      "score": 3.5,
+      "tags": [
+        "thin content",
+        "untagged"
+      ]
+    },
+    {
+      "name": "Aider + Ollama: Local AI Pair Programming",
+      "type": "walkthrough",
+      "score": 3.5,
+      "tags": [
+        "thin content",
+        "untagged"
+      ]
+    },
+    {
+      "name": "Claude Code CLI",
+      "type": "workflow_card",
+      "score": 3.5,
+      "tags": [
+        "thin content",
+        "untagged"
+      ]
+    }
+  ],
+  "reverse_search_index": true
 }
