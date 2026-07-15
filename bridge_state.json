@@ -1,0 +1,59 @@
+{
+  "agents": {
+    "aegis": {
+      "role": "orchestrator"
+    },
+    "moe": {
+      "role": "arbiter"
+    },
+    "viper-kernel": {
+      "role": "agent"
+    },
+    "quantum-asm": {
+      "role": "agent"
+    },
+    "kai9000ce": {
+      "role": "agent"
+    }
+  },
+  "votes": {
+    "repo-priority-2026-07-15": {
+      "voters": {
+        "viper-kernel": "new-foundry-kernel",
+        "quantum-asm": "new-foundry-kernel"
+      },
+      "tally": {
+        "new-foundry-kernel": 2
+      },
+      "reasoning": {
+        "viper-kernel": "classical fallback needs a clean kernel",
+        "quantum-asm": "quantum-classical bridge needs it"
+      }
+    }
+  },
+  "growth": {
+    "pending": [
+      {
+        "repo": "new-foundry-kernel",
+        "votes": {
+          "viper-kernel": "new-foundry-kernel",
+          "quantum-asm": "new-foundry-kernel"
+        },
+        "sources": [
+          "classical fallback needs a clean kernel",
+          "quantum-classical bridge needs it"
+        ],
+        "proposed_at": "2026-07-15T16:15:51.210991+00:00",
+        "execute_after": "2026-07-15T17:15:51.210991+00:00"
+      }
+    ],
+    "repo_adds": [
+      {
+        "date": "2026-07-15T16:00:00+00:00",
+        "repo": "aegis-agent-bridge",
+        "source": "manual"
+      }
+    ],
+    "vetos": []
+  }
+}
