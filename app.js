@@ -50,6 +50,10 @@ function normalizeData(data) {
     if (!Array.isArray(data.walkthroughs)) data.walkthroughs = [];
     if (!Array.isArray(data.incomplete_tasks)) data.incomplete_tasks = [];
     if (!Array.isArray(data.email_updates)) data.email_updates = [];
+    if (!Array.isArray(data.workflow_cards)) data.workflow_cards = [];
+    if (!data.daily_flex) data.daily_flex = {};
+    if (!data.metrics) data.metrics = { page_views: 0 };
+    if (!data.seo) data.seo = {};
 
     return data;
 }
@@ -153,11 +157,11 @@ function textToAscii(text, maxWidth = 80) {
 function createLiveFeed(data) {
     const techHeadline = data.headlines.length > 0 ? data.headlines[0].title : "Tech News Unavailable";
     const asciiHeadline = textToAscii(techHeadline);
-    
+
     const asciiRepos = data.repos.map((repo, index) =>
         `${index + 1}. ${repo.name}: ${repo.next || 'No next issue'}`
     ).join('\n');
-    
+
     const asciiSteps = data.next_steps?.map((step, index) =>
         `${index + 1}. ${step}`
     ).join('\n') || 'No next steps defined';
@@ -168,24 +172,272 @@ function createLiveFeed(data) {
             <pre class="ascii-art">${asciiHeadline}</pre>
             ${data.headlines.length > 0 && data.headlines[0].link ? `<p><a href="${data.headlines[0].link}" target="_blank">Read more</a></p>` : ''}
         </div>
-        
+
         <div class="repos-section">
             <h2>💻 GitHub Projects</h2>
             <pre class="ascii-art">${asciiRepos}</pre>
         </div>
-        
+
         <div class="steps-section">
             <h2>📋 Next Steps</h2>
             <pre class="ascii-art">${asciiSteps}</pre>
         </div>
-        
+
         <div class="footer">
             <p>Updated: ${new Date(data.date || data.timestamp || Date.now()).toLocaleString()}</p>
         </div>
     `;
 }
 
-// Walkthroughs (static, renders once)
+// ===== WORKFLOW CARDS =====
+
+function createWorkflowCards(data) {
+    const cards = data.workflow_cards || [];
+    if (!cards.length) return '<p class="note">No workflow cards yet.</p>';
+
+    return '<div class="workflow-grid">' + cards.map(card => {
+        const tabs = card.install_methods.map((m, i) => {
+            const allLines = [...(m.pre_steps || []), ...m.steps, m.verify_command ? '# Verify\n' + m.verify_command : ''];
+            return `
+            <div class="tab-panel ${i === 0 ? 'active' : ''}" data-tab="${card.id}-m-${i}">
+                <div class="method-header">
+                    <span class="method-name">${escapeHtml(m.name)}</span>
+                    <span class="method-meta">${escapeHtml(m.shell)} · ${escapeHtml(m.os)}</span>
+                </div>
+                <div class="dep-box">
+                    <strong>Dependencies needed first:</strong>
+                    <ul>${(card.dependencies || []).map(d => `<li><code>${escapeHtml(d.check_command)}</code> — ${escapeHtml(d.name)} <span class="dep-why">(${escapeHtml(d.why)})</span></li>`).join('')}</ul>
+                </div>
+                <div class="terminal-block">
+                    <div class="terminal-header"><span>$</span><span>terminal</span></div>
+                    <pre class="terminal-body"><code>${escapeHtml(allLines.join('\n'))}</code></pre>
+                    <button class="copy-btn" data-copy="${escapeHtml(allLines.join('\n'))}">Copy all</button>
+                </div>
+                ${m.pitfalls ? `<p class="method-pitfall"><strong>Pitfall:</strong> ${escapeHtml(m.pitfalls)}</p>` : ''}
+                ${m.fallback ? `<p class="method-fallback"><strong>Fallback:</strong> <code>${escapeHtml(m.fallback)}</code></p>` : ''}
+            </div>`;
+        }).join('');
+
+        const depInstall = (card.dependency_install || []).map(d => `
+            <div class="dep-install-block">
+                <h5>${escapeHtml(d.name)}</h5>
+                <div class="terminal-block">
+                    <div class="terminal-header"><span>$</span><span>${escapeHtml(d.shell)}</span></div>
+                    <pre class="terminal-body"><code>${escapeHtml((d.steps || []).join('\n'))}</code></pre>
+                    <button class="copy-btn" data-copy="${escapeHtml((d.steps || []).join('\n'))}">Copy steps</button>
+                </div>
+            </div>
+        `).join('');
+
+        const useCases = (card.use_cases || []).map((u, i) => `
+            <div class="use-case">
+                <h5>${i + 1}. ${escapeHtml(u.title)}</h5>
+                <p class="use-context">${escapeHtml(u.context)}</p>
+                <div class="terminal-block">
+                    <div class="terminal-header"><span>$</span><span>demo</span></div>
+                    <pre class="terminal-body"><code>${escapeHtml((u.demo_commands || []).join('\n'))}</code></pre>
+                    <button class="copy-btn" data-copy="${escapeHtml((u.demo_commands || []).join('\n'))}">Copy demo</button>
+                </div>
+                <p class="expected-output"><strong>Expected:</strong> ${escapeHtml(u.expected_output)}</p>
+            </div>
+        `).join('');
+
+        const quickCopies = (card.copy_sections || []).map(c => `
+            <button class="copy-section-btn" data-copy="${escapeHtml(c.text)}">${escapeHtml(c.label)}</button>
+        `).join('');
+
+        const tips = (card.pro_tips || []).map(t => `<li>${escapeHtml(t)}</li>`).join('');
+        const links = (card.related_links || []).map(l => `
+            <a href="${escapeHtml(l.url)}" target="_blank">${escapeHtml(l.label)}</a>
+        `).join(' · ');
+
+        return `
+        <article class="workflow-card" id="card-${card.id}">
+            <header class="card-header">
+                <div class="card-title-row">
+                    <h3>${escapeHtml(card.name)}</h3>
+                    <span class="card-tag">${escapeHtml(card.category)}</span>
+                    <span class="card-difficulty">${escapeHtml(card.difficulty)}</span>
+                    ${card.metrics ? '<span class="card-metric">★ ' + escapeHtml(card.metrics.claim) + '</span>' : ''}
+                </div>
+                <p class="card-tagline">${escapeHtml(card.tagline)}</p>
+            </header>
+            <div class="card-body">
+                <p class="card-why">${escapeHtml(card.why_use)}</p>
+                ${card.deprecated ? `<div class="deprecation-banner">⚠️ Deprecated: ${escapeHtml(card.deprecated)}</div>` : ''}
+                ${card.metrics ? `<div class="metric-callout"><strong>${escapeHtml(card.metrics.claim)}</strong> · ${escapeHtml(card.metrics.evidence)}</div>` : ''}
+
+                <div class="quick-copy-row">${quickCopies}</div>
+
+                <div class="method-tabs">
+                    <div class="tab-buttons">${card.install_methods.map((m, i) => `<button class="tab-btn ${i === 0 ? 'active' : ''}" data-target="${card.id}-m-${i}">${escapeHtml(m.name.split('—')[0].trim())}</button>`).join('')}</div>
+                    ${tabs}
+                </div>
+
+                ${card.dependency_install ? `
+                <div class="dependency-install-section">
+                    <h4>🔧 Bare-terminal dependency install</h4>
+                    ${depInstall}
+                </div>` : ''}
+
+                <div class="use-cases-section">
+                    <h4>Use cases — you are the terminal</h4>
+                    ${useCases}
+                </div>
+
+                ${tips ? `<div class="pro-tips"><h4>Pro tips</h4><ul>${tips}</ul></div>` : ''}
+                ${links ? `<div class="related-links"><strong>Links:</strong> ${links}</div>` : ''}
+            </div>
+        </article>`;
+    }).join('') + '</div>';
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = String(text);
+    return div.innerHTML;
+}
+
+function bindWorkflowTabs() {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const target = btn.dataset.target;
+            const card = btn.closest('.workflow-card');
+            if (!card) return;
+            card.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            card.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            const panel = card.querySelector('[data-tab="' + target + '"]');
+            if (panel) panel.classList.add('active');
+        });
+    });
+    document.querySelectorAll('.copy-btn, .copy-section-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            navigator.clipboard.writeText(btn.dataset.copy).then(() => {
+                const old = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = old, 1200);
+            });
+        });
+    });
+}
+
+// ===== DAILY FLEX =====
+function renderDailyFlex(data) {
+    const flex = data.daily_flex || {};
+    if (!flex.type) return '';
+    const today = new Date().toISOString().slice(0, 10);
+    const seed = flex.seed || todayToSeed(today);
+    const art = generateDailyAsciiArt(flex.type, seed, 60, 16);
+    const options = (flex.vote_options || []).map(opt => `
+        <button class="vote-btn ${flex.current_vote === opt ? 'voted' : ''}" data-vote="${escapeHtml(opt)}">${escapeHtml(opt.replace(/_/g, ' '))}</button>
+    `).join('');
+
+    return `
+        <div class="daily-flex" id="daily-flex">
+            <div class="flex-header">
+                <h3>Daily Programmatic Flex · ${escapeHtml(flex.date)}</h3>
+                <span class="flex-type">${escapeHtml(flex.title)}</span>
+            </div>
+            <p class="flex-desc">${escapeHtml(flex.description)}</p>
+            <pre class="ascii-art daily-ascii">${escapeHtml(art)}</pre>
+            <div class="flex-vote">
+                <strong>Vote on tomorrow's flex:</strong>
+                <div class="vote-options">${options}</div>
+                <p class="vote-note">Votes are saved locally and tallied at 00:00 UTC.</p>
+            </div>
+        </div>`;
+}
+
+function todayToSeed(today) {
+    const [y, m, d] = today.split('-').map(Number);
+    return y * 10000 + m * 100 + d;
+}
+
+function mulberry32(a) {
+    return function() {
+        let t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+}
+
+function generateDailyAsciiArt(type, seed, cols, rows) {
+    const rng = mulberry32(Number(seed) || 1);
+    const out = [];
+    if (type === 'spiral_galaxy') {
+        for (let y = 0; y < rows; y++) {
+            let line = '';
+            for (let x = 0; x < cols; x++) {
+                const cx = x - cols / 2, cy = y - rows / 2;
+                const r = Math.sqrt(cx * cx + cy * cy);
+                const angle = Math.atan2(cy, cx);
+                const density = Math.sin(r * 0.5 - angle * 3 + seed) * Math.exp(-r / 12);
+                line += density > 0.3 ? '*' : density > -0.1 ? '.' : ' ';
+            }
+            out.push(line);
+        }
+    } else if (type === 'matrix_rain') {
+        const chars = '01αβΓπΣΩ';
+        for (let y = 0; y < rows; y++) {
+            let line = '';
+            for (let x = 0; x < cols; x++) line += rng() > 0.7 ? chars[Math.floor(rng() * chars.length)] : ' ';
+            out.push(line);
+        }
+    } else if (type === 'fractal_tree') {
+        const canvas = Array(rows).fill(null).map(() => Array(cols).fill(' '));
+        function branch(x, y, len, angle) {
+            if (len < 1 || x < 0 || x >= cols || y < 0 || y >= rows) return;
+            const x2 = Math.round(x + len * Math.cos(angle));
+            const y2 = Math.round(y - len * Math.sin(angle));
+            const steps = Math.max(Math.abs(x2 - x), Math.abs(y2 - y));
+            for (let i = 0; i <= steps; i++) {
+                const px = Math.round(x + (x2 - x) * i / steps);
+                const py = Math.round(y + (y2 - y) * i / steps);
+                if (px >= 0 && px < cols && py >= 0 && py < rows) canvas[py][px] = '|';
+            }
+            branch(x2, y2, len * 0.7, angle - 0.3);
+            branch(x2, y2, len * 0.7, angle + 0.3);
+        }
+        branch(cols / 2, rows - 1, 6, Math.PI / 2);
+        out.push(...canvas.map(r => r.join('')));
+    } else {
+        for (let y = 0; y < rows; y++) {
+            let line = '';
+            for (let x = 0; x < cols; x++) {
+                const wave = Math.sin((x + Number(seed)) * 0.2) * (rows / 3) + (rows / 2);
+                const dist = Math.abs(wave - y);
+                line += dist < 0.8 ? '#' : dist < 1.8 ? '+' : ' ';
+            }
+            out.push(line);
+        }
+    }
+    return out.join('\n');
+}
+
+function bindDailyFlexVote() {
+    document.querySelectorAll('.vote-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const vote = btn.dataset.vote;
+            localStorage.setItem('daily_flex_vote', vote);
+            document.querySelectorAll('.vote-btn').forEach(b => b.classList.remove('voted'));
+            btn.classList.add('voted');
+        });
+    });
+    const saved = localStorage.getItem('daily_flex_vote');
+    if (saved) {
+        document.querySelectorAll('.vote-btn').forEach(b => b.classList.toggle('voted', b.dataset.vote === saved));
+    }
+}
+
+// ===== PAGE COUNTER =====
+function createPageCounter(data) {
+    const views = data.metrics && data.metrics.page_views != null ? data.metrics.page_views : '—';
+    return `<div class="page-counter">🧿 Foundry visitors: <strong>${views}</strong> · ${data.metrics.cards_count || 0} workflow cards · last updated ${data.updated_at || '—'}</div>`;
+}
+
+
 function createWalkthroughs(data) {
     if (!data.walkthroughs || data.walkthroughs.length === 0) {
         return '<p style="color:#888; text-align:center; padding:20px;">No walkthroughs yet.</p>';
@@ -342,6 +594,23 @@ async function updatePage() {
     try {
         const data = await loadContent();
         console.log('[ASCII] data loaded:', {headlines: data.headlines.length, repos: data.repos.length, walkthroughs: data.walkthroughs.length});
+
+        const workflowContainer = document.getElementById('workflow-cards-content');
+        if (workflowContainer) {
+            workflowContainer.innerHTML = createWorkflowCards(data);
+            bindWorkflowTabs();
+        }
+
+        const flexContainer = document.getElementById('daily-flex-content');
+        if (flexContainer) {
+            flexContainer.innerHTML = renderDailyFlex(data);
+            bindDailyFlexVote();
+        }
+
+        const counterContainer = document.getElementById('page-counter-content');
+        if (counterContainer) {
+            counterContainer.innerHTML = createPageCounter(data);
+        }
 
         // Live feed (updates every 5 min)
         const feedContainer = document.getElementById('live-feed');
