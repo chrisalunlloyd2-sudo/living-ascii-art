@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis Sovereign Analytics — Hypothesis Lab</title>
+    <style>
+        :root {
+            --bg: #050510;
+            --panel: #0a0a1f;
+            --accent: #ff00ff;
+            --accent2: #00ffff;
+            --text: #e0e0ff;
+            --muted: #8888aa;
+            --border: #222244;
+            --up: #0f0;
+            --down: #f44;
+            --flat: #ff0;
+        }
+        * { box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+        h2 { color: var(--accent2); font-size: 18px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 20px; margin-top: 20px; }
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 0 15px rgba(0,255,255,0.05);
+        }
+        .hypothesis {
+            background: rgba(255,0,255,0.08);
+            border-left: 3px solid var(--accent);
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        .metric { font-size: 28px; font-weight: bold; }
+        .delta { font-size: 14px; }
+        .delta.up { color: var(--up); }
+        .delta.down { color: var(--down); }
+        .delta.flat { color: var(--flat); }
+        .stat-row { display: flex; justify-content: space-between; margin: 6px 0; }
+        .mono { font-family: monospace; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+        th, td { text-align: left; padding: 8px; border-bottom: 1px solid var(--border); }
+        th { color: var(--accent2); }
+        .tag { padding: 2px 6px; border-radius: 4px; background: var(--border); font-size: 11px; }
+        .placeholder { color: var(--muted); font-style: italic; }
+    </style>
+</head>
+<body>
+    <h1>📊 Aegis Sovereign Analytics — Hypothesis Lab</h1>
+    <p>Correlates keywords, traffic, and outcomes. Every day we test whether yesterday's changes moved the needle.</p>
+
+    <div class="grid">
+        <!-- Today's Hypothesis -->
+        <div class="panel">
+            <h2>🧪 Today's Hypothesis</h2>
+            <div id="todays-hypothesis" class="hypothesis">
+                <div class="placeholder">Loading...</div>
+            </div>
+            <div class="stat-row"><span>Status</span><span id="hypothesis-status" class="tag">—</span></div>
+            <div class="stat-row"><span>Traffic since change</span><span id="traffic-since-change" class="metric">—</span></div>
+            <div class="stat-row"><span>Delta vs baseline</span><span id="traffic-delta" class="delta">—</span></div>
+        </div>
+
+        <!-- Keyword Rankings -->
+        <div class="panel">
+            <h2>🔑 Keyword Rankings</h2>
+            <div id="keyword-rankings">
+                <p class="placeholder">Loading...</p>
+            </div>
+        </div>
+
+        <!-- Reverse Word Search -->
+        <div class="panel">
+            <h2>🔍 Reverse Word Search</h2>
+            <input id="reverse-search" type="text" placeholder="Type a concept (e.g. 'kernel', 'quantum', 'affiliate')" style="width:100%;padding:8px;background:#050510;border:1px solid var(--border);color:var(--text);">
+            <button id="reverse-search-btn" style="margin-top:8px;padding:8px 16px;background:var(--accent);color:#fff;border:none;border-radius:4px;cursor:pointer;">Find related repos/content</button>
+            <div id="reverse-results" style="margin-top:12px;">
+                <p class="placeholder">Enter a concept above.</p>
+            </div>
+        </div>
+
+        <!-- Metadata Ratings -->
+        <div class="panel">
+            <h2>⭐ Metadata Ratings</h2>
+            <div id="metadata-ratings">
+                <p class="placeholder">Loading...</p>
+            </div>
+        </div>
+
+        <!-- Hypothesis History -->
+        <div class="panel" style="grid-column: 1 / -1;">
+            <h2>📜 Hypothesis History</h2>
+            <div id="hypothesis-history">
+                <p class="placeholder">No historical hypotheses yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function loadAnalytics() {
+            try {
+                const res = await fetch('analytics.json?v=' + Date.now());
+                if (!res.ok) return null;
+                return await res.json();
+            } catch (e) {
+                console.warn('No analytics.json', e);
+                return null;
+            }
+        }
+
+        async function loadDataJson() {
+            try {
+                const res = await fetch('../data.json?v=' + Date.now());
+                if (!res.ok) return null;
+                return await res.json();
+            } catch (e) {
+                console.warn('No data.json', e);
+                return null;
+            }
+        }
+
+        function renderHypothesis(data) {
+            const today = data?.hypotheses?.[0];
+            const el = document.getElementById('todays-hypothesis');
+            if (!today) {
+                el.innerHTML = '<div class="placeholder">No active hypothesis. Generate one from keyword traffic + pending votes.</div>';
+                return;
+            }
+            el.innerHTML = `
+                <strong>${today.title}</strong><br>
+                <span style="font-size:13px;">${today.description}</span><br>
+                <span class="tag" style="margin-top:6px;display:inline-block;">Keywords: ${today.keywords?.join(', ') || 'none'}</span>
+            `;
+            const status = document.getElementById('hypothesis-status');
+            status.textContent = today.status || 'running';
+            status.style.background = today.status === 'confirmed' ? '#0f0' : today.status === 'rejected' ? '#f44' : '#ff0';
+            status.style.color = '#000';
+
+            document.getElementById('traffic-since-change').textContent = today.traffic_since_change ?? '—';
+            const delta = document.getElementById('traffic-delta');
+            const d = today.traffic_delta ?? 0;
+            delta.textContent = (d > 0 ? '+' : '') + d + '%';
+            delta.className = 'delta ' + (d > 0 ? 'up' : d < 0 ? 'down' : 'flat');
+        }
+
+        function renderKeywordRankings(data) {
+            const container = document.getElementById('keyword-rankings');
+            const keywords = data?.keyword_rankings || [];
+            if (!keywords.length) {
+                container.innerHTML = '<p class="placeholder">No keyword ranking data. Populate analytics.json with keyword scores.</p>';
+                return;
+            }
+            container.innerHTML = `
+                <table>
+                    <tr><th>Rank</th><th>Keyword</th><th>Score</th><th>Traffic Δ</th></tr>
+                    ${keywords.map((k, i) => `
+                        <tr>
+                            <td>${i + 1}</td>
+                            <td class="mono">${k.term}</td>
+                            <td>${k.score?.toFixed(2) || '—'}</td>
+                            <td class="${(k.delta || 0) > 0 ? 'up' : (k.delta || 0) < 0 ? 'down' : 'flat'}">${(k.delta || 0) > 0 ? '+' : ''}${k.delta || 0}%</td>
+                        </tr>
+                    `).join('')}
+                </table>
+            `;
+        }
+
+        function renderMetadataRatings(data, launchpadData) {
+            const container = document.getElementById('metadata-ratings');
+            const ratings = data?.metadata_ratings || [];
+            if (!ratings.length) {
+                container.innerHTML = '<p class="placeholder">No ratings yet. Phase 3: score walkthroughs, repos, and cards by completeness, clarity, and traffic value.</p>';
+                return;
+            }
+            container.innerHTML = `
+                <table>
+                    <tr><th>Asset</th><th>Type</th><th>Score</th><th>Tags</th></tr>
+                    ${ratings.map(r => `
+                        <tr>
+                            <td class="mono">${r.name}</td>
+                            <td><span class="tag">${r.type}</span></td>
+                            <td>${r.score?.toFixed(1) || '—'}</td>
+                            <td>${(r.tags || []).map(t => `<span class="tag">${t}</span>`).join(' ')}</td>
+                        </tr>
+                    `).join('')}
+                </table>
+            `;
+        }
+
+        function renderHypothesisHistory(data) {
+            const container = document.getElementById('hypothesis-history');
+            const list = (data?.hypotheses || []).slice(1);
+            if (!list.length) {
+                container.innerHTML = '<p class="placeholder">No historical hypotheses. Once daily analytics runs, old hypotheses will archive here.</p>';
+                return;
+            }
+            container.innerHTML = `
+                <table>
+                    <tr><th>Date</th><th>Hypothesis</th><th>Keywords</th><th>Result</th></tr>
+                    ${list.map(h => `
+                        <tr>
+                            <td class="mono">${h.date}</td>
+                            <td>${h.title}</td>
+                            <td>${(h.keywords || []).join(', ')}</td>
+                            <td class="${h.status === 'confirmed' ? 'up' : h.status === 'rejected' ? 'down' : 'flat'}">${h.status}</td>
+                        </tr>
+                    `).join('')}
+                </table>
+            `;
+        }
+
+        function reverseSearch(data, query) {
+            query = query.toLowerCase().trim();
+            if (!query) return [];
+            const results = [];
+            const repos = data?.repos || [];
+            const walkthroughs = data?.walkthroughs || [];
+            const keywords = (data?.keyword_rankings || []).filter(k => k.term.toLowerCase().includes(query));
+
+            repos.forEach(r => {
+                const text = (r.name + ' ' + (r.next || '')).toLowerCase();
+                if (text.includes(query)) results.push({ type: 'repo', name: r.name, url: r.url, reason: 'name or next issue' });
+            });
+            walkthroughs.forEach(w => {
+                const text = (w.title + ' ' + (w.description || '')).toLowerCase();
+                if (text.includes(query)) results.push({ type: 'walkthrough', name: w.title, url: w.url || '#', reason: 'title or description' });
+            });
+            keywords.forEach(k => {
+                results.push({ type: 'keyword', name: k.term, url: '#', reason: `ranked keyword (score ${k.score?.toFixed(2)})` });
+            });
+            return results;
+        }
+
+        function bindReverseSearch(data) {
+            document.getElementById('reverse-search-btn').addEventListener('click', () => {
+                const q = document.getElementById('reverse-search').value;
+                const results = reverseSearch(data, q);
+                const el = document.getElementById('reverse-results');
+                if (!results.length) {
+                    el.innerHTML = '<p class="placeholder">No matches for "' + escapeHtml(q) + '".</p>';
+                    return;
+                }
+                el.innerHTML = `
+                    <table>
+                        <tr><th>Type</th><th>Name</th><th>Why matched</th></tr>
+                        ${results.map(r => `
+                            <tr>
+                                <td><span class="tag">${r.type}</span></td>
+                                <td class="mono">${r.url !== '#' ? `<a href="${r.url}" style="color:var(--accent2);" target="_blank">${escapeHtml(r.name)}</a>` : escapeHtml(r.name)}</td>
+                                <td>${r.reason}</td>
+                            </tr>
+                        `).join('')}
+                    </table>
+                `;
+            });
+            document.getElementById('reverse-search').addEventListener('keydown', e => {
+                if (e.key === 'Enter') document.getElementById('reverse-search-btn').click();
+            });
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        async function init() {
+            const analytics = await loadAnalytics();
+            const launchpad = await loadDataJson();
+            if (analytics) {
+                renderHypothesis(analytics);
+                renderKeywordRankings(analytics);
+                renderMetadataRatings(analytics, launchpad);
+                renderHypothesisHistory(analytics);
+            } else {
+                ['todays-hypothesis','keyword-rankings','metadata-ratings','hypothesis-history'].forEach(id => {
+                    document.getElementById(id).innerHTML = '<p class="placeholder">No analytics.json found. Run the analytics generator to populate this dashboard.</p>';
+                });
+            }
+            bindReverseSearch(launchpad || {});
+        }
+
+        init();
+    </script>
+</body>
+</html>
