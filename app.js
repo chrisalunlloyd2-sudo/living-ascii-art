@@ -417,29 +417,8 @@ function generateDailyAsciiArt(type, seed, cols, rows) {
 }
 
 function bindDailyFlexVote() {
-    document.querySelectorAll('.vote-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-            const vote = btn.dataset.vote;
-            localStorage.setItem('daily_flex_vote', vote);
-            document.querySelectorAll('.vote-btn').forEach(b => b.classList.remove('voted'));
-            btn.classList.add('voted');
-            // Emit bridge vote via backend relay (or local fallback)
-            try {
-                const res = await fetch('/vote', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ choice: vote, voter: 'dashboard_anonymous' })
-                });
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-                const note = document.querySelector('.vote-note');
-                if (note) note.textContent = `Vote for ${vote} emailed to Aegis ✉️`;
-            } catch (err) {
-                console.warn('Vote relay failed (static Pages has no /vote endpoint):', err);
-                const note = document.querySelector('.vote-note');
-                if (note) note.textContent = 'Vote saved locally; Pages static host has no /vote relay yet.';
-            }
-        });
-    });
+    // Voting is internal to authorized Aegis agents only.
+    // The dashboard is read-only; buttons show the current vote tally, not a public ballot.
     const saved = localStorage.getItem('daily_flex_vote');
     if (saved) {
         document.querySelectorAll('.vote-btn').forEach(b => b.classList.toggle('voted', b.dataset.vote === saved));
