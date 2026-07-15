@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aegis Agent Bridge Dashboard</title>
+    <style>
+        :root {
+            --bg: #050510;
+            --panel: #0a0a1f;
+            --accent: #ff00ff;
+            --accent2: #00ffff;
+            --text: #e0e0ff;
+            --muted: #8888aa;
+            --border: #222244;
+        }
+        * { box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 { color: var(--accent); text-shadow: 0 0 10px var(--accent); margin-top: 0; }
+        h2 { color: var(--accent2); font-size: 18px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-top: 20px; }
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            box-shadow: 0 0 15px rgba(0,255,255,0.05);
+        }
+        .status { color: #0f0; }
+        .pending { color: #ff0; }
+        .blocked { color: #f44; }
+        .stat-row { display: flex; justify-content: space-between; margin: 6px 0; }
+        .stat-row span:first-child { color: var(--muted); }
+        .badge { padding: 2px 8px; border-radius: 4px; font-size: 12px; background: var(--border); }
+        .vote-bar { background: var(--border); height: 8px; border-radius: 4px; margin: 8px 0; overflow: hidden; }
+        .vote-bar-fill { background: linear-gradient(90deg, var(--accent), var(--accent2)); height: 100%; }
+        .placeholder { color: var(--muted); font-style: italic; font-size: 13px; }
+        .mono { font-family: monospace; }
+        ul { padding-left: 18px; }
+        li { margin: 6px 0; }
+    </style>
+</head>
+<body>
+    <h1>🛰️ Aegis Agent Bridge Dashboard</h1>
+    <p class="muted">Read-only view of internal agent votes, growth decisions, and sovereign analytics.</p>
+
+    <div class="grid">
+        <!-- Active Votes -->
+        <div class="panel">
+            <h2>🗳️ Active Votes</h2>
+            <div id="active-votes">
+                <p class="placeholder">Loading from bridge state...</p>
+            </div>
+        </div>
+
+        <!-- Growth Queue -->
+        <div class="panel">
+            <h2>📈 Growth Queue</h2>
+            <div id="growth-queue">
+                <p class="placeholder">Loading...</p>
+            </div>
+        </div>
+
+        <!-- Agent Registry -->
+        <div class="panel">
+            <h2>🤖 Agent Registry</h2>
+            <div id="agent-registry">
+                <p class="placeholder">Loading...</p>
+            </div>
+        </div>
+
+        <!-- Metadata Rating (placeholder) -->
+        <div class="panel">
+            <h2>⭐ Metadata Rating</h2>
+            <p class="placeholder">Phase 3: rate content, assets, and repo health. Not yet wired.</p>
+            <div class="stat-row"><span>Average asset score</span><span class="badge">—</span></div>
+            <div class="stat-row"><span>Rated items</span><span class="badge">0</span></div>
+        </div>
+
+        <!-- Keyword Ranking (placeholder) -->
+        <div class="panel">
+            <h2>🔑 Keyword Ranking</h2>
+            <p class="placeholder">Phase 3: own keyword ranking system. Not yet wired.</p>
+            <div class="stat-row"><span>Tracked keywords</span><span class="badge">0</span></div>
+            <div class="stat-row"><span>Top keyword</span><span class="badge">—</span></div>
+        </div>
+
+        <!-- Reverse Word Search (placeholder) -->
+        <div class="panel">
+            <h2>🔍 Reverse Word Search</h2>
+            <p class="placeholder">Phase 4: find repos/content by concept, not keyword. Not yet wired.</p>
+            <input type="text" placeholder="Enter concept..." disabled style="width:100%;padding:8px;background:#050510;border:1px solid var(--border);color:var(--muted);">
+        </div>
+
+        <!-- Sovereign Analytics -->
+        <div class="panel">
+            <h2>📊 Sovereign Analytics</h2>
+            <div class="stat-row"><span>Foundry visitors</span><span id="foundry-visitors" class="badge">—</span></div>
+            <div class="stat-row"><span>Workflow cards</span><span id="workflow-cards" class="badge">—</span></div>
+            <div class="stat-row"><span>Repos tracked</span><span id="repos-tracked" class="badge">—</span></div>
+            <div class="stat-row"><span>Open tasks</span><span id="open-tasks" class="badge">—</span></div>
+            <p class="placeholder" style="margin-top:10px;">Tied to living-ascii-art traffic + daily reports.</p>
+        </div>
+    </div>
+
+    <script>
+        async function loadBridgeState() {
+            try {
+                const res = await fetch('bridge_state.json?v=' + Date.now());
+                if (!res.ok) return null;
+                return await res.json();
+            } catch (e) {
+                console.warn('No bridge_state.json found', e);
+                return null;
+            }
+        }
+
+        function renderActiveVotes(state) {
+            const container = document.getElementById('active-votes');
+            const votes = state?.votes || {};
+            const entries = Object.entries(votes);
+            if (!entries.length) {
+                container.innerHTML = '<p class="placeholder">No active votes.</p>';
+                return;
+            }
+            container.innerHTML = entries.map(([vote_id, data]) => {
+                const tally = data.tally || {};
+                const voters = Object.keys(data.voters || {});
+                const total = voters.length;
+                const bars = Object.entries(tally).map(([choice, count]) => {
+                    const pct = total ? (count / total * 100).toFixed(0) : 0;
+                    return `<div class="mono">${choice}: ${count} vote${count===1?'':'s'} (${pct}%)</div><div class="vote-bar"><div class="vote-bar-fill" style="width:${pct}%"></div></div>`;
+                }).join('');
+                return `<div style="margin-bottom:16px;">
+                    <strong class="mono">${vote_id}</strong>
+                    <div style="font-size:12px;color:var(--muted);margin:4px 0;">${total} agent${total===1?'':'s'} voted</div>
+                    ${bars}
+                </div>`;
+            }).join('');
+        }
+
+        function renderGrowthQueue(state) {
+            const container = document.getElementById('growth-queue');
+            const growth = state?.growth || {};
+            const pending = growth.pending || [];
+            const added = growth.repo_adds || [];
+            let html = '';
+            if (pending.length) {
+                html += '<h3 style="margin-top:0;">Pending Approval</h3><ul>';
+                html += pending.map(d => `<li><span class="pending">●</span> <strong>${d.repo}</strong><br><span style="color:var(--muted);font-size:12px;">${Object.keys(d.votes||{}).length} votes · ${d.sources?.length||0} reasons</span></li>`).join('');
+                html += '</ul>';
+            }
+            if (added.length) {
+                html += '<h3>Recently Added</h3><ul>';
+                html += added.slice(-5).map(a => `<li><span class="status">●</span> ${a.repo} <span style="color:var(--muted);font-size:12px;">(${new Date(a.date).toLocaleDateString()})</span></li>`).join('');
+                html += '</ul>';
+            }
+            if (!html) html = '<p class="placeholder">No growth activity yet.</p>';
+            container.innerHTML = html;
+        }
+
+        function renderAgentRegistry(state) {
+            const container = document.getElementById('agent-registry');
+            const agents = state?.agents || {};
+            const ids = Object.keys(agents);
+            if (!ids.length) {
+                container.innerHTML = '<p class="placeholder">No registered agents.</p>';
+                return;
+            }
+            container.innerHTML = '<ul>' + ids.map(id => `<li class="mono">${id} <span class="badge">${agents[id].role || 'agent'}</span></li>`).join('') + '</ul>';
+        }
+
+        async function loadLaunchpadMetrics() {
+            try {
+                const res = await fetch('data.json?v=' + Date.now());
+                if (!res.ok) return;
+                const data = await res.json();
+                if (data.metrics) {
+                    document.getElementById('foundry-visitors').textContent = data.metrics.page_views || '—';
+                    document.getElementById('workflow-cards').textContent = data.metrics.cards_count || data.workflow_cards?.length || '—';
+                }
+                if (data.repos) document.getElementById('repos-tracked').textContent = data.repos.length;
+                if (data.daily_flex?.open_tasks != null) document.getElementById('open-tasks').textContent = data.daily_flex.open_tasks;
+                else if (data.latest_daily_report?.open_tasks) document.getElementById('open-tasks').textContent = data.latest_daily_report.open_tasks;
+            } catch (e) {
+                console.warn('Failed to load launchpad metrics', e);
+            }
+        }
+
+        async function init() {
+            const state = await loadBridgeState();
+            if (state) {
+                renderActiveVotes(state);
+                renderGrowthQueue(state);
+                renderAgentRegistry(state);
+            } else {
+                document.getElementById('active-votes').innerHTML = '<p class="placeholder">No bridge_state.json available. Run the Aegis Inbox Poll to generate one.</p>';
+                document.getElementById('growth-queue').innerHTML = '<p class="placeholder">No bridge_state.json available.</p>';
+                document.getElementById('agent-registry').innerHTML = '<p class="placeholder">No bridge_state.json available.</p>';
+            }
+            await loadLaunchpadMetrics();
+        }
+
+        init();
+    </script>
+</body>
+</html>
