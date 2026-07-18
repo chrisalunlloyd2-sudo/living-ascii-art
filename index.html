@@ -19,7 +19,7 @@
     <meta name="twitter:title" content="Aegis Foundry Launchpad">
     <meta name="twitter:description" content="Terminal-first guides + daily programmatic flex for sovereign developers.">
     <style>
-        /* Rainbow Wave Animation - No Fade */
+        /* Rainbow Wave Animation - Flows like water */
         @keyframes rainbowWave {
             0% { filter: hue-rotate(0deg) drop-shadow(0 0 5px #ff0000); }
             20% { filter: hue-rotate(72deg) drop-shadow(0 0 5px #ff7f00); }
@@ -29,11 +29,33 @@
             100% { filter: hue-rotate(360deg) drop-shadow(0 0 5px #8b00ff); }
         }
 
-        @keyframes waveMotion {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-2px) rotate(1deg); }
-            50% { transform: translateY(-4px) rotate(0deg); }
-            75% { transform: translateY(-2px) rotate(-1deg); }
+        @keyframes waterFlow {
+            0% {
+                transform: translateX(0) skewX(0deg) scaleY(1);
+                text-shadow: 0 0 5px #00ff00, 0 0 12px #00ff80;
+            }
+            25% {
+                transform: translateX(6px) skewX(-1.5deg) scaleY(1.03);
+                text-shadow: 4px 0 8px #00ff00, -4px 0 12px #00ff80;
+            }
+            50% {
+                transform: translateX(0) skewX(0deg) scaleY(1);
+                text-shadow: 0 0 5px #00ff00, 0 0 12px #00ff80;
+            }
+            75% {
+                transform: translateX(-6px) skewX(1.5deg) scaleY(1.03);
+                text-shadow: -4px 0 8px #00ff00, 4px 0 12px #00ff80;
+            }
+            100% {
+                transform: translateX(0) skewX(0deg) scaleY(1);
+                text-shadow: 0 0 5px #00ff00, 0 0 12px #00ff80;
+            }
+        }
+
+        @keyframes shimmerFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         * {
@@ -107,8 +129,31 @@
             font-size: 14px;
             line-height: 1.4;
             white-space: pre-wrap;
-            animation: rainbowWave 8s linear infinite, waveMotion 3s ease-in-out infinite;
+            animation:
+                rainbowWave 8s linear infinite,
+                waterFlow 3.5s ease-in-out infinite;
             text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff80;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        .ascii-art.flowing-water {
+            background: linear-gradient(
+                90deg,
+                #00ff00 0%,
+                #00ffcc 25%,
+                #00ffff 50%,
+                #00ffcc 75%,
+                #00ff00 100%
+            );
+            background-size: 200% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation:
+                rainbowWave 8s linear infinite,
+                waterFlow 3.5s ease-in-out infinite,
+                shimmerFlow 4s ease-in-out infinite;
         }
 
         .tech-section pre,
