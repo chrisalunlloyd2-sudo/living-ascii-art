@@ -2,6 +2,10 @@
 import json
 import datetime
 import os
+import logging
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+logger = logging.getLogger("fetch_data")
 
 TECH_KEYWORDS = ['computers', 'ai', 'artificial intelligence', 'hardware', 'programming', 'software', 'tech', 'digital', 'cyber', 'data', 'algorithm', 'chip', 'processor', 'quantum', 'neural']
 
@@ -27,7 +31,7 @@ def load_cached_data():
         "Resolve AST tree fragmentation in frontier-ai-dlc",
         "Integrate living-ASCII wave renderer into MoeGUI",
         "Complete GPU kernel integration for viper-kernel",
-        "Add TODO: logging to debug AI pipeline"
+        "Add fetch health diagnostics to data.json"
     ]
 
     incomplete_tasks = [
@@ -37,7 +41,7 @@ def load_cached_data():
     ]
 
     email_updates = [
-        "TODO: Add logging to debug AI pipeline",
+        "Review fetch_data health metrics before next release",
         "Review PR #42 for memory optimization",
         "Follow up on GitHub issue #18"
     ]
@@ -223,7 +227,7 @@ if __name__ == "__main__":
                     if key in old:
                         static_fields[key] = old[key]
         except Exception as e:
-            print(f"Could not preserve static fields: {e}")
+            logger.warning("Could not preserve static fields: %s", e)
 
     report["title"] = static_fields.get("title", report.get("title"))
     report["tagline"] = static_fields.get("tagline", report.get("tagline"))
@@ -239,4 +243,4 @@ if __name__ == "__main__":
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
-    print(f"Data written to {output_path}")
+    logger.info("Data written to %s", output_path)
