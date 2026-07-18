@@ -10,6 +10,45 @@ logger = logging.getLogger("fetch_data")
 TECH_KEYWORDS = ['computers', 'ai', 'artificial intelligence', 'hardware', 'programming', 'software', 'tech', 'digital', 'cyber', 'data', 'algorithm', 'chip', 'processor', 'quantum', 'neural']
 
 
+def load_reviews():
+    """Scan reviews/*.md, parse YAML-like frontmatter, and return review list."""
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    reviews_dir = os.path.join(base_dir, "reviews")
+    reviews = []
+    if not os.path.isdir(reviews_dir):
+        return reviews
+    for filename in sorted(os.listdir(reviews_dir)):
+        if not filename.endswith(".md") or filename == "review-template.md":
+            continue
+        filepath = os.path.join(reviews_dir, filename)
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                content = f.read()
+            if not content.startswith("---"):
+                continue
+            _, frontmatter, body = content.split("---", 2)
+            meta = {}
+            for line in frontmatter.strip().splitlines():
+                if ":" in line:
+                    key, val = line.split(":", 1)
+                    key = key.strip()
+                    val = val.strip().strip('"')
+                    if val.startswith("[") and val.endswith("]"):
+                        val = [v.strip().strip('"') for v in val[1:-1].split(",") if v.strip()]
+                    elif key in ("rating",):
+                        try:
+                            val = float(val)
+                        except ValueError:
+                            pass
+                    meta[key] = val
+            meta["slug"] = filename.replace(".md", "")
+            meta["body"] = body.strip()
+            reviews.append(meta)
+        except Exception as e:
+            logger.warning("Could not parse review %s: %s", filename, e)
+    return reviews
+
+
 def load_cached_data():
     tech_news = [
         {"title": "New AI Chip Breaks Energy Efficiency Barriers", "link": "https://www.wired.com/story/new-ai-chip-energy-efficiency/", "source": "Wired"},
@@ -208,6 +247,7 @@ def load_cached_data():
         "about": about,
         "contact": contact,
         "forums": forums,
+        "reviews": load_reviews(),
         "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat()
     }
 

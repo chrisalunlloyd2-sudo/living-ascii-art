@@ -54,6 +54,7 @@ function normalizeData(data) {
     if (!data.daily_flex) data.daily_flex = {};
     if (!data.metrics) data.metrics = { page_views: 0 };
     if (!data.seo) data.seo = {};
+    if (!Array.isArray(data.reviews)) data.reviews = [];
 
     return data;
 }
@@ -153,6 +154,26 @@ function textToAscii(text, maxWidth = 80) {
 
 // ===== RENDER FUNCTIONS =====
 
+// Reviews Section
+function createReviews(data) {
+    const reviews = data.reviews || [];
+    if (!reviews.length) return '<p class="note">No reviews yet.</p>';
+    return '<div class="reviews-grid">' + reviews.map(r => {
+        const stars = '★'.repeat(Math.round(r.rating || 0)) + '☆'.repeat(5 - Math.round(r.rating || 0));
+        return `
+            <article class="review-card">
+                <div class="review-header">
+                    <h3>${escapeHtml(r.title)}</h3>
+                    <span class="review-rating" title="${r.rating}/5">${stars}</span>
+                </div>
+                <p class="review-meta">${escapeHtml(r.category)} · ${escapeHtml(r.date || 'TBD')}</p>
+                <p class="review-summary">${escapeHtml(r.summary || '')}</p>
+                ${r.affiliate_url ? `<a href="${escapeHtml(r.affiliate_url)}" class="review-link" target="_blank">Learn more →</a>` : ''}
+                <a href="reviews/${escapeHtml(r.slug)}.html" class="review-read">Read full review →</a>
+            </article>`;
+    }).join('') + '</div>';
+}
+
 // Live Feed (updates every 5 min)
 function createLiveFeed(data) {
     const techHeadline = data.headlines.length > 0 ? data.headlines[0].title : "Tech News Unavailable";
@@ -167,19 +188,20 @@ function createLiveFeed(data) {
     ).join('\n') || 'No next steps defined';
 
     return `
+        <h2>🔥 Live Feed</h2>
         <div class="tech-section">
-            <h2>🔬 Tech Headline</h2>
+            <h3>🔬 Tech Headline</h3>
             <pre class="ascii-art">${asciiHeadline}</pre>
             ${data.headlines.length > 0 && data.headlines[0].link ? `<p><a href="${data.headlines[0].link}" target="_blank">Read more</a></p>` : ''}
         </div>
 
         <div class="repos-section">
-            <h2>💻 GitHub Projects</h2>
+            <h3>💻 GitHub Projects</h3>
             <pre class="ascii-art">${asciiRepos}</pre>
         </div>
 
         <div class="steps-section">
-            <h2>📋 Next Steps</h2>
+            <h3>📋 Next Steps</h3>
             <pre class="ascii-art">${asciiSteps}</pre>
         </div>
 
@@ -633,6 +655,11 @@ async function updatePage() {
             const contactContainer = document.getElementById('contact-content');
             if (contactContainer) {
                 contactContainer.innerHTML = createContact(data);
+            }
+
+            const reviewsContainer = document.getElementById('reviews-content');
+            if (reviewsContainer) {
+                reviewsContainer.innerHTML = createReviews(data);
             }
 
             window.sectionsRendered = true;

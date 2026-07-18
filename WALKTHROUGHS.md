@@ -59,3 +59,13 @@ Then push.
 ## Auto-Update Schedule
 
 The `.github/workflows/update.yml` runs every 5 minutes and calls `scripts/fetch_data.py` to refresh `data.json` with the latest static news/project data.
+
+
+## How to Submit a Product Review via Aegis
+
+1. Send Aegis plain-English notes about the product.
+2. Aegis expands them into `reviews/{product-slug}.md` using the template in `reviews/review-template.md`.
+3. Aegis commits the markdown file and regenerates `data.json`.
+4. The site renders the review automatically on the next `data.json` refresh.
+
+Current reviews: Kai 9000, OpenClaw, Claude, Google Antigravity, Hermes.
