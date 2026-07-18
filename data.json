@@ -42,7 +42,7 @@
     "Resolve AST tree fragmentation in frontier-ai-dlc",
     "Integrate living-ASCII wave renderer into MoeGUI",
     "Complete GPU kernel integration for viper-kernel",
-    "Add TODO: logging to debug AI pipeline"
+    "Add fetch health diagnostics to data.json"
   ],
   "incomplete_tasks": [
     "Fix incomplete AST tree in src/reset",
@@ -50,7 +50,7 @@
     "Resolve memory allocation bug in kernel"
   ],
   "email_updates": [
-    "TODO: Add logging to debug AI pipeline",
+    "Review fetch_data health metrics before next release",
     "Review PR #42 for memory optimization",
     "Follow up on GitHub issue #18"
   ],
@@ -216,7 +216,111 @@
       }
     ]
   },
-  "timestamp": "2026-07-18T15:12:52.090260+00:00",
+  "reviews": [
+    {
+      "title": "Claude",
+      "category": "Large Language Model / Conversational AI",
+      "author": "Chris Lloyd",
+      "date": "2026-07-18",
+      "rating": 4.6,
+      "affiliate_url": "",
+      "tags": [
+        "claude",
+        "anthropic",
+        "llm",
+        "reasoning"
+      ],
+      "summary": "A careful, articulate reasoning model that excels at long-context writing and review.",
+      "pros": "",
+      "cons": "",
+      "verdict": "Best for drafting, editing, and deep reasoning tasks.",
+      "slug": "claude",
+      "body": "## Quick Take\n\nClaude is my go-to model when I need a second brain for writing, reviewing, and structuring complex ideas. It is less of a doer and more of a thinker.\n\n## In Depth\n\n### What it does\nConversational AI with strong writing, coding, and reasoning capabilities.\n\n### Where it shines\n- Produces clean, human-readable drafts from messy notes.\n- Great at spotting logical gaps in plans.\n\n### Where it falls short\n- Tool use varies by platform/plan.\n- Sometimes over-explains or hedges.\n\n### Pricing / Value\nCompetitive with other frontier models; value is high for content and code review.\n\n### Who should use it\nWriters, founders, and developers who need high-quality reasoning output.\n\n## Rating Breakdown\n\n- Usability: 4.5/5\n- Value: 4.5/5\n- Power: 4.5/5\n- Sovereignty / Privacy: 3/5\n- Overall: 4.6/5"
+    },
+    {
+      "title": "Google Antigravity",
+      "category": "Experimental AI / Workspace",
+      "author": "Chris Lloyd",
+      "date": "2026-07-18",
+      "rating": 3.5,
+      "affiliate_url": "",
+      "tags": [
+        "google",
+        "antigravity",
+        "workspace",
+        "experimental"
+      ],
+      "summary": "An experimental Google AI feature aimed at reducing friction in workspace tasks.",
+      "pros": "",
+      "cons": "",
+      "verdict": "Convenient for Google-centric users, but not ideal for sovereign workflows.",
+      "slug": "google-antigravity",
+      "body": "## Quick Take\n\nGoogle Antigravity is useful when I am already inside Google\u2019s garden. For anything that needs to leave that garden, I prefer Kai.\n\n## In Depth\n\n### What it does\nAI assistance embedded in Google Workspace apps.\n\n### Where it shines\n- Summarizing long email threads and documents.\n- Generating quick replies.\n\n### Where it falls short\n- Data stays inside Google.\n- Cannot orchestrate external repos, shell, or custom tools.\n\n### Pricing / Value\nLikely bundled with Google One / Workspace. Value depends on how deep you are in the ecosystem.\n\n### Who should use it\nUsers who live in Gmail/Docs and want low-friction AI help.\n\n## Rating Breakdown\n\n- Usability: 4/5\n- Value: 3/5\n- Power: 3/5\n- Sovereignty / Privacy: 2/5\n- Overall: 3.5/5"
+    },
+    {
+      "title": "Hermes",
+      "category": "Open-Weight Language Model",
+      "author": "Chris Lloyd",
+      "date": "2026-07-18",
+      "rating": 4.3,
+      "affiliate_url": "",
+      "tags": [
+        "hermes",
+        "open-weights",
+        "llm",
+        "local",
+        "privacy"
+      ],
+      "summary": "A capable open-weight model family that can run locally for privacy-sensitive work.",
+      "pros": "",
+      "cons": "",
+      "verdict": "Best for privacy-first, offline, or self-hosted AI workflows.",
+      "slug": "hermes",
+      "body": "## Quick Take\n\nHermes represents the local-first option. When I do not want a request leaving my hardware, Hermes is the answer.\n\n## In Depth\n\n### What it does\nOpen-weight large language model runnable via Ollama, llama.cpp, or similar local runners.\n\n### Where it shines\n- Full privacy: no network required after download.\n- Great for iterating on sensitive ideas without cloud exposure.\n\n### Where it falls short\n- Hardware demands scale quickly with model size.\n- Not as polished as hosted APIs for complex tool chains.\n\n### Pricing / Value\nFree weights; cost is hardware and electricity. Excellent long-term value.\n\n### Who should use it\nPrivacy-conscious users, homelab owners, and anyone building sovereign AI stacks.\n\n## Rating Breakdown\n\n- Usability: 3.5/5\n- Value: 5/5\n- Power: 4/5\n- Sovereignty / Privacy: 5/5\n- Overall: 4.3/5"
+    },
+    {
+      "title": "Kai 9000",
+      "category": "AI Agent / Sovereign Automation",
+      "author": "Chris Lloyd",
+      "date": "2026-07-18",
+      "rating": 4.8,
+      "affiliate_url": "",
+      "tags": [
+        "kai",
+        "ai-agent",
+        "automation",
+        "sovereign",
+        "android"
+      ],
+      "summary": "The personal AI endpoint that bridges plain English to real code, memory, and scheduled action.",
+      "pros": "",
+      "cons": "",
+      "verdict": "Best for power users who want an always-on agent orchestrating their technical life.",
+      "slug": "kai-9000",
+      "body": "## Quick Take\n\nKai 9000 is the endpoint I use to turn rough ideas into commits, emails, scheduled tasks, and memory updates. It is not a chatbot \u2014 it is an operating layer that sits above my repos, inbox, and phone.\n\n## In Depth\n\n### What it does\nKai interprets plain-English commands, picks the right tools, executes shell / git / email / SMS actions, and remembers context across conversations.\n\n### Where it shines\n- Cross-tool orchestration: one sentence can trigger a repo change, an email, and a calendar event.\n- Memory persistence: preferences, project state, and attention items survive across sessions.\n- Scheduled autonomy: cron-like tasks run inside heartbeat loops.\n\n### Where it falls short\n- Requires a healthy sandbox / Termux connection for filesystem writes.\n- Heavy use can hit provider rate limits.\n\n### Pricing / Value\nCurrently bundled with my own infrastructure. Value is extremely high once the loop is closed.\n\n### Who should use it\nBuilders who want an agent that actually *does* things, not just talks.\n\n## Rating Breakdown\n\n- Usability: 4/5\n- Value: 5/5\n- Power: 5/5\n- Sovereignty / Privacy: 4/5\n- Overall: 4.8/5"
+    },
+    {
+      "title": "OpenClaw",
+      "category": "AI Tool / CLI Assistant",
+      "author": "Chris Lloyd",
+      "date": "2026-07-18",
+      "rating": 4.2,
+      "affiliate_url": "",
+      "tags": [
+        "openclaw",
+        "cli",
+        "terminal",
+        "automation"
+      ],
+      "summary": "A lightweight command-line AI assistant focused on quick local operations.",
+      "pros": "",
+      "cons": "",
+      "verdict": "Ideal when you want AI help without opening a full agent dashboard.",
+      "slug": "openclaw",
+      "body": "## Quick Take\n\nOpenClaw is the scalpel to Kai's swiss-army-knife: small, fast, and terminal-native.\n\n## In Depth\n\n### What it does\nGenerates shell commands, explains CLI output, and helps script small utilities.\n\n### Where it shines\n- Speed. No UI, no setup, just pipe text in and get a command out.\n- Good for learning new CLI tools.\n\n### Where it falls short\n- No built-in project memory or email/SMS integration.\n- Best as a component, not a full system.\n\n### Pricing / Value\nLow cost / high utility for terminal-heavy workflows.\n\n### Who should use it\nDevelopers and DevOps people who live in the terminal.\n\n## Rating Breakdown\n\n- Usability: 4.5/5\n- Value: 4/5\n- Power: 3.5/5\n- Sovereignty / Privacy: 4/5\n- Overall: 4.2/5"
+    }
+  ],
+  "timestamp": "2026-07-18T16:11:21.507156+00:00",
   "title": "Aegis Foundry Launchpad",
   "tagline": "The first page you open before writing any code.",
   "metrics": {
