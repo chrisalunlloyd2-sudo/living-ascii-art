@@ -300,6 +300,31 @@
       "body": "## Quick Take\n\nKai 9000 is the endpoint I use to turn rough ideas into commits, emails, scheduled tasks, and memory updates. It is not a chatbot \u2014 it is an operating layer that sits above my repos, inbox, and phone.\n\n## In Depth\n\n### What it does\nKai interprets plain-English commands, picks the right tools, executes shell / git / email / SMS actions, and remembers context across conversations.\n\n### Where it shines\n- Cross-tool orchestration: one sentence can trigger a repo change, an email, and a calendar event.\n- Memory persistence: preferences, project state, and attention items survive across sessions.\n- Scheduled autonomy: cron-like tasks run inside heartbeat loops.\n\n### Where it falls short\n- Requires a healthy sandbox / Termux connection for filesystem writes.\n- Heavy use can hit provider rate limits.\n\n### Pricing / Value\nCurrently bundled with my own infrastructure. Value is extremely high once the loop is closed.\n\n### Who should use it\nBuilders who want an agent that actually *does* things, not just talks.\n\n## Rating Breakdown\n\n- Usability: 4/5\n- Value: 5/5\n- Power: 5/5\n- Sovereignty / Privacy: 4/5\n- Overall: 4.8/5"
     },
     {
+      "title": "Local AI on a 2009 Xeon (No GPU, No AVX)",
+      "category": "Hardware / Local AI",
+      "author": "Chris Lloyd",
+      "date": "2026-07-19",
+      "rating": 4.4,
+      "affiliate_url": "",
+      "tags": [
+        "local-llm",
+        "ollama",
+        "quantization",
+        "old-hardware",
+        "no-avx",
+        "sustainable",
+        "cpu-inference",
+        "benchmarks"
+      ],
+      "summary": "Real benchmark numbers from running a 45-model local LLM fleet on a 17-year-old Xeon X3430 \u2014 including a Q8 vs Q4 quantization shootout that upends the usual advice.",
+      "pros": "",
+      "- \"Sustainable": "hardware everyone else scrapped, kept genuinely useful",
+      "cons": "",
+      "verdict": "Wouldn't be a fun chat, but it works for us \u2014 measured, sustainable, and completely sovereign.",
+      "slug": "old-cpu-local-ai",
+      "body": "## Quick Take\n\nEveryone says you need a GPU, or at least a modern CPU with AVX-512, to run local AI. Our build server is a 2009 Xeon X3430 \u2014 four cores, 16GB ECC, spinning RAID, and NO AVX at all. It runs a 45-model ollama fleet around the clock and ships real, tested code. Here are the actual numbers, because almost nobody publishes benchmarks for hardware this old.\n\n## In Depth\n\n### What it does\nCPU-only LLM inference (ollama / GGUF) on a machine old enough to have voted twice. 1-3B models handle routine decisions and drafts; a quantized 7B \"senior\" handles the hard asks asynchronously; deterministic code generators do the heavy lifting so the models only spend tokens where judgement is needed.\n\n### The quantization shootout (the interesting numbers)\nWe ran llama3.2:1b in Q8_0 against its Q4_K_M sibling \u2014 28 head-to-head rounds across 14 scored arenas (code, math, comparison, decisions, docs):\n- Accuracy: statistically identical \u2014 matched pass-for-pass on 13 of 14 arenas, a single flip on the 14th.\n- Speed: Q4_K_M was about 15% SLOWER warm (e.g. 14.8s vs 12.3s on short tasks). The internet's \"Q4 is faster\" advice assumes AVX2/AVX-512 SIMD kernels for K-quant dequantization. Without AVX, Q8_0's trivial dequant wins the compute race.\n- RAM: Q4 wins the only prize that matters on 16GB \u2014 807MB vs 1.3GB resident, a 38% headroom gain.\nRuling: on old CPUs, quantization is a RAM lever, not a speed lever. Measure your own box; don't import assumptions from GPU-land.\n\n### More measured surprises\n- Doubling inference threads from 2 to 4 physical cores gained only ~6% tokens/sec \u2014 the box is memory-bandwidth-bound, not compute-bound.\n- A 7B coder model at ~5 tok/s is useless for chat but excellent as an async \"slow court\": give it minutes instead of seconds and it produces working, reviewable code that the small models can't.\n\n### Where it falls short\nInteractive conversation. Warm answers land in 12-25 seconds, cold loads in minutes. You would not want this as your chat companion \u2014 it's a factory floor, not a front desk.\n\n### Pricing / Value\nHardware most people would recycle for free. Weights are free. The cost is electricity and patience \u2014 and the patience is the system's, not yours, if you design async.\n\n### Who should use it\nHomelabbers, sovereignty-minded builders, anyone with a retired server and a stubborn streak. Sustainability angle is real: this is e-waste doing production work.\n\n## Rating Breakdown\n\n- Usability: 3/5 (async only \u2014 chat is not the use case)\n- Value: 5/5 (rescued hardware, zero recurring cost)\n- Power: 4/5 (surprising ceiling with the right architecture)\n- Sovereignty / Privacy: 5/5 (nothing ever leaves the box)\n- Overall: 4.4/5"
+    },
+    {
       "title": "OpenClaw",
       "category": "AI Tool / CLI Assistant",
       "author": "Chris Lloyd",
@@ -320,7 +345,7 @@
       "body": "## Quick Take\n\nOpenClaw is the scalpel to Kai's swiss-army-knife: small, fast, and terminal-native.\n\n## In Depth\n\n### What it does\nGenerates shell commands, explains CLI output, and helps script small utilities.\n\n### Where it shines\n- Speed. No UI, no setup, just pipe text in and get a command out.\n- Good for learning new CLI tools.\n\n### Where it falls short\n- No built-in project memory or email/SMS integration.\n- Best as a component, not a full system.\n\n### Pricing / Value\nLow cost / high utility for terminal-heavy workflows.\n\n### Who should use it\nDevelopers and DevOps people who live in the terminal.\n\n## Rating Breakdown\n\n- Usability: 4.5/5\n- Value: 4/5\n- Power: 3.5/5\n- Sovereignty / Privacy: 4/5\n- Overall: 4.2/5"
     }
   ],
-  "timestamp": "2026-07-19T03:51:29.844138+00:00",
+  "timestamp": "2026-07-19T06:21:13.478371+00:00",
   "title": "Aegis Foundry Launchpad",
   "tagline": "The first page you open before writing any code.",
   "metrics": {
