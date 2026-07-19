@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local AI on a 2009 Xeon (No GPU, No AVX) Review — Aegis Foundry</title>
+    <meta name="description" content="Real benchmark numbers from a 45-model local LLM fleet on a 17-year-old Xeon X3430 — including a Q8 vs Q4 quantization shootout that upends the usual advice.">
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Local AI on a 2009 Xeon (No GPU, No AVX)</h1>
+        <p class="review-meta">Hardware / Local AI · Rating: 4.4/5 · 2026-07-19</p>
+        <p class="review-summary"><strong>Summary:</strong> Real benchmark numbers from running a 45-model local LLM fleet on a 17-year-old Xeon X3430 — including a Q8 vs Q4 quantization shootout that upends the usual advice.</p>
+        <div class="review-body">
+            <h2>Quick Take</h2>
+            <p>Everyone says you need a GPU, or at least a modern CPU with AVX-512, to run local AI. Our build server is a 2009 Xeon X3430 — four cores, 16GB ECC, spinning RAID, and NO AVX at all. It runs a 45-model ollama fleet around the clock and ships real, tested code. Here are the actual numbers, because almost nobody publishes benchmarks for hardware this old.</p>
+            <h2>The quantization shootout (the interesting numbers)</h2>
+            <p>We ran llama3.2:1b in Q8_0 against its Q4_K_M sibling — 28 head-to-head rounds across 14 scored arenas (code, math, comparison, decisions, docs):</p>
+            <ul>
+                <li><strong>Accuracy:</strong> statistically identical — matched pass-for-pass on 13 of 14 arenas, a single flip on the 14th.</li>
+                <li><strong>Speed:</strong> Q4_K_M was about 15% SLOWER warm (e.g. 14.8s vs 12.3s on short tasks). The internet's "Q4 is faster" advice assumes AVX2/AVX-512 SIMD kernels for K-quant dequantization. Without AVX, Q8_0's trivial dequant wins the compute race.</li>
+                <li><strong>RAM:</strong> Q4 wins the only prize that matters on 16GB — 807MB vs 1.3GB resident, a 38% headroom gain.</li>
+            </ul>
+            <p><strong>Ruling:</strong> on old CPUs, quantization is a RAM lever, not a speed lever. Measure your own box; don't import assumptions from GPU-land.</p>
+            <h2>More measured surprises</h2>
+            <ul>
+                <li>Doubling inference threads from 2 to 4 physical cores gained only ~6% tokens/sec — the box is memory-bandwidth-bound, not compute-bound.</li>
+                <li>A 7B coder model at ~5 tok/s is useless for chat but excellent as an async "slow court": give it minutes instead of seconds and it produces working, reviewable code that the small models can't.</li>
+            </ul>
+            <h2>Where it falls short</h2>
+            <p>Interactive conversation. Warm answers land in 12-25 seconds, cold loads in minutes. You would not want this as your chat companion — it's a factory floor, not a front desk.</p>
+            <h2>Pricing / Value</h2>
+            <p>Hardware most people would recycle for free. Weights are free. The cost is electricity and patience — and the patience is the system's, not yours, if you design async.</p>
+            <h2>Who should use it</h2>
+            <p>Homelabbers, sovereignty-minded builders, anyone with a retired server and a stubborn streak. Sustainability angle is real: this is e-waste doing production work.</p>
+            <h2>Rating Breakdown</h2>
+            <ul>
+                <li>Usability: 3/5 (async only — chat is not the use case)</li>
+                <li>Value: 5/5 (rescued hardware, zero recurring cost)</li>
+                <li>Power: 4/5 (surprising ceiling with the right architecture)</li>
+                <li>Sovereignty / Privacy: 5/5 (nothing ever leaves the box)</li>
+            </ul>
+            <p><strong>Verdict:</strong> Wouldn't be a fun chat, but it works for us — measured, sustainable, and completely sovereign. Overall: 4.4/5</p>
+        </div>
+        <p><a href="index.html">← All reviews</a> · <a href="../index.html#reviews">← Launchpad</a></p>
+    </div>
+</body>
+</html>
