@@ -345,7 +345,7 @@
       "body": "## Quick Take\n\nOpenClaw is the scalpel to Kai's swiss-army-knife: small, fast, and terminal-native.\n\n## In Depth\n\n### What it does\nGenerates shell commands, explains CLI output, and helps script small utilities.\n\n### Where it shines\n- Speed. No UI, no setup, just pipe text in and get a command out.\n- Good for learning new CLI tools.\n\n### Where it falls short\n- No built-in project memory or email/SMS integration.\n- Best as a component, not a full system.\n\n### Pricing / Value\nLow cost / high utility for terminal-heavy workflows.\n\n### Who should use it\nDevelopers and DevOps people who live in the terminal.\n\n## Rating Breakdown\n\n- Usability: 4.5/5\n- Value: 4/5\n- Power: 3.5/5\n- Sovereignty / Privacy: 4/5\n- Overall: 4.2/5"
     }
   ],
-  "timestamp": "2026-07-21T15:04:00.210836+00:00",
+  "timestamp": "2026-07-21T16:38:50.222091+00:00",
   "title": "Aegis Foundry Launchpad",
   "tagline": "The first page you open before writing any code.",
   "metrics": {
