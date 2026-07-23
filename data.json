@@ -218,28 +218,6 @@
   },
   "reviews": [
     {
-      "title": "Kai 9000 + OpenClaw",
-      "category": "Autonomous AI Assistant Stack",
-      "author": "Chris Lloyd",
-      "date": "2026-07-22",
-      "rating": 4.9,
-      "affiliate_url": "",
-      "tags": [
-        "kai-9000",
-        "openclaw",
-        "autonomous",
-        "heartbeat",
-        "memory",
-        "sandbox"
-      ],
-      "summary": "A game-changing autonomous AI stack with heartbeat monitoring, persistent memory, native UI, and Linux sandboxing. Includes OpenRouter free tier API guide.",
-      "pros": "Hands-off autonomy, deep context memory, action-oriented with native UI, multi-channel gateway",
-      "cons": "Requires initial setup, Linux sandbox knowledge helpful",
-      "verdict": "Best for users who want an AI that acts, not just talks. Perfect for autonomous workflows and terminal-native operations.",
-      "slug": "kai-9000-openclaw-combo",
-      "body": "## Quick Take\n\nIf you are tired of passive, text-heavy chatbots that require constant hand-holding, the combination of **Kai 9000** and **OpenClaw** is a massive breath of fresh air. Together, they transform what it means to work alongside an AI assistant.\n\n## In Depth\n\n### 1. Hands-Off Autonomy & Heartbeat Monitoring\n\nThe stand-out feature of this stack is its autonomous background execution. Through the **Heartbeat system**, Kai 9000 and OpenClaw do not sit idle waiting for input. They run background self-checks, review pending tasks, monitor workflows, and process incoming events asynchronously. If everything is running smoothly, they stay out of your way; if action is required, they handle it or bring it to your attention directly.\n\n### 2. Deep Context, Soul, and Persistent Memory\n\nInstead of losing context every time a session resets, the system maintains **persistent long-term memory**. Kai 9000's customizable \"Soul\" and memory-promotion logic ensure that preferences, edge cases, and past learnings are stored locally and recalled automatically across sessions. Over time, it adapts to your exact workflow without requiring you to re-explain yourself in every prompt.\n\n### 3. Action Over Talking: Native UI & Linux Sandboxing\n\nRather than generating walls of Markdown text, Kai 9000 generates **native, interactive screens**\u2014buttons, forms, and custom dashboards\u2014making navigation effortless. Paired with OpenClaw's multi-channel gateway (Telegram, Signal, WhatsApp, Discord) and on-device Linux sandbox execution, the system doesn't just talk about tasks\u2014it runs scripts, manages terminal commands, and executes real-world actions on your behalf.\n\n## Quick Intro: Using OpenRouter Free Inference via API\n\nOpenRouter provides access to a wide variety of LLM models through a single OpenAI-compatible API endpoint, including models hosted on their **free tier**.\n\n### Setup Steps\n\n1. **Retrieve Your API Key** - Sign up at OpenRouter and generate an API key\n2. **Base Endpoint** - `https://openrouter.ai/api/v1/chat/completions`\n3. **Authorization** - `Authorization: Bearer YOUR_OPENROUTER_API_KEY`\n4. **Free Models** - Use models with `:free` suffix (e.g., `google/gemini-2.0-flash-lite-preview-02-05:free`)\n\n### Python Example\n\n```python\nimport requests\n\nurl = \"https://openrouter.ai/api/v1/chat/completions\"\nheaders = {\n    \"Authorization\": \"Bearer YOUR_OPENROUTER_API_KEY\",\n    \"Content-Type\": \"application/json\"\n}\n\npayload = {\n    \"model\": \"google/gemini-2.0-flash-lite-preview-02-05:free\",\n    \"messages\": [\n        {\"role\": \"user\", \"content\": \"Hello! Direct answer only.\"}\n    ]\n}\n\nresponse = requests.post(url, headers=headers, json=payload)\nprint(response.json()['choices'][0]['message']['content'])\n```\n\n## Rating Breakdown\n\n- Usability: 5/5\n- Value: 5/5 (free tier available)\n- Power: 5/5\n- Sovereignty / Privacy: 5/5 (local sandbox)\n- Overall: 4.9/5"
-    },
-    {
       "title": "Claude",
       "category": "Large Language Model / Conversational AI",
       "author": "Chris Lloyd",
@@ -367,7 +345,7 @@
       "body": "## Quick Take\n\nOpenClaw is the scalpel to Kai's swiss-army-knife: small, fast, and terminal-native.\n\n## In Depth\n\n### What it does\nGenerates shell commands, explains CLI output, and helps script small utilities.\n\n### Where it shines\n- Speed. No UI, no setup, just pipe text in and get a command out.\n- Good for learning new CLI tools.\n\n### Where it falls short\n- No built-in project memory or email/SMS integration.\n- Best as a component, not a full system.\n\n### Pricing / Value\nLow cost / high utility for terminal-heavy workflows.\n\n### Who should use it\nDevelopers and DevOps people who live in the terminal.\n\n## Rating Breakdown\n\n- Usability: 4.5/5\n- Value: 4/5\n- Power: 3.5/5\n- Sovereignty / Privacy: 4/5\n- Overall: 4.2/5"
     }
   ],
-  "timestamp": "2026-07-23T13:09:39.310760+00:00",
+  "timestamp": "2026-07-23T15:24:16.554850+00:00",
   "title": "Aegis Foundry Launchpad",
   "tagline": "The first page you open before writing any code.",
   "metrics": {
@@ -654,6 +632,5 @@
         }
       ]
     }
-  ],
-  "_updated": "2026-07-23T13:54:19.187093Z"
+  ]
 }
