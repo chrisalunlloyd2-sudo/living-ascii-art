@@ -3,21 +3,102 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reviews — Aegis Foundry</title>
+    <title>Reviews - Living ASCII Art</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        .reviews-list {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .review-card {
+            background: #001100;
+            border: 2px solid #00ff00;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        .review-card:hover {
+            box-shadow: 0 0 20px #00ff00;
+            transform: translateX(10px);
+        }
+        .review-card h3 {
+            color: #00ff00;
+            margin: 0 0 10px 0;
+        }
+        .review-card p {
+            color: #00cc00;
+            margin: 10px 0;
+        }
+        .review-card a {
+            color: #00ffff;
+            text-decoration: none;
+        }
+        .review-card a:hover {
+            text-decoration: underline;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #00ff00;
+            color: #000;
+            border-radius: 4px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🧪 Product Reviews</h1>
-        <p class="menu-content">Honest, structured reviews of AI tools and services I actually use.</p>
-        <ul class="review-list">
-            <li><a href="kai-9000.html">Kai 9000</a> — AI Agent / Sovereign Automation</li>
-            <li><a href="openclaw.html">OpenClaw</a> — CLI Assistant</li>
-            <li><a href="claude.html">Claude</a> — Conversational AI</li>
-            <li><a href="google-antigravity.html">Google Antigravity</a> — Workspace AI</li>
-            <li><a href="hermes.html">Hermes</a> — Open-Weight Model</li>
-        </ul>
-        <p><a href="../index.html">← Back to launchpad</a></p>
+    <div class="reviews-list">
+        <h1 style="color: #00ff00; text-align: center; text-shadow: 0 0 10px #00ff00;">Living ASCII Art - Reviews</h1>
+        
+        <div class="review-card">
+            <h3>Kai 9000 + OpenClaw Combo Review <span class="badge">NEW</span></h3>
+            <p>Why the combination of Kai 9000 and OpenClaw is a game-changer for autonomous AI assistance. Covers heartbeat monitoring, persistent memory, native UI, and Linux sandboxing.</p>
+            <p><strong>Includes:</strong> OpenRouter free tier API guide with Python examples</p>
+            <a href="kai-9000-openclaw-combo.html">Read Review →</a>
+        </div>
+
+        <div class="review-card">
+            <h3>Kai 9000 Review</h3>
+            <p>Deep dive into Kai 9000's autonomous capabilities, heartbeat system, and persistent memory architecture.</p>
+            <a href="kai-9000.html">Read Review →</a>
+        </div>
+
+        <div class="review-card">
+            <h3>OpenClaw Review</h3>
+            <p>Multi-channel gateway review covering Telegram, Signal, WhatsApp, and Discord integration with Linux sandbox execution.</p>
+            <a href="openclaw.html">Read Review →</a>
+        </div>
+
+        <div class="review-card">
+            <h3>Hermes Review</h3>
+            <p>Analysis of the Hermes AI assistant and its unique features.</p>
+            <a href="hermes.html">Read Review →</a>
+        </div>
+
+        <div class="review-card">
+            <h3>Google Anti-Gravity Review</h3>
+            <p>Exploring Google's experimental anti-gravity search feature.</p>
+            <a href="google-antigravity.html">Read Review →</a>
+        </div>
+
+        <div class="review-card">
+            <h3>Claude Review</h3>
+            <p>Comprehensive review of Claude AI assistant capabilities.</p>
+            <a href="claude.html">Read Review →</a>
+        </div>
+
+        <a href="../index.html" class="back-link">← Back to Living ASCII Art</a>
     </div>
 </body>
 </html>
