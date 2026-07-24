@@ -657,20 +657,21 @@ async function updatePage() {
                 contactContainer.innerHTML = createContact(data);
             }
 
-            const reviewsContainer = document.getElementById('reviews-content');
-            if (reviewsContainer) {
-                console.log('[ASCII] Reviews container found, reviews count:', data.reviews?.length || 0);
-                try {
-                    const reviewsHtml = createReviews(data);
-                    console.log('[ASCII] Reviews HTML generated, length:', reviewsHtml.length);
-                    reviewsContainer.innerHTML = reviewsHtml;
-                } catch (e) {
-                    console.error('[ASCII] Reviews render error:', e);
-                    reviewsContainer.innerHTML = '<p style="color:#ff4444;">Error loading reviews: ' + e.message + '</p>';
-                }
-            }
-
             window.sectionsRendered = true;
+        }
+
+        // Reviews — render every time so it's independent of static sections
+        const reviewsContainer = document.getElementById('reviews-content');
+        if (reviewsContainer) {
+            console.log('[ASCII] Reviews container found, reviews count:', data.reviews?.length || 0);
+            try {
+                const reviewsHtml = createReviews(data);
+                console.log('[ASCII] Reviews HTML generated, length:', reviewsHtml.length);
+                reviewsContainer.innerHTML = reviewsHtml;
+            } catch (e) {
+                console.error('[ASCII] Reviews render error:', e);
+                reviewsContainer.innerHTML = '<p style="color:#ff4444;">Error loading reviews: ' + e.message + '</p>';
+            }
         }
 
         console.log('[ASCII] updatePage complete');
