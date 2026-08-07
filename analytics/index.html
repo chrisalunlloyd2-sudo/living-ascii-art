@@ -98,6 +98,33 @@
             </div>
         </div>
 
+        <!-- Swarm Projects + Votes -->
+        <div class="panel">
+            <h2>🐝 Swarm Projects + Votes</h2>
+            <div id="swarm-projects" class="placeholder">Loading...</div>
+            <div style="margin-top:10px;border-top:1px solid var(--border);padding-top:8px;">
+                <div class="stat-row"><span>Pool open</span><span id="pool-open" class="metric">—</span></div>
+                <div class="stat-row"><span>Pool done</span><span id="pool-done" class="metric">—</span></div>
+                <div class="stat-row"><span>Strategy A</span><span id="strategy-a" class="metric">—</span></div>
+                <div class="stat-row"><span>Game round</span><span id="game-round" class="metric">—</span></div>
+            </div>
+        </div>
+
+        <!-- FOW Hooks -->
+        <div class="panel">
+            <h2>⬡ FOW Hooks — Agent Hex Locks</h2>
+            <div id="fow-hooks" class="placeholder">Loading...</div>
+            <p style="font-size:11px;color:var(--muted);margin-top:10px;">
+                Agents lock onto their hex to claim work. 1-hop visibility. Missing agents = no lock = idle.
+            </p>
+        </div>
+
+        <!-- Swarm Hub Screenshot -->
+        <div class="panel" style="grid-column: 1 / -1;">
+            <h2>🖥️ Swarm Hub — Executive Cortex</h2>
+            <img src="../swarm-hub.png" alt="Swarm Hub" style="width:100%;max-width:480px;border:1px solid var(--border);border-radius:6px;display:block;margin:0 auto;">
+        </div>
+
         <!-- Hypothesis History -->
         <div class="panel" style="grid-column: 1 / -1;">
             <h2>📜 Hypothesis History</h2>
@@ -295,7 +322,33 @@
     </script>
 
 <!-- Cloudflare Web Analytics -->
-<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "61d0daf81ed542958758a4a424ae09cf"}'></script>
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "61d0daf81ed542958758a4a424ae09cf"}'>
+// --- Swarm votes + FOW panel ---
+fetch('../vote_data.json').then(r=>r.json()).then(d=>{
+  const proj = (d.projects||[]).map(p=>
+    `<div style="margin-bottom:6px;font-size:12px;"><b>${p.agent}</b>
+     <span style="color:var(--muted)">⬡${p.hex} · ${p.repo}</span>
+     trust <b style="color:${p.trust>=0?'#0f0':'#f55'}">${p.trust>=0?'+':''}${p.trust}</b>
+     ${p.leashed?'<span class="tag">LEASHED</span>':''}</div>`).join('');
+  const el=document.getElementById('swarm-projects');
+  if(el){el.innerHTML=proj || 'no agents'; el.className='';}
+  const v=d.votes||{};
+  const set=(id,val)=>{const e=document.getElementById(id); if(e)e.textContent=val;};
+  set('pool-open', (v.task_pool&&v.task_pool.open)||'—');
+  set('pool-done', (v.task_pool&&v.task_pool.done)||'—');
+  const sa=v.strategy_A||{};
+  set('strategy-a', `${sa.fails||0} fails / ${sa.wins||0} wins (${sa.mode||'shadow'})`);
+  set('game-round', v.game_round||'—');
+  const fw=d.fow||{};
+  const fh=document.getElementById('fow-hooks');
+  if(fh){
+    const reg=fw.registry||{};
+    fh.innerHTML=Object.entries(reg).map(([a,h])=>
+      `<div style="font-size:12px;margin-bottom:4px;"><b>${a}</b> → ⬡${h.hex||'?'} <span class="tag">LOCKED</span></div>`).join('') || 'no registry';
+    fh.className='';
+  }
+}).catch(e=>{const el=document.getElementById('swarm-projects'); if(el)el.textContent='vote_data offline: '+e.message;});
+</script>
 <!-- End Cloudflare Web Analytics -->
 </body>
 </html>
