@@ -1,0 +1,111 @@
+{
+ "generated": "2026-08-07T23:16:05.594546+00:00",
+ "projects": [
+  {
+   "agent": "sims1337",
+   "hex": "0,1",
+   "trust": 1185,
+   "leashed": true,
+   "repo": "SIMS1337"
+  },
+  {
+   "agent": "matrixwince",
+   "hex": "0,1",
+   "trust": 1185,
+   "leashed": true,
+   "repo": "MatrixWinCE"
+  },
+  {
+   "agent": "brute-foundry",
+   "hex": "0,1",
+   "trust": 1183,
+   "leashed": false,
+   "repo": "house-server"
+  },
+  {
+   "agent": "nyx-governor",
+   "hex": "0,1",
+   "trust": 1185,
+   "leashed": true,
+   "repo": "hexgame"
+  },
+  {
+   "agent": "hero-kernel",
+   "hex": "0,1",
+   "trust": 1183,
+   "leashed": false,
+   "repo": "house-server"
+  },
+  {
+   "agent": "aegis-core",
+   "hex": "0,1",
+   "trust": 1185,
+   "leashed": true,
+   "repo": "sov"
+  },
+  {
+   "agent": "aegis-doctor",
+   "hex": "hex:doctor-banker",
+   "trust": 1318,
+   "leashed": false,
+   "repo": "hexgame"
+  }
+ ],
+ "votes": {
+  "task_pool": {
+   "open": 23,
+   "done": 0,
+   "deferred": 0,
+   "total": 23
+  },
+  "strategy_A": {
+   "fails": 110,
+   "wins": 0,
+   "mode": "shadow"
+  },
+  "game_round": 1338
+ },
+ "fow": {
+  "note": "agents lock onto their hex (FOW) to claim work; 1-hop visibility",
+  "registry": {
+   "sims1337": {
+    "hex": "0,1",
+    "repo": null
+   },
+   "matrixwince": {
+    "hex": "0,1",
+    "repo": null
+   },
+   "brute-foundry": {
+    "hex": "0,1",
+    "repo": null
+   },
+   "nyx-governor": {
+    "hex": "0,1",
+    "repo": null
+   },
+   "hero-kernel": {
+    "hex": "0,1",
+    "repo": null
+   },
+   "aegis-core": {
+    "hex": "0,1",
+    "repo": null
+   },
+   "aegis-doctor": {
+    "hex": "hex:doctor-banker",
+    "repo": null
+   }
+  }
+ },
+ "memory": {
+  "kv": 75,
+  "kg": 2159,
+  "logit": 0,
+  "ts": "2026-08-07T23:10:40.496237+00:00"
+ },
+ "scheduler": {
+  "last_run": "2026-08-07T23:10:40.016995+00:00",
+  "action": "c1 probe: verified at hexgame/quality_gate.py (no feature token found)"
+ }
+}
