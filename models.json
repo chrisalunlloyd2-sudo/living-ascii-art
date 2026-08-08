@@ -1,82 +1,44 @@
 {
- "generated": "2026-08-08T01:25:10.178020+00:00",
- "note": "numbers are locally LLM-generated \u2014 deterministic per model, refreshed daily",
- "servers": [
-  {
-   "name": "house-server (:5000)",
-   "port": 5000,
-   "healthy": false,
-   "http": null
+  "updated": "2026-08-08T14:31:26+00:00",
+  "day": "2026-08-08",
+  "servers": {
+    "5000_gguf_merged": {
+      "status": 200,
+      "body": "{\"ok\": true, \"model\": \"stories15M-be.Q8_0.gguf\", \"engine\": \"llama-cli\", \"lora\": null}"
+    },
+    "5001_llama_slm": {
+      "status": 200,
+      "body": "{\"status\":\"ok\"}"
+    }
   },
-  {
-   "name": "SmolLM-135M (:5001)",
-   "port": 5001,
-   "healthy": true,
-   "http": 200
-  }
- ],
- "trace": {
-  "spans": 200,
-  "ok": 17,
-  "err": 183,
-  "p50_ms": 90091.3
- },
- "manifest_models": [
-  "manifest_version",
-  "updated",
-  "default_port",
-  "models",
-  "repo_public",
-  "download_note"
- ],
- "models": [
-  {
-   "model": "stories15M",
-   "tokens_per_sec": 0.91,
-   "avg_latency_ms": 911,
-   "ctx_used_pct": 51,
-   "health": "ok",
-   "updated": "2026-08-08T01:25:10.177824+00:00"
+  "trace": {
+    "spans": 478,
+    "ok": 72,
+    "err": 406,
+    "err_rate": 0.8494
   },
-  {
-   "model": "SmolLM-135M",
-   "tokens_per_sec": 1.65,
-   "avg_latency_ms": 1085,
-   "ctx_used_pct": 45,
-   "health": "degraded",
-   "updated": "2026-08-08T01:25:10.177910+00:00"
-  },
-  {
-   "model": "danube3-500m",
-   "tokens_per_sec": 0.98,
-   "avg_latency_ms": 1218,
-   "ctx_used_pct": 58,
-   "health": "ok",
-   "updated": "2026-08-08T01:25:10.177940+00:00"
-  },
-  {
-   "model": "triton-local",
-   "tokens_per_sec": 1.04,
-   "avg_latency_ms": 724,
-   "ctx_used_pct": 44,
-   "health": "ok",
-   "updated": "2026-08-08T01:25:10.177964+00:00"
-  },
-  {
-   "model": "qwen2.5-coder:0.5b",
-   "tokens_per_sec": 1.37,
-   "avg_latency_ms": 757,
-   "ctx_used_pct": 77,
-   "health": "ok",
-   "updated": "2026-08-08T01:25:10.177987+00:00"
-  },
-  {
-   "model": "qwen2.5:1.5b",
-   "tokens_per_sec": 1.05,
-   "avg_latency_ms": 425,
-   "ctx_used_pct": 45,
-   "health": "degraded",
-   "updated": "2026-08-08T01:25:10.178009+00:00"
-  }
- ]
+  "models": [
+    {
+      "name": "stories15M-be.Q8_0",
+      "kind": "gguf merged server",
+      "params": 15000000,
+      "up": true,
+      "tok_s": 13,
+      "ctx": 1743,
+      "ram_mb": 190,
+      "gen_ms": 8630
+    },
+    {
+      "name": "SmolLM-135M.Q4_K_M",
+      "kind": "llama-server slm",
+      "params": 135000000,
+      "up": true,
+      "tok_s": 42,
+      "ctx": 1918,
+      "ram_mb": 311,
+      "gen_ms": 8702
+    }
+  ],
+  "up_count": 2,
+  "up_total": 2
 }
