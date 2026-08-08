@@ -213,5 +213,30 @@
 <!-- Cloudflare Web Analytics -->
 <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "61d0daf81ed542958758a4a424ae09cf"}'></script>
 <!-- End Cloudflare Web Analytics -->
+        <!-- Models Panel (local LLM telemetry) -->
+        <div class="panel">
+            <h2>🧠 Local Models</h2>
+            <div id="models-panel"><p style="color:var(--muted)">Loading...</p></div>
+            <p style="font-size:11px;color:var(--muted);margin-top:10px;">Numbers locally LLM-generated · refreshed daily</p>
+        </div>
+
+
+<script>
+fetch('models.json').then(r=>r.json()).then(d=>{
+  const el = document.getElementById('models-panel');
+  if(!el) return;
+  const rows = (d.models||[]).map(m=>
+    `<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;">
+      <span><b>${m.model}</b></span>
+      <span style="color:var(--muted)">${m.tokens_per_sec} tok/s · ${m.avg_latency_ms}ms · ctx ${m.ctx_used_pct}% · <span style="color:${m.health==='ok'?'#0f0':'#fa0'}">${m.health}</span></span>
+    </div>`).join('');
+  const sv = (d.servers||[]).map(s=>
+    `<div style="display:flex;justify-content:space-between;padding:4px 0;font-size:12px;">
+      <span>${s.name}</span><span style="color:${s.healthy?'#0f0':'#f55'}">${s.healthy?'UP':'DOWN'}</span></div>`).join('');
+  const tr = d.trace||{};
+  el.innerHTML = rows + `<div style="margin-top:8px;font-size:11px;color:var(--muted);border-top:1px solid var(--border);padding-top:6px;">servers:</div>` + sv +
+    `<div style="margin-top:6px;font-size:11px;color:var(--muted);">trace: ${tr.spans||0} spans · ${tr.ok||0} ok · ${tr.err||0} err · p50 ${tr.p50_ms||'—'}ms</div>`;
+}).catch(e=>{const el=document.getElementById('models-panel'); if(el)el.textContent='models offline: '+e.message;});
+</script>
 </body>
 </html>
