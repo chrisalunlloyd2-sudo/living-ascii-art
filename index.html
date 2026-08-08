@@ -666,6 +666,15 @@
             </div>
         </section>
 
+        <!-- Daily Feature (auto-updated) -->
+        <section id="daily-feature" class="section">
+            <h2>✨ Daily Feature <span id="df-badge" style="font-size:12px;color:#ffaa00;"></span></h2>
+            <div id="df-content" style="text-align:center;">
+                <p style="color:#888;">Loading today's feature...</p>
+            </div>
+            <p id="df-meta" style="color:#666;font-size:11px;margin-top:10px;"></p>
+        </section>
+
         <!-- Daily Programmatic Flex -->
         <section id="daily-flex" class="section">
             <h2>🎨 Daily Programmatic Flex</h2>
@@ -752,7 +761,26 @@
     <script src="app.js?v=11"></script>
 
 <!-- Cloudflare Web Analytics -->
-<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "61d0daf81ed542958758a4a424ae09cf"}'></script>
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "61d0daf81ed542958758a4a424ae09cf"}'>
+// --- Daily Feature loader ---
+fetch('daily_feature.json').then(r=>r.json()).then(f=>{
+  const el = document.getElementById('df-content');
+  const meta = document.getElementById('df-meta');
+  const badge = document.getElementById('df-badge');
+  badge.textContent = f.is_new ? '· NEW today' : '· reuse';
+  badge.style.color = f.is_new ? '#00ff80' : '#ffaa00';
+  if(f.type === 'image'){
+    el.innerHTML = `<img src="${f.image}" alt="${f.image_name||f.title}" style="max-width:320px;width:100%;border:1px solid #00ffff44;border-radius:8px;box-shadow:0 0 20px #00ffff22;display:inline-block;">` +
+      `<p style="color:#ccc;font-size:13px;margin-top:10px;">${f.description||''}</p>`;
+  } else if(f.type === 'code'){
+    el.innerHTML = `<pre style="text-align:left;background:#0a0a0a;border:1px solid #00ff0044;border-radius:8px;padding:14px;font-size:12px;overflow-x:auto;color:#00ff90;max-height:280px;">${(f.code||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre>` +
+      `<p style="color:#ccc;font-size:13px;margin-top:10px;">${f.explanation||f.description||''}</p>`;
+  } else {
+    el.innerHTML = `<p style="color:#ccc;font-size:13px;">${f.description||'no feature'}</p>`;
+  }
+  meta.innerHTML = `📅 ${f.date} · repo: <a href="https://github.com/chrisalunlloyd2-sudo/${f.repo||''}" style="color:#00ffff">${f.repo||''}</a> · commit ${(f.commit||'').slice(0,7)} · ${f.note||''}`;
+}).catch(e=>{const el=document.getElementById('df-content'); if(el)el.innerHTML=`<p style="color:#888;">daily feature offline: ${e.message}</p>`;});
+</script>
 <!-- End Cloudflare Web Analytics -->
 </body>
 </html>
