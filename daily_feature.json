@@ -1,0 +1,11 @@
+{
+ "date": "2026-08-08",
+ "type": "image",
+ "repo": "MatrixWinCE",
+ "title": "Daily Feature \u2014 MatrixWinCE Real GUI",
+ "image": "https://raw.githubusercontent.com/chrisalunlloyd2-sudo/MatrixWinCE/master/screenshots/MatrixWinCE_GUI_20260807.jpg",
+ "image_name": "MatrixWinCE Real GUI",
+ "description": "The sovereign code foundry for Android/Termux \u2014 real GUI on device.",
+ "is_new": true,
+ "note": "seed feature"
+}
