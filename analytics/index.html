@@ -110,6 +110,13 @@
             </div>
         </div>
 
+        <!-- Local Models -->
+        <div class="panel">
+            <h2>🧠 Local Models</h2>
+            <div id="local-models" class="placeholder">Loading...</div>
+            <p style="font-size:11px;color:var(--muted);margin-top:8px;">LLM-generated locally · refreshed daily</p>
+        </div>
+
         <!-- FOW Hooks -->
         <div class="panel">
             <h2>⬡ FOW Hooks — Agent Hex Locks</h2>
@@ -348,6 +355,13 @@ fetch('../vote_data.json').then(r=>r.json()).then(d=>{
     fh.className='';
   }
 }).catch(e=>{const el=document.getElementById('swarm-projects'); if(el)el.textContent='vote_data offline: '+e.message;});
+
+fetch('../models.json').then(r=>r.json()).then(d=>{
+  const el=document.getElementById('local-models'); if(!el) return;
+  el.innerHTML=(d.models||[]).map(m=>
+    `<div style="font-size:12px;padding:4px 0;border-bottom:1px solid var(--border);"><b>${m.model}</b> <span style="color:var(--muted)">${m.tokens_per_sec} tok/s · ${m.avg_latency_ms}ms · ctx ${m.ctx_used_pct}%</span> <span style="color:${m.health==='ok'?'#0f0':'#fa0'}">${m.health}</span></div>`).join('');
+  el.className='';
+}).catch(e=>{const el=document.getElementById('local-models'); if(el)el.textContent='models offline';});
 </script>
 <!-- End Cloudflare Web Analytics -->
 </body>
