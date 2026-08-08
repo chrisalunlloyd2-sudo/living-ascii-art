@@ -1,11 +1,13 @@
 {
  "date": "2026-08-08",
- "type": "image",
- "repo": "MatrixWinCE",
- "title": "Daily Feature \u2014 MatrixWinCE Real GUI",
- "image": "https://raw.githubusercontent.com/chrisalunlloyd2-sudo/MatrixWinCE/master/screenshots/MatrixWinCE_GUI_20260807.jpg",
- "image_name": "MatrixWinCE Real GUI",
- "description": "The sovereign code foundry for Android/Termux \u2014 real GUI on device.",
- "is_new": false,
- "note": "no new content since 2026-08-08 \u2014 showing yesterday's feature"
+ "type": "code",
+ "repo": "living-ascii-art",
+ "commit": "423a2e8857",
+ "title": "Daily Code \u2014 living-ascii-art",
+ "code": "#!/usr/bin/env python3\n\"\"\"Bump cache-bust query string in index.html using current git short hash.\"\"\"\nimport re\nimport subprocess\nfrom pathlib import Path\n\nROOT = Path(__file__).resolve().parent.parent\nindex = ROOT / 'index.html'\nhtml = index.read_text(encoding='utf-8')\n\nshort_hash = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD'], cwd=ROOT).decode().strip()\n\n# Replace any existing ?v=... on our js files with the new hash\nnew_html = re.sub(\n    r'(js/[a-zA-Z0-9_./-]+\\.js)\\?v=[^\"\\'\\s]+',\n    r'\\1?v=' + short_hash,\n    html\n)\n\nif new_html != html:\n    index.write_text(new_html, encoding='utf-8')\n    print(f'Bumped cache-bust to {short_hash}')\nelse:\n    print(f'Cache-bust already at {short_hash}')",
+ "language": "python",
+ "description": "daily feature: image MatrixWinCE (reuse)",
+ "explanation": "This is the newest change in living-ascii-art (daily feature: image MatrixWinCE (reuse)). A small, readable slice \u2014 the kind of programmatic flex that builds the system one commit at a time.",
+ "is_new": true,
+ "note": "fresh today"
 }
