@@ -1,12 +1,12 @@
 {
- "date": "2026-08-09",
+ "date": "2026-08-10",
  "type": "image",
  "repo": "MatrixWinCE",
- "commit": "c8007ffabb",
+ "commit": "be03eb0763",
  "title": "Daily Feature \u2014 MatrixWinCE",
- "image": "https://raw.githubusercontent.com/chrisalunlloyd2-sudo/MatrixWinCE/master/screenshots/MatrixWinCE_GUI_20260807.jpg?token=CA4MLFB36E2QJHJFJRFHLIDKPCH3DAA",
+ "image": "https://raw.githubusercontent.com/chrisalunlloyd2-sudo/MatrixWinCE/master/screenshots/MatrixWinCE_GUI_20260807.jpg?token=CA4MLFAZYEHAJVD2AZLBKBTKPI4ZZAA",
  "image_name": "MatrixWinCE Real GUI",
- "description": "aegis: add build_verify.sh \u2014 deterministic build gates (preflight + APK verify)",
+ "description": "qwen: Cortex panels + SIMS1337 GodHand dashboard \u2014 match relay JSON formats, add hex FOW grid, auto-",
  "is_new": true,
  "note": "fresh today"
 }
