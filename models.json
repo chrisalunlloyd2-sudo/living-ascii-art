@@ -1,6 +1,6 @@
 {
-  "updated": "2026-08-10T20:49:41+00:00",
-  "day": "2026-08-10",
+  "updated": "2026-08-11T14:31:10+00:00",
+  "day": "2026-08-11",
   "servers": {
     "5000_gguf_merged": {
       "status": 200,
@@ -12,10 +12,10 @@
     }
   },
   "trace": {
-    "spans": 655,
-    "ok": 226,
-    "err": 429,
-    "err_rate": 0.655
+    "spans": 664,
+    "ok": 227,
+    "err": 437,
+    "err_rate": 0.6581
   },
   "models": [
     {
@@ -23,20 +23,20 @@
       "kind": "gguf merged server",
       "params": 15000000,
       "up": true,
-      "tok_s": 12,
-      "ctx": 998,
-      "ram_mb": 161,
-      "gen_ms": 7678
+      "tok_s": 31,
+      "ctx": 706,
+      "ram_mb": 90,
+      "gen_ms": 7443
     },
     {
       "name": "SmolLM-135M.Q4_K_M",
       "kind": "llama-server slm",
       "params": 135000000,
       "up": true,
-      "tok_s": 32,
-      "ctx": 1206,
-      "ram_mb": 277,
-      "gen_ms": 6475
+      "tok_s": 28,
+      "ctx": 1386,
+      "ram_mb": 227,
+      "gen_ms": 1891
     }
   ],
   "up_count": 2,
