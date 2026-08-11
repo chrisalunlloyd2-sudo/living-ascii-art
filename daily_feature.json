@@ -1,19 +1,21 @@
 {
  "date": "2026-08-11",
  "type": "code",
- "repo": "karoo-hexeract",
- "commit": "a9c7969",
- "title": "Daily Feature \u2014 karoo-hexeract",
- "code": "#!/usr/bin/env python3\n\"\"\"HexDB \u2014 Euler-space hexagonal storage (topological-memory HexDB pattern).\nDeterministic: SHA-256(content) -> (q, r) axial hex cell. O(1) neighbor lookup,\nregion queries via axial coordinates. Pure stdlib, runs anywhere.\"\"\"\nimport hashlib, json, math, os\n\ndef cell_of(key: str, radius: int = 32) -> tuple:\n    \"\"\"Deterministic hex cell (q, r) for a key, centered near origin.\"\"\"\n    h = hashlib.sha256(key.encode()).digest()\n    # map 256-bit hash into axial range [-radius, radius]\n    q = int.from_bytes(h[:4], 'big') % (2 * radius + 1) - radius\n    r = int.from_bytes(h[4:8], 'big') % (2 * radius + 1) - radius\n    return (q, r)\n\ndef neighbors(q, r):\n    \"\"\"Axial hex neighbors (6).\"\"\"\n    return [(q+1,r), (q-1,r), (q,r+1), (q,r-1), (q+1,r-1), (q-1,r+1)]\n",
+ "repo": "karoo_gp",
+ "commit": "9f51404",
+ "title": "Daily Feature \u2014 karoo_gp",
+ "code": "from .pause import pause\nfrom .node_lib import NodeData, function_lib, get_nodes, get_function_node\nfrom .node import Node\nfrom .tree import Tree\nfrom .population import Population\nfrom .base_class import BaseGP, RegressorGP, MultiClassifierGP, \\\n                        MatchingGP, ClassDecoder\n\n__version__ = \"3.0.0\"",
  "language": "python",
- "description": "karoo-hexeract: comparative wrapper + HexDB + SVG renderer (Phase 6, pure stdlib)",
- "explanation": "1 new commit(s) in karoo-hexeract since the last feature (karoo-hexeract: comparative wrapper + HexDB + SVG ). BDI_FSM_AGENT surfaced this slice from the newest change.",
- "is_new": false,
- "note": "no new content since 2026-08-11 \u2014 showing yesterday's feature",
+ "description": "deps: DEPENDENCIES.md \u2014 stdlib-only (verified by import scan)",
+ "explanation": "1 new commit(s) in karoo_gp since the last feature (deps: DEPENDENCIES.md \u2014 stdlib-only (verified by i). BDI_FSM_AGENT surfaced this slice from the newest change.",
+ "is_new": true,
+ "note": "fresh via BDI_FSM triple loop",
  "files": [
+  ".gitignore",
+  "DEPENDENCIES.md",
   "README.md",
-  "hexdb.py",
-  "karoo_wrapper.py",
-  "render.py"
+  "__init__.py",
+  "base_class.py",
+  "files/Iris_dataset/README.txt"
  ]
 }
