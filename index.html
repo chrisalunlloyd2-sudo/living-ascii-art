@@ -761,7 +761,8 @@
     <script src="app.js?v=11"></script>
 
 <!-- Cloudflare Web Analytics -->
-<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "61d0daf81ed542958758a4a424ae09cf"}'>
+<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "61d0daf81ed542958758a4a424ae09cf"}'></script>
+<script>
 // --- Daily Feature loader ---
 fetch('daily_feature.json').then(r=>r.json()).then(f=>{
   const el = document.getElementById('df-content');
