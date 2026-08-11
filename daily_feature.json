@@ -8,8 +8,8 @@
  "language": "python",
  "description": "karoo-hexeract: comparative wrapper + HexDB + SVG renderer (Phase 6, pure stdlib)",
  "explanation": "1 new commit(s) in karoo-hexeract since the last feature (karoo-hexeract: comparative wrapper + HexDB + SVG ). BDI_FSM_AGENT surfaced this slice from the newest change.",
- "is_new": true,
- "note": "fresh via BDI_FSM triple loop",
+ "is_new": false,
+ "note": "no new content since 2026-08-11 \u2014 showing yesterday's feature",
  "files": [
   "README.md",
   "hexdb.py",
