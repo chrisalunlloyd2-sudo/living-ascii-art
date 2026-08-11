@@ -6,8 +6,8 @@
  "title": "Daily Feature \u2014 SIMS1337",
  "description": "approve(ADD-only): land local agent adds (quality-gated)",
  "explanation": "30 new commit(s) in SIMS1337 since last check. Changes touch: scripts/toc_tok/toc_tok.json.",
- "is_new": true,
- "note": "fresh via BDI_FSM triple loop",
+ "is_new": false,
+ "note": "no new sibling changes \u2014 showing previous feature (BDI_FSM)",
  "files": [
   "scripts/toc_tok/toc_tok.json"
  ]
