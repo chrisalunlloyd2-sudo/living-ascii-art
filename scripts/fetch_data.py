@@ -7,6 +7,8 @@ import logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 logger = logging.getLogger("fetch_data")
 
+FLEX_TYPES = ['ascii_sine', 'fractal_tree', 'matrix_rain', 'spiral_galaxy']
+
 TECH_KEYWORDS = ['computers', 'ai', 'artificial intelligence', 'hardware', 'programming', 'software', 'tech', 'digital', 'cyber', 'data', 'algorithm', 'chip', 'processor', 'quantum', 'neural']
 
 
@@ -273,13 +275,34 @@ if __name__ == "__main__":
     report["tagline"] = static_fields.get("tagline", report.get("tagline"))
     report["metrics"] = static_fields.get("metrics", report.get("metrics", {}))
     report["seo"] = static_fields.get("seo", report.get("seo", {}))
-    report["daily_flex"] = static_fields.get("daily_flex", report.get("daily_flex", {}))
+    # === DAILY FLEX ===
+    # Previously this was copied forward verbatim from the old data.json, which
+    # froze it permanently. Now it is regenerated from today's UTC date: the
+    # winning vote picks the type if there is one, otherwise it rotates
+    # deterministically through FLEX_TYPES.
+    old_flex = static_fields.get("daily_flex", {}) or {}
+    today = datetime.datetime.now(datetime.timezone.utc).date()
+    seed = today.year * 10000 + today.month * 100 + today.day
+    voted = old_flex.get("current_vote")
+    flex_type = voted if voted in FLEX_TYPES else FLEX_TYPES[seed % len(FLEX_TYPES)]
+
+    report["daily_flex"] = {
+        **old_flex,
+        "date": today.isoformat(),
+        "seed": seed,
+        "type": flex_type,
+        "vote_options": FLEX_TYPES,
+    }
+    flex_changed = old_flex.get("type") != flex_type
     report["workflow_cards"] = static_fields.get("workflow_cards", report.get("workflow_cards", []))
 
     # keep metrics in sync
     if "metrics" in report:
         report["metrics"]["cards_count"] = len(report.get("workflow_cards", []))
-        report["metrics"]["last_flex_change"] = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%d")
+        # Only stamp this when the flex genuinely changed — it used to be set
+        # on every run, which made a frozen flex look freshly updated.
+        if flex_changed or not report["metrics"].get("last_flex_change"):
+            report["metrics"]["last_flex_change"] = today.isoformat()
 
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
