@@ -350,6 +350,7 @@ function renderDailyFlex(data) {
     if (!flex.type) return '';
     const today = new Date().toISOString().slice(0, 10);
     const seed = flex.seed || todayToSeed(today);
+    flexStats = flex.stats || null;   // expose live stats to the stats renderer
     const art = generateDailyAsciiArt(flex.type, seed, 60, 16);
     const options = (flex.vote_options || []).map(opt => `
         <button class="vote-btn ${flex.current_vote === opt ? 'voted' : ''}" data-vote="${escapeHtml(opt)}">${escapeHtml(opt.replace(/_/g, ' '))}</button>
@@ -424,6 +425,39 @@ function generateDailyAsciiArt(type, seed, cols, rows) {
         }
         branch(cols / 2, rows - 1, 6, Math.PI / 2);
         out.push(...canvas.map(r => r.join('')));
+    } else if (type === 'stats') {
+        // Programmatic flex: live BDI stats rendered as a bordered grid (no sine, no noise).
+        const stats = (typeof flexStats !== 'undefined' && flexStats) ? flexStats : {};
+        const labels = [
+            ['corpus lines', stats.corpus],
+            ['agent events', stats.events],
+            ['lexicon tokens', stats.tokens],
+            ['minted contracts', stats.contracts],
+            ['promoted SOPs', stats.sops],
+            ['journal lines', stats.journal],
+            ['nash theta*', stats.nash]
+        ];
+        const left = Math.floor((cols - 26) / 2);
+        const title = ' KERNEL // LIVE STATS ';
+        for (let y = 0; y < rows; y++) {
+            let line = new Array(cols).fill(' ');
+            const t = title.charAt((y + seed) % title.length);
+            if (y === 0) {
+                for (let x = 0; x < cols; x++) line[x] = '=';
+            } else if (y === rows - 1) {
+                for (let x = 0; x < cols; x++) line[x] = '=';
+            } else if (y === 2) {
+                for (let i = 0; i < title.length && left + i < cols; i++) line[left + i] = title[i];
+            } else {
+                const idx = y - 4;
+                if (idx >= 0 && idx < labels.length) {
+                    const [k, v] = labels[idx];
+                    const s = '  ' + k.padEnd(18, ' ') + ': ' + (v == null ? '--' : v);
+                    for (let i = 0; i < s.length && left + i < cols; i++) line[left + i] = s.charAt(i);
+                }
+            }
+            out.push(line.join(''));
+        }
     } else {
         for (let y = 0; y < rows; y++) {
             let line = '';

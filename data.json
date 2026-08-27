@@ -364,11 +364,20 @@
     ]
   },
   "daily_flex": {
-    "date": "2026-07-13",
-    "title": "ASCII Sine-Wave of the Day",
-    "description": "A deterministic sine wave rendered in ASCII, seeded by today's date. Refreshes once per day at 00:00 UTC.",
-    "type": "ascii_sine",
-    "seed": 20260713,
+    "date": "2026-08-26",
+    "title": "Kernel // Live Stats Board",
+    "description": "Programmatic flex: live BDI-FSM fleet stats rendered as ASCII, pulled from the real agent state. No static sine wave \u2014 this board reads what the fleet actually did.",
+    "type": "stats",
+    "seed": 20260827,
+    "stats": {
+      "corpus": 1446,
+      "events": 213,
+      "tokens": 22173,
+      "contracts": 10,
+      "sops": 1,
+      "journal": 16,
+      "nash": "0.301"
+    },
     "vote_options": [
       "ascii_sine",
       "fractal_tree",
