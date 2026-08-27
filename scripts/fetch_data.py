@@ -274,6 +274,19 @@ if __name__ == "__main__":
     report["metrics"] = static_fields.get("metrics", report.get("metrics", {}))
     report["seo"] = static_fields.get("seo", report.get("seo", {}))
     report["daily_flex"] = static_fields.get("daily_flex", report.get("daily_flex", {}))
+    # LOCK-IN: the flex is ALWAYS the programmatic stats board (never a static sine wave).
+    # refresh the live stats each run so the board reads current fleet state.
+    import datetime as _dt
+    dflex = report.get("daily_flex") or {}
+    dflex["type"] = "stats"
+    dflex["date"] = _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d")
+    dflex["title"] = "Kernel // Live Stats Board"
+    dflex["description"] = ("Programmatic flex: live BDI-FSM fleet stats rendered as ASCII, "
+                            "pulled from the real agent state. No static sine wave - this board "
+                            "reads what the fleet actually did.")
+    dflex["seed"] = int(_dt.datetime.now(_dt.timezone.utc).strftime("%Y%m%d"))
+    dflex["vote_options"] = ["ascii_sine", "fractal_tree", "matrix_rain", "spiral_galaxy", "stats"]
+    report["daily_flex"] = dflex
     report["workflow_cards"] = static_fields.get("workflow_cards", report.get("workflow_cards", []))
 
     # keep metrics in sync
