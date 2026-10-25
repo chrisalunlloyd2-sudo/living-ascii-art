@@ -7,6 +7,12 @@ on:
 permissions:
   contents: write
 
+# Runs every 5 min can overlap; two pushes racing gave
+# "failed to push some refs" (run 39678124940). Queue them.
+concurrency:
+  group: update-data
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
@@ -26,4 +32,8 @@ jobs:
           git config user.email "aegis@local"
           git add data.json
           git commit -m "Update data $(date -u)" || echo "No changes"
-          git push
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push && exit 0
+            echo "push attempt $i lost a race, retrying"; sleep $((i * 5))
+          done
+          exit 1
