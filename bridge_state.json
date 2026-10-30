@@ -14,6 +14,9 @@
     },
     "kai9000ce": {
       "role": "agent"
+    },
+    "hermes": {
+      "role": "orchestrator"
     }
   },
   "votes": {
@@ -28,6 +31,29 @@
       "reasoning": {
         "viper-kernel": "classical fallback needs a clean kernel",
         "quantum-asm": "quantum-classical bridge needs it"
+      }
+    },
+    "daily-flex-mc-1": {
+      "voters": {
+        "hermes": "stats",
+        "aegis": "stats",
+        "moe": "stats",
+        "viper-kernel": "hex_swirl",
+        "quantum-asm": "hex_swirl",
+        "kai9000ce": "boids"
+      },
+      "tally": {
+        "stats": 3,
+        "hex_swirl": 2,
+        "boids": 1
+      },
+      "reasoning": {
+        "hermes": "stats board is the strongest existing structure: dense information art, real foundry telemetry, and the LOCK-IN pipeline already honors it — vote submits to the built structure per Architect's directive; new generators (hex_swirl/grid_pulse/boids) are additions, not replacements.",
+        "aegis": "stats art is the living dashboard; keep the LOCK-IN default.",
+        "moe": "stats is the highest-ink board — best 'impress viewers' candidate.",
+        "viper-kernel": "hex_swirl: logarithmic arms with jitter reads organic at 60x20.",
+        "quantum-asm": "hex_swirl: arm count seeds novel per-day topology.",
+        "kai9000ce": "boids: emergent flocking trails are the most novel motion-art candidate."
       }
     }
   },

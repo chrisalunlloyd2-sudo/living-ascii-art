@@ -285,7 +285,8 @@ if __name__ == "__main__":
                             "pulled from the real agent state. No static sine wave - this board "
                             "reads what the fleet actually did.")
     dflex["seed"] = int(_dt.datetime.now(_dt.timezone.utc).strftime("%Y%m%d"))
-    dflex["vote_options"] = ["ascii_sine", "fractal_tree", "matrix_rain", "spiral_galaxy", "stats"]
+    dflex["vote_options"] = ["ascii_sine", "fractal_tree", "matrix_rain", "spiral_galaxy", "stats",
+                             "hex_swirl", "grid_pulse", "boids"]
     report["daily_flex"] = dflex
     report["workflow_cards"] = static_fields.get("workflow_cards", report.get("workflow_cards", []))
 
